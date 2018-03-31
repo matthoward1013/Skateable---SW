@@ -1,0 +1,77 @@
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+html, body { 
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    font-family: Georgia, sans-serif;
+}
+
+a {
+    target-name: new;
+    target-new: tab;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#side-bar {
+    height: 100%;
+    width: 0;
+    position: fixed ;
+    background-color: darkgray;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+#top-bar {
+    width: 100%;
+    height: 10%;
+    background-color: darkgray;
+    border-color: black;
+    
+}
+
+#menu-button {
+    height: 100%;
+    max-width: 25px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+}
+
+#menu {
+    z-index: 1;
+    height: 25px;
+    margin-top: 50%;
+    vertical-align: middle;
+}
+
+#map { 
+    bottom: 0px;
+    height: 90%;
+    left: 0px;
+    position: absolute;
+    right: 0px;
+}
+
+#error {
+    position: fixed;
+    top 350px;
+    left: 5%;
+    width: 20%;
+}
+
+.infoWindow {
+    text-align: center;
+}
