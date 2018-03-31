@@ -4,6 +4,8 @@
 
 Software Engineering Project for Seattle Pacific University.
 
+Skateable, a Tatooine Group project.
+
 ###### Contributing
 
 * Henry Ang
