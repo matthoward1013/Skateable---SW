@@ -38,12 +38,15 @@ a {
     height: 10%;
     background-color: darkgray;
     border-color: black;
+    display: flex;
+    flex-wrap: wrap;
     
 }
 
 #menu-button {
     height: 100%;
-    max-width: 25px;
+    width: 5%;
+    max-width: 5%;
     cursor: pointer;
     text-align: center;
     display: block;
@@ -52,9 +55,22 @@ a {
 
 #menu {
     z-index: 1;
-    height: 25px;
-    margin-top: 50%;
-    vertical-align: middle;
+    display: relative;
+    margin-top: 17%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 60%;
+    
+}
+
+#logo {
+    width: 90%;
+    height: 100%;
+    text-align: center;
+}
+
+#logo img {
+    height: inherit;
 }
 
 #map { 
