@@ -28,9 +28,37 @@ a {
     height: 100%;
     width: 0;
     position: fixed ;
+    overflow-x: hidden;
+    top: 0;
+    left: 0;
     background-color: darkgray;
     z-index: 1;
     transition: 0.5s;
+}
+
+#side-bar a {
+    padding: 8px, 8px, 8px, 32px;
+    text-decoration: none;
+    font-size: 40px;
+    display: block;
+    color: #f1f1f1;
+    font-family: 'Acme', sans-serif;
+}
+
+#side-bar a:hover {
+    color: black;
+}
+
+#side-bar .list {
+    margin-top: 30%;
+    text-align: center;
+}
+
+.clsbtn {
+    cursor: pointer;
+    padding-right: 10px;
+    top: 0;
+    float: right;
 }
 
 #top-bar {
@@ -38,23 +66,43 @@ a {
     height: 10%;
     background-color: darkgray;
     border-color: black;
+    display: flex;
+    flex-wrap: wrap;
     
 }
 
 #menu-button {
     height: 100%;
-    max-width: 25px;
-    cursor: pointer;
+    width: 5%;
+    max-width: 5%;
     text-align: center;
     display: block;
     vertical-align: middle;
+    background-color: darkgray;
+    border: none;
+}
+
+#menu-button:focus {
+    outline: 0;
 }
 
 #menu {
     z-index: 1;
-    height: 25px;
-    margin-top: 50%;
-    vertical-align: middle;
+    display: relative;
+    margin-right: auto;
+    margin-left: auto;
+    height: 60%;
+    cursor: pointer;
+}
+
+#logo {
+    width: 90%;
+    height: 100%;
+    text-align: center;
+}
+
+#logo img {
+    height: inherit;
 }
 
 #map { 
