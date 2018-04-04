@@ -39,18 +39,26 @@ a {
 #side-bar a {
     padding: 8px, 8px, 8px, 32px;
     text-decoration: none;
+    font-size: 40px;
+    display: block;
+    color: #f1f1f1;
+    font-family: 'Acme', sans-serif;
 }
 
 #side-bar a:hover {
-    color: #f1f1f1;
+    color: black;
+}
+
+#side-bar .list {
+    margin-top: 30%;
+    text-align: center;
 }
 
 .clsbtn {
     cursor: pointer;
-    font-size: 36px;
     padding-right: 10px;
+    top: 0;
     float: right;
-    color: lightgray;
 }
 
 #top-bar {
