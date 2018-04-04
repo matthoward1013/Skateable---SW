@@ -8,11 +8,14 @@
     </head>
     <body>
         <div id="container">
-            <div id="side-bar"></div>
+            <div id="side-bar">
+                <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
+            </div>
+            
             <header id="top-bar">
-                <div id="menu-button">
-                    <img id="menu" src="img/menu.png" alt="menu" data-bind="click: menuUtility">
-                </div>
+                <button id="menu-button">
+                    <img id="menu" src="img/menu.png" alt="menu" data-bind="click: openPanel">
+                </button>
                 <div id="logo"><img src="img/Logo.png" alt="Skateable"></div>
             </header>
             <div id="map"></div>
