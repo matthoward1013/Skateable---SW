@@ -3,6 +3,9 @@
     background: transparent;
 }
 
+* {
+    font-family: 'Acme', sans-serif;
+}
 html, body { 
     height: 100%;
     margin: 0;
@@ -43,6 +46,7 @@ a {
     display: block;
     color: #f1f1f1;
     font-family: 'Acme', sans-serif;
+    transition: 0.3s;
 }
 
 #side-bar a:hover {
@@ -79,6 +83,24 @@ a {
     display: block;
     vertical-align: middle;
     background-color: darkgray;
+    border: none;
+}
+
+#pinButton {
+    height: 100%;
+    width: 5%;
+    max-width: 5%;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    background-color: darkgray;
+    border: none;
+    
+}
+
+#yesButton {
+    background-color: aqua;
+    color: black;
     border: none;
 }
 

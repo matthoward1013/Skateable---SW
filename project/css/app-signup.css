@@ -1,5 +1,9 @@
+* {
+    font-family: 'Acme', sans-serif;    
+}
+
 body {
-background:  #b3b3b3;
+    background:  #b3b3b3;
  }
 
 /* Center the image */
@@ -32,9 +36,9 @@ input[type=first],input[type=last],input[type=email],input[type=email2],input[ty
 }
 
     /* button */
-h1{
+h1 {
     text-align: center;
-    font-family: sans-serif;
+    font-family: 'Acme',    sans-serif;
     font-size: 50;
     margin-top: auto;
 }
@@ -48,3 +52,12 @@ h1{
   text-align: center;
 }
 
+.footer {
+    position: relative;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}

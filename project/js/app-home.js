@@ -66,7 +66,8 @@ let ViewModel = function () {
     
     let panelVis = false,
         sidebar = $('#side-bar'),
-        menuButton = $("#menu-button");
+        menuButton = $("#menu-button"),
+        pinModal = $('#createPin');
     
     self.closePanel = function() {
         sidebar.css("width", "0");
@@ -76,5 +77,9 @@ let ViewModel = function () {
     self.openPanel = function() {
         sidebar.css("width", "20%");
         panelVis = true;
+    };
+    
+    self.openModal = function() {
+        pinModal.modal('show');  
     };
 };
