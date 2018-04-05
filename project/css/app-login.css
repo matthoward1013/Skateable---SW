@@ -41,15 +41,10 @@ img.logo {
     padding: 8px;
     position:absolute;
     left: 20%;
-    right: 20%
+    right: 20%;
 }
 .container2 {
     text-align: center;
-}
-
-/* The "Forgot password" text */
-span.psw {
-    float: auto;
 }
 
 .footer {
