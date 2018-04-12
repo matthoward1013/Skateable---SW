@@ -75,7 +75,7 @@ let ViewModel = function () {
     };
     
     self.openPanel = function() {
-        sidebar.css("width", "20%");
+        sidebar.css("width", "15%");
         panelVis = true;
     };
     
