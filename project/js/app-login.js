@@ -20,18 +20,17 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page!');
 }
 
-//Class to store each theater information
-let Theater = function (theater) {
-    this.title = ko.observable(theater.title);
-    this.lat = ko.observable(theater.position.lat);
-    this.lng = ko.observable(theater.position.lng);
-    this.id = ko.observable(theater.id);
+//Class to store each SkateSpot information
+let skateSpot = function (skateSpot) {
+    this.name = ko.observable(skateSpot.name);
+    this.lat = ko.observable(skateSpot.position.lat);
+    this.lng = ko.observable(skateSpot.position.lng);
+    this.id = ko.observable(skateSpot.id);
     this.streetAddress = ko.observable('');
-    this.cityStateZip = ko.observable('');
-    this.number = ko.observable('');
-    this.url = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(true);
+	this.comments[5] = ko.observable();
+	this.rating = ko.observable();
 };
 
 let item = $('li');
@@ -127,7 +126,7 @@ let ViewModel = function () {
                     theater.number = phone.formattedPhone;
                 }
                 
-                let contentString = `<div class="infoWindow">
+                let contentString = <div class="infoWindow">
                         <h2>` + theater.title() + `</h2>
                         <p>` + theater.streetAddress() + `</p>
                         <p>` + theater.cityStateZip() + `</p>

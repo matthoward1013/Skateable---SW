@@ -20,19 +20,41 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
-//Class to store each theater information
-let Park = function (park) {
-    this.title = ko.observable(park.title);
-    this.lat = ko.observable(park.position.lat);
-    this.lng = ko.observable(park.position.lng);
-    this.id = ko.observable(park.id);
+//Class to store each SkateSpot information
+let skateSpot = function (skateSpot) {
+	this.id = ko.observable(skateSpot.name);
+    this.name = ko.observable(skateSpot.name);
+    this.lat = ko.observable(skateSpot.position.lat);
+    this.lng = ko.observable(skateSpot.position.lng);
+    this.id = ko.observable(skateSpot.id);
     this.streetAddress = ko.observable('');
-    this.cityStateZip = ko.observable('');
-    this.number = ko.observable('');
-    this.url = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(true);
+	this.comments = ko.observableArray();
+	this.rating = ko.observable();
 };
+
+//class to store each meetup at a skatespot
+let meetup = function(meetup){
+	this.id = ko.observable();
+	this.dayofMeetup = ko.observable();
+	this.description = ko.observable();
+};
+//class to store the user
+let user = function(user){
+	this.id = ko.observable();
+	this.name = ko.observable();
+	this.email = ko.observabe();
+	this.password = ko.observable();
+	this.bio = ko.obserable();
+};
+//to store each group
+let group = function(group){
+	this.id = ko.observable();
+	this.name = ko.observable();
+	this.members= ko.observableArray();
+	th.chat = ko
+}
 
 let ViewModel = function () {
     let self = this;
