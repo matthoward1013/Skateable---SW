@@ -47,15 +47,15 @@ let user = function(user){
 	this.name = ko.observable();
 	this.email = ko.observabe();
 	this.password = ko.observable();
-	this.bio = ko.obserable();
+	this.bio = ko.observable();
 };
 //to store each group
 let group = function(group){
 	this.id = ko.observable();
 	this.name = ko.observable();
 	this.members= ko.observableArray();
-	th.chat = ko
-}
+	//this.chat = ko
+};
 
 let ViewModel = function () {
     let self = this;

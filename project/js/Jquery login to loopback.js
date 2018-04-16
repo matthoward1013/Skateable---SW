@@ -1,3 +1,5 @@
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, self*/
+/*jshint esversion: 6 */
 //Jquery Login to loopback
 
 function AjaxLogin(url, method, accept, contentType, datatype, data, callback)

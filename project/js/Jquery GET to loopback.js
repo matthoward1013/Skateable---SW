@@ -1,3 +1,5 @@
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
+/*jshint esversion: 6 */
 // JQuery ajax get function
 
 function AjaxGet(url, method, datatype, callback)
