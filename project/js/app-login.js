@@ -20,18 +20,14 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page!');
 }
 
-//Class to store each SkateSpot information
-let skateSpot = function (skateSpot) {
-    this.name = ko.observable(skateSpot.name);
-    this.lat = ko.observable(skateSpot.position.lat);
-    this.lng = ko.observable(skateSpot.position.lng);
-    this.id = ko.observable(skateSpot.id);
-    this.streetAddress = ko.observable('');
-    this.marker = ko.observable();
-    this.visible = ko.observable(true);
-	this.comments[5] = ko.observable();
-	this.rating = ko.observable();
-};
+//class to store the user
+let User = function(user){
+	this.id = ko.observable();
+	this.key = ko.observable();
+	this.name = ko.observable();
+	this.email = ko.observabe();
+	this.password = ko.observable();
+	this.bio = ko.observable();
 
 let item = $('li');
     
