@@ -2,24 +2,6 @@
 /*jshint esversion: 6 */
 let map;
 
-
-
-//Initiliazes  the map, using the center of WA state as the center
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.7511, lng: -120.7401},
-        zoom: 7,
-        mapTypeControl: false //Sticks to the classic mapType
-    });
-    ko.applyBindings(new ViewModel());
-}
-
-//Error handling for map
-
-function errorHandling() {
-    alert('Google maps has failed to load. Please reload the page!');
-}
-
 //class to store the user
 let User = function(user){
 	this.id = ko.observable();
