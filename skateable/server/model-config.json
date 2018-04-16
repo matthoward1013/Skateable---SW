@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "mongoatlas"
+  },
+  "AccessToken": {
+    "dataSource": "mongoatlas",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "mongoatlas",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "mongoatlas",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "mongoatlas",
+    "public": false
+  },
+  "user": {
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "skatespot": {
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "meetup": {
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "groups": {
+    "dataSource": "mongoatlas",
+    "public": true
+  }
+}

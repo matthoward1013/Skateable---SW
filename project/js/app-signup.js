@@ -2,37 +2,14 @@
 /*jshint esversion: 6 */
 let map;
 
-
-
-//Initiliazes  the map, using the center of WA state as the center
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.7511, lng: -120.7401},
-        zoom: 7,
-        mapTypeControl: false //Sticks to the classic mapType
-    });
-    ko.applyBindings(new ViewModel());
-}
-
-//Error handling for map
-
-function errorHandling() {
-    alert('Google maps has failed to load. Please reload the page!');
-}
-
-//Class to store each theater information
-let Theater = function (theater) {
-    this.title = ko.observable(theater.title);
-    this.lat = ko.observable(theater.position.lat);
-    this.lng = ko.observable(theater.position.lng);
-    this.id = ko.observable(theater.id);
-    this.streetAddress = ko.observable('');
-    this.cityStateZip = ko.observable('');
-    this.number = ko.observable('');
-    this.url = ko.observable('');
-    this.marker = ko.observable();
-    this.visible = ko.observable(true);
-};
+//class to store the user
+let User = function(user){
+	this.id = ko.observable();
+	this.key = ko.observable();
+	this.name = ko.observable();
+	this.email = ko.observabe();
+	this.password = ko.observable();
+	this.bio = ko.observable();
 
 let item = $('li');
     
