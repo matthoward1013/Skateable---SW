@@ -44,7 +44,7 @@ function AjaxGet(url, method, datatype, callback)
 				self.curUser.key(data.id);
 				let url = "http://localhost:3000/api/users/" + String(self.curUser.id()) + "?access_token=" + String(self.curUser.key());
 				//GET request to loopback based on the userId from the login
-				AjaxGet, "GET",   "json", function(data){
+				AjaxGet(url, "GET",   "json", function(data){
 				self.curUser.name = data.name;
 				self.curUser.email = data.email;
 				self.curUser.bio = data.bio;
