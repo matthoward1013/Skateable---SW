@@ -9,7 +9,9 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 47.6062, lng: -122.3321},
         zoom: 12,
-        mapTypeControl: false //Sticks to the classic mapType
+        mapTypeControl: false, //Sticks to the classic mapType
+        minZoom: 5,
+        streetViewControl: false
     });
     ko.applyBindings(new ViewModel());
 }
@@ -87,6 +89,8 @@ let ViewModel = function () {
         return true;
     };
     
+    //Function for sidebar animation
+    
     let panelVis = false,
         sidebar = $('#side-bar'),
         menuButton = $("#menu-button"),
@@ -94,13 +98,19 @@ let ViewModel = function () {
     
     self.closePanel = function() {
         sidebar.css("width", "0");
+        setTimeout(function() { 
+            $('#side-bar .list').css("visibility", "hidden"); 
+        }, 200);
         panelVis = false;
     };
     
     self.openPanel = function() {
         sidebar.css("width", "15%");
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 300);       
         panelVis = true;
     };
+    
+    //Create a pin modal function
     
     self.openModal = function() {
         pinModal.modal('show');  
