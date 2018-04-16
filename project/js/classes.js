@@ -1,3 +1,5 @@
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
+/*jshint esversion: 6 */
 //Classes to be used in JS files
 
 //Class to store each SkateSpot information
@@ -34,4 +36,4 @@ let Group = function(group){
 	this.id = ko.observable();
 	this.name = ko.observable();
 	this.members= ko.observableArray();
-}
+};
