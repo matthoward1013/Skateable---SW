@@ -23,6 +23,7 @@ let Meetup = function(meetup){
 //class to store the user
 let User = function(user){
 	this.id = ko.observable();
+	this.key = ko.observable();
 	this.name = ko.observable();
 	this.email = ko.observabe();
 	this.password = ko.observable();
