@@ -1,0 +1,40 @@
+{
+  "name": "skatespot",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "spotName": {
+      "type": "string",
+      "required": true
+    },
+    "lat": {
+      "type": "number",
+      "required": true
+    },
+    "long": {
+      "type": "number",
+      "required": true
+    },
+    "rating": {
+      "type": "number",
+      "required": true
+    },
+    "comments": {
+      "type": [
+        "string"
+      ]
+    },
+    "currentMeetups": {
+      "type": [
+        "string"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
