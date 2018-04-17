@@ -12,9 +12,9 @@
         <div id="container">
             <div id="side-bar">
                 <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
-                <a href="#" class="list">Profile</a>
+                <a href="profile.html" class="list">Profile</a>
                 <a href="#" class="list">Groups</a>
-                <a href="#" class="list">Parks</a>
+                <a href="parks.html" class="list">Parks</a>
                 <a href="#" class="list">Settings</a>
             </div>
             
@@ -24,14 +24,19 @@
                 </button>
                 <div id="logo"><a href="index.html"><img src="img/Logo.png" alt="Skateable"></a></div>
             </header>
+            <div id="mainContent">
             
+            </div>
+            <div id="map"></div>
 
         </div>
         
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/lib/knockout-3.4.2.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
+        </script>
         <script src="js/app-parks.js"></script> 
     </body>
 </html>

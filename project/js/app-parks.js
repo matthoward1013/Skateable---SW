@@ -1,5 +1,21 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
 /*jshint esversion: 6 */
+let map;
+
+
+
+//Initiliazes  the map, using the center of WA state as the center
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 47.6062, lng: -122.3321},
+        zoom: 12,
+        mapTypeControl: false, //Sticks to the classic mapType
+        minZoom: 5,
+        streetViewControl: false
+    });
+    ko.applyBindings(new ViewModel());
+}
+
 
 //Class to store each SkateSpot information
 let skateSpot = function (skateSpot) {
@@ -54,5 +70,3 @@ let ViewModel = function () {
         panelVis = true;
     };
 };
-
-ko.applyBindings(new ViewModel());
