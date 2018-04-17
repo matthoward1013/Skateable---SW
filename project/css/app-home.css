@@ -132,7 +132,8 @@ a {
 }
 
 #logo img {
-    height: inherit;
+    height: 100%;
+    cursor: pointer;
 }
 
 #map { 

@@ -1,10 +1,6 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
 /*jshint esversion: 6 */
 
-function init () {
-    ko.applyBindings(new ViewModel());
-}
-
 //Class to store each SkateSpot information
 let skateSpot = function (skateSpot) {
 	this.id = ko.observable(skateSpot.name);
@@ -34,13 +30,6 @@ let user = function(user){
 	this.password = ko.observable();
 	this.bio = ko.observable();
 };
-//to store each group
-let group = function(group){
-	this.id = ko.observable();
-	this.name = ko.observable();
-	this.members= ko.observableArray();
-	//this.chat = ko
-};
 
 let ViewModel = function () {
     //Function for sidebar animation
@@ -61,7 +50,9 @@ let ViewModel = function () {
     
     self.openPanel = function() {
         sidebar.css("width", "15%");
-        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 300);       
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
     };
 };
+
+ko.applyBindings(new ViewModel());

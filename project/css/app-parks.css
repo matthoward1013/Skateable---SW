@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
 
 * {
     font-family: 'Acme', sans-serif;
@@ -88,4 +92,34 @@ a {
     vertical-align: middle;
     background-color: darkgray;
     border: none;
+}
+
+#yesButton {
+    background-color: aqua;
+    color: black;
+    border: none;
+}
+
+#menu-button:focus {
+    outline: 0;
+}
+
+#menu {
+    z-index: 1;
+    display: relative;
+    margin-right: auto;
+    margin-left: auto;
+    height: 45%;
+    cursor: pointer;
+}
+
+#logo {
+    width: 90%;
+    height: 100%;
+    text-align: center;
+}
+
+#logo img {
+    height: 100%;
+    cursor: pointer;
 }
