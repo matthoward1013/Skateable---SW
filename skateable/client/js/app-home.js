@@ -106,7 +106,7 @@ let ViewModel = function () {
     
     self.openPanel = function() {
         sidebar.css("width", "15%");
-        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 300);       
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
     };
     

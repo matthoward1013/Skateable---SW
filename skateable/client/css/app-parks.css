@@ -131,9 +131,31 @@ a {
     bottom: 0;
     left: 0;
     right: 0;
-    align-content: center;
     background-color: darkgray;
     position: absolute;
+}
+
+#parkList {
+    max-height: 80%;
+    max-width: 100%;
+    width: 400px;
+    margin: 0 auto;
+    margin-bottom: 5%;
+}
+
+#parkList ul {
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-li {
+    width: 100%;
+    padding: 15px 15px 15px 15px;
+    background-color: lightgray;
+    border: 2px solid;
+    border-radius: 25px;
+    border-color: black;
 }
 
 #map {
