@@ -30,6 +30,11 @@
       "type": [
         "number"
       ]
+    },
+    "favoriteSpot": {
+      "type": [
+        "string"
+      ]
     }
   },
   "validations": [],
