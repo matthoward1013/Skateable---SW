@@ -23,7 +23,7 @@ function errorHandling() {
 }
 
 //Class to store each SkateSpot information
-let skateSpot = function (skateSpot) {
+let SkateSpot = function (skateSpot) {
 	this.id = ko.observable(skateSpot.name);
     this.name = ko.observable(skateSpot.name);
     this.lat = ko.observable(skateSpot.position.lat);
