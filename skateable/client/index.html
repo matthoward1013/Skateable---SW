@@ -30,7 +30,7 @@
                         </div>
                         <div class="modal-body">
                             <form>
-                                <input type="radio" id="current-location">User current location<br>-Or-<br>
+                                <button type="button" id="current-location" data-bind="click: getLocation">Use my Location</button><br><h2>Or</h2><br>
                                 <span>Search the address of the park</span><br>
                                 <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
                             </form>
@@ -62,7 +62,7 @@
 
         <script src="js/app-home.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&libraries=places&callback=initMap" onerror="errorHandling()">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTh2rza-L1ZN7tHtNzOpjGNHor-y7Ld0&v=3&libraries=places&callback=initMap" onerror="errorHandling()">
         </script>
     </body>
 </html>

@@ -119,6 +119,12 @@ a {
     border: none;
 }
 
+#current-location {
+    background-color: aqua;
+    color: black;
+    border-radius: 25px;
+}
+
 .pac-container {
     z-index: 10000;
     position: fixed;
@@ -136,10 +142,7 @@ a {
 
 .modal-body form {
     text-align: center;
-}
-
-#current-location {
-    margin-right: 10px;
+    align-content: center;
 }
 
 #places-search {
