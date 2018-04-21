@@ -1,0 +1,8 @@
+for POST queries:
+https://docs.strongloop.com/display/LB1/Where+filter shows how to filter results
+
+for GET or POST queries to these:
+"http://localhost:3000/api/skatespots?access_token=" + String(curUser.key)
+"http://localhost:3000/api/meetups?access_token=" + String(curUser.key)
+"http://localhost:3000/api/groups?access_token=" + String(curUser.key)
+"http://localhost:3000/api/users/" + String(curUser.id) + "?access_token=" + String(curUser.key)

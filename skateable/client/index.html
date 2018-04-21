@@ -12,10 +12,11 @@
         <div id="container">
             <div id="side-bar">
                 <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
-                <a href="#" class="list">Profile</a>
+                <a href="profile.html" class="list">Profile</a>
                 <a href="#" class="list">Groups</a>
-                <a href="#" class="list">Parks</a>
+                <a href="parks.html" class="list">My Parks</a>
                 <a href="#" class="list">Settings</a>
+                <a href="login.html" class="login">Login</a>
             </div>
             
             <div id="createPin" class="modal fade" role="dialog">
@@ -25,10 +26,14 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Create a Pin</h4>
+                            <h3 class="modal-title">Create a Pin</h3>
                         </div>
                         <div class="modal-body">
-                            <p></p>
+                            <form>
+                                <input type="radio" id="current-location">User current location<br>-Or-<br>
+                                <span>Search the address of the park</span><br>
+                                <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" id="yesButton" data-dismiss="modal">Add Pin</button>
@@ -43,11 +48,11 @@
                 <button id="menu-button">
                     <img id="menu" src="img/menu.png" alt="menu" data-bind="click: openPanel">
                 </button>
-                <div id="logo"><img src="img/Logo.png" alt="Skateable"></div>
+                <div id="logo"><a href="index.html"><img src="img/Logo.png" alt="Skateable"></a></div>
                 <button id="pinButton" data-bind="click: openModal">Create Pin</button>
             </header>
-            <div id="map"></div>
             
+            <div id="map"></div>
 
         </div>
         
@@ -57,7 +62,7 @@
 
         <script src="js/app-home.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
-        </script>   
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&libraries=places&callback=initMap" onerror="errorHandling()">
+        </script>
     </body>
 </html>

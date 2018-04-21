@@ -16,11 +16,6 @@ function initMap() {
     ko.applyBindings(new ViewModel());
 }
 
-//Error handling for map
-
-function errorHandling() {
-    alert('Google maps has failed to load. Please reload the page and try again!');
-}
 
 //Class to store each SkateSpot information
 let skateSpot = function (skateSpot) {
@@ -51,45 +46,10 @@ let user = function(user){
 	this.password = ko.observable();
 	this.bio = ko.observable();
 };
-//to store each group
-let group = function(group){
-	this.id = ko.observable();
-	this.name = ko.observable();
-	this.members= ko.observableArray();
-	//this.chat = ko
-};
 
 let ViewModel = function () {
-    let self = this;
-    
-    let markers = ko.observableArray([]);
-    
-    //Init infowindow
-    let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
-    }), //Init marker
-        marker;
-    
-    //Create each marker on map
-    
-    self.showMarkers = function() {
-        let bounds = new google.maps.LatLngBounds();
-        markers().forEach(function(marker) {
-            marker.setMap(map);
-            bounds.extend(marker.position);
-        });
-        map.fitBounds(bounds);
-        return true;
-    };
-    
-    self.hideMarkers = function() {
-        markers().forEach(function(marker) {
-           marker.setMap(null); 
-        });
-        return true;
-    };
-    
     //Function for sidebar animation
+    let self = this;
     
     let panelVis = false,
         sidebar = $('#side-bar'),
@@ -106,13 +66,7 @@ let ViewModel = function () {
     
     self.openPanel = function() {
         sidebar.css("width", "15%");
-        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 300);       
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
-    };
-    
-    //Create a pin modal function
-    
-    self.openModal = function() {
-        pinModal.modal('show');  
     };
 };
