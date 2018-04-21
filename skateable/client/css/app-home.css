@@ -119,6 +119,33 @@ a {
     border: none;
 }
 
+.pac-container {
+    z-index: 10000;
+    position: fixed;
+    display: inline-block;
+    float: left;
+}
+
+.modal {
+    z-index: 20;
+}
+
+.modal-backdrop {
+    z-index: 10;
+}
+
+.modal-body form {
+    text-align: center;
+}
+
+#current-location {
+    margin-right: 10px;
+}
+
+#places-search {
+    width: 60%;
+}
+
 #menu-button:focus {
     outline: 0;
 }

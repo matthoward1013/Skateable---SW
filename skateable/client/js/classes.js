@@ -34,4 +34,4 @@ let Group = function(group){
 	this.id = ko.observable();
 	this.name = ko.observable();
 	this.members= ko.observableArray();
-}
+};

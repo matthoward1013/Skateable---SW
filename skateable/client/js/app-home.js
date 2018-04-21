@@ -1,4 +1,4 @@
-/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage*/
 /*jshint esversion: 6 */
 let map;
 
@@ -43,7 +43,7 @@ let meetup = function(meetup){
 	this.description = ko.observable();
 };
 //class to store the user
-let user = function(user){
+let User = function(user){
 	this.id = ko.observable();
 	this.key = ko.observable();
 	this.name = ko.observable();
@@ -62,10 +62,16 @@ let group = function(group){
 let ViewModel = function () {
     let self = this;
   
-  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+  	/*var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
 	if(curUser === null)
-		location.href = 'login.html';
+		location.href = 'login.html';*/
+    
+    //Search box methods
+    
+    let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
+    searchBox.setBounds(map.getBounds());
+    
     
     let markers = ko.observableArray([]);
     
