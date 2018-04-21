@@ -61,6 +61,11 @@ let group = function(group){
 
 let ViewModel = function () {
     let self = this;
+  
+  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	
+	if(curUser === null)
+		location.href = 'login.html';
     
     let markers = ko.observableArray([]);
     
