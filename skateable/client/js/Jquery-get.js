@@ -2,12 +2,12 @@
 /*jshint esversion: 6 */
 // JQuery ajax get function
 
-function AjaxGet(url, method, datatype, callback)
+function AjaxGet(url, callback)
 {
 	$.ajax({
 			url:url,
-			method: method,
-			datatype: datatype,
+			method: "GET",
+			datatype: "json",
 			success: function (data) {
 				callback(data);
 			},
