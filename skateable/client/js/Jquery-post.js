@@ -2,17 +2,18 @@
 /*jshint esversion: 6 */
 // JQuery ajax get function
 
-function AjaxGet(url, callback)
+
+function AjaxPost(url, method, callback)
 {
 	$.ajax({
 			url:url,
-			method: "GET",
-			datatype: "json",
+			method: "POST",
+			datatype: "application/json",
 			success: function (data) {
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload Browser");
+				alert("Could not connect to the server! please reload browser");
 			}
 	});
 }
