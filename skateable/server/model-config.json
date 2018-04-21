@@ -14,29 +14,41 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "mongoatlas"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "mongoatlas",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "mongoatlas",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "mongoatlas",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "mongoatlas",
     "public": false
   },
   "user": {
-    "dataSource": "db",
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "skatespot": {
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "meetup": {
+    "dataSource": "mongoatlas",
+    "public": true
+  },
+  "groups": {
+    "dataSource": "mongoatlas",
     "public": true
   }
 }

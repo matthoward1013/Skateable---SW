@@ -9,16 +9,13 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 47.6062, lng: -122.3321},
         zoom: 12,
-        mapTypeControl: false //Sticks to the classic mapType
+        mapTypeControl: false, //Sticks to the classic mapType
+        minZoom: 5,
+        streetViewControl: false
     });
     ko.applyBindings(new ViewModel());
 }
 
-//Error handling for map
-
-function errorHandling() {
-    alert('Google maps has failed to load. Please reload the page and try again!');
-}
 
 //Class to store each SkateSpot information
 let skateSpot = function (skateSpot) {
@@ -47,45 +44,12 @@ let user = function(user){
 	this.name = ko.observable();
 	this.email = ko.observabe();
 	this.password = ko.observable();
-	this.bio = ko.obserable();
+	this.bio = ko.observable();
 };
-//to store each group
-let group = function(group){
-	this.id = ko.observable();
-	this.name = ko.observable();
-	this.members= ko.observableArray();
-	th.chat = ko
-}
 
 let ViewModel = function () {
+    //Function for sidebar animation
     let self = this;
-    
-    let markers = ko.observableArray([]);
-    
-    //Init infowindow
-    let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
-    }), //Init marker
-        marker;
-    
-    //Create each marker on map
-    
-    self.showMarkers = function() {
-        let bounds = new google.maps.LatLngBounds();
-        markers().forEach(function(marker) {
-            marker.setMap(map);
-            bounds.extend(marker.position);
-        });
-        map.fitBounds(bounds);
-        return true;
-    };
-    
-    self.hideMarkers = function() {
-        markers().forEach(function(marker) {
-           marker.setMap(null); 
-        });
-        return true;
-    };
     
     let panelVis = false,
         sidebar = $('#side-bar'),
@@ -94,15 +58,15 @@ let ViewModel = function () {
     
     self.closePanel = function() {
         sidebar.css("width", "0");
+        setTimeout(function() { 
+            $('#side-bar .list').css("visibility", "hidden"); 
+        }, 200);
         panelVis = false;
     };
     
     self.openPanel = function() {
         sidebar.css("width", "15%");
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
-    };
-    
-    self.openModal = function() {
-        pinModal.modal('show');  
     };
 };

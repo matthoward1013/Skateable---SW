@@ -12,6 +12,7 @@ html, body {
     padding: 0;
     overflow-y: hidden;
     font-family: Georgia, sans-serif;
+    
 }
 
 a {
@@ -30,13 +31,13 @@ a {
 #side-bar {
     height: 100%;
     width: 0;
-    position: fixed ;
+    position: fixed;
     overflow-x: hidden;
     top: 0;
     left: 0;
     background-color: darkgray;
     z-index: 1;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 #side-bar a {
@@ -46,8 +47,9 @@ a {
     display: block;
     color: #f1f1f1;
     font-family: 'Acme', sans-serif;
-    transition: 0.3s;
 }
+
+
 
 #side-bar a:hover {
     color: black;
@@ -61,7 +63,7 @@ a {
     margin-top: 25%;
     text-align: center;
     font-size: 25px;
-
+    visibility: hidden;
 }
 
 .clsbtn {
@@ -93,18 +95,6 @@ a {
     border: none;
 }
 
-#pinButton {
-    height: 100%;
-    width: 5%;
-    max-width: 5%;
-    text-align: center;
-    display: block;
-    vertical-align: middle;
-    background-color: darkgray;
-    border: none;
-    
-}
-
 #yesButton {
     background-color: aqua;
     color: black;
@@ -120,7 +110,7 @@ a {
     display: relative;
     margin-right: auto;
     margin-left: auto;
-    height: 60%;
+    height: 45%;
     cursor: pointer;
 }
 
@@ -131,24 +121,49 @@ a {
 }
 
 #logo img {
-    height: inherit;
+    height: 100%;
+    cursor: pointer;
 }
 
-#map { 
-    bottom: 0px;
+#mainContent {
     height: 90%;
-    left: 0px;
+    width: 40%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: darkgray;
     position: absolute;
-    right: 0px;
 }
 
-#error {
-    position: fixed;
-    top 350px;
-    left: 5%;
-    width: 20%;
+#parkList {
+    max-height: 80%;
+    max-width: 100%;
+    width: 400px;
+    margin: 0 auto;
+    margin-bottom: 5%;
 }
 
-.infoWindow {
-    text-align: center;
+#parkList ul {
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-li {
+    width: 100%;
+    padding: 15px 15px 15px 15px;
+    background-color: lightgray;
+    border: 2px solid;
+    border-radius: 25px;
+    border-color: black;
+}
+
+#map {
+    height: 90%;
+    width: 60%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    float: right;
+    position: relative;
 }

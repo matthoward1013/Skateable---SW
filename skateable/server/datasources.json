@@ -1,12 +1,12 @@
 {
-  "db": {
-    "host": "localhost",
+  "mongoatlas": {
+    "host": "skateablecluster-shard-00-00-tiqic.mongodb.net",
     "port": 27017,
-    "url": "",
-    "database": "skateable-app",
-    "password": "",
-    "name": "db",
-    "user": "",
+    "url": "mongodb://admin:r3uqKztMTndHQdTS@skateablecluster-shard-00-00-tiqic.mongodb.net:27017,skateablecluster-shard-00-01-tiqic.mongodb.net:27017,skateablecluster-shard-00-02-tiqic.mongodb.net:27017/skatable?ssl=true&replicaSet=SkateableCluster-shard-0&authSource=admin",
+    "database": "loopback-mongodb-atlas",
+    "password": "r3uqKztMTndHQdTS",
+    "name": "mongoatlas",
+    "user": "admin",
     "connector": "mongodb"
   }
 }
