@@ -3,8 +3,6 @@
 //Jquery Login to loopback
 
 
-console.log("hi");
-
 function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 {
 	$.ajax({
@@ -38,7 +36,7 @@ function Login(){
 	
 //example
 	var login = {"email": document.all[12].value,"password": document.all[15].value};
-	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}};
+	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}, "favSpots": {}};
 
 			//Login POST request to loopback. returns a access key and the userID. 
 			AjaxLogin("http://localhost:3000/api/users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
@@ -59,13 +57,17 @@ function Login(){
 					$.each(tempUser.groups, function(i, value){
 						curUser.groups[i] = value;
 					});
+					$.each(tempUser.favSpots, function(i, value){
+						curUser.favSpots[i] = value;
+					});
+					
 					if(curUser.key !== "")
-						location.href = 'index.html';
+					{							
+							sessionStorage.setItem("curUser", JSON.stringify(curUser));
+							location.href = 'index.html';
+					}	
 				});
-				
 		});
-
-	
-	console.log(curUser);
 }
 	
+
