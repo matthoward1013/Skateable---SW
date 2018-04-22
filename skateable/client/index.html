@@ -26,17 +26,16 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h3 class="modal-title">Create a Pin</h3>
+                            <h3 class="modal-title">Park Name</h3>
+                            <input type="text" id="pinName">
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <button type="button" id="current-location" data-bind="click: getLocation">Use my Location</button><br><h2>Or</h2><br>
-                                <span>Search the address of the park</span><br>
-                                <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
-                            </form>
+                            <button type="button" id="current-location" data-bind="click: getLocation">Use my Location</button><br><h2>Or</h2>
+                            <h4>Search the address of the park</h4>
+                            <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="yesButton" data-dismiss="modal">Add Pin</button>
+                            <button type="button" class="btn btn-success" id="yesButton" data-bind="click: setPin">Add Pin</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -62,7 +61,7 @@
 
         <script src="js/app-home.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTh2rza-L1ZN7tHtNzOpjGNHor-y7Ld0&v=3&libraries=places&callback=initMap" onerror="errorHandling()">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTh2rza-L1ZN7tHtNzOpjGNHor-y7Ld0&v=3&libraries=places,geometry&callback=initMap" onerror="errorHandling()">
         </script>
     </body>
 </html>

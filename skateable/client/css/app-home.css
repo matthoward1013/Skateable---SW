@@ -140,7 +140,12 @@ a {
     z-index: 10;
 }
 
-.modal-body form {
+.modal-header {
+    text-align: center;
+    align-content: center;
+}
+
+.modal-body {
     text-align: center;
     align-content: center;
 }

@@ -72,30 +72,6 @@ let ViewModel = function () {
     
     //Search box methods
         
-    let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
-    searchBox.setBounds(map.getBounds());
-    
-    self.getLocation = function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                let crd = position.coords;
-                let latlng = { lat: crd.latitude, lng: crd.longitude }; 
-                geocoder.geocode({location: latlng}, function(results, status) {
-                    if (status === "OK") {
-                        if (results[0])
-                            $('#places-search').val(results[0].formatted_address);
-                    }
-                });
-                
-                console.log('Your current position is:');
-                console.log(`Latitude : ${crd.latitude}`);
-                console.log(`Longitude: ${crd.longitude}`);
-                console.log(`More or less ${crd.accuracy} meters.`);
-            });
-        } else {
-            alert("Geolocation is not supported by this browser");
-        }
-    };
     
     let markers = ko.observableArray([]);
     
@@ -122,6 +98,68 @@ let ViewModel = function () {
            marker.setMap(null); 
         });
         return true;
+    };
+    
+        let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
+    searchBox.setBounds(map.getBounds());
+    
+    self.getLocation = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let crd = position.coords;
+                let latlng = { lat: crd.latitude, lng: crd.longitude }; 
+                geocoder.geocode({location: latlng}, function(results, status) {
+                    if (status === "OK") {
+                        if (results[0])
+                            $('#places-search').val(results[0].formatted_address);
+                    }
+                });
+                
+                console.log('Your current position is:');
+                console.log(`Latitude : ${crd.latitude}`);
+                console.log(`Longitude: ${crd.longitude}`);
+                console.log(`More or less ${crd.accuracy} meters.`);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser");
+        }
+    };
+    
+    self.setPin = function() {
+        let pinAddress = $('#places-search').val();
+        let pinName = $('#pinName').val();
+        if (pinAddress !== '' && pinName !== '') {
+            geocoder.geocode({'address': pinAddress}, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    map.setZoom(15);
+                    let markerPark = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: pinName
+                    });
+                    let contentString = 
+                        `<div id="content-info-window">
+                            <h2>` + pinName + `</h2>
+                            <p>` + pinAddress + `</p>
+                        </div>`;
+                    google.maps.event.addListener(markerPark, 'click', function() {
+                        infoWindow.open(map, this);
+                        infoWindow.setContent(contentString);
+                    });
+                    
+                    $('#createPin').modal('hide');
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        } else if (pinName === '' && pinAddress !== '') {
+            alert('Please enter a name!');
+        } else if (pinName !== '' && pinAddress === '') {
+            alert('Please enter an address!');
+        } else {
+            alert('Please enter a name and address!');
+        }
     };
     
     //Function for sidebar animation
