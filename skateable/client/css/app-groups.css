@@ -142,6 +142,33 @@ a {
 #main-content {
     width: 100%;
     background-color: darkgray;
-    position: relative;
+    position: absolute;
     height: 90%;
+}
+
+#group-list {
+    width: 50%;
+    text-align: center;
+}
+
+#group-list h1 {
+    color: white;
+}
+
+#group-list ul {
+    overflow-y: scroll;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 400px;
+    max-width: 100%;
+}
+
+#group-list li {
+    width: 100%;
+    padding: 15px 15px 15px 15px;
+    background-color: lightgray;
+    border: 2px solid;
+    border-radius: 25px;
+    border-color: black;
 }
