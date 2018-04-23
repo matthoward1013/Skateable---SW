@@ -9,7 +9,6 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 			datatype: datatype,
 			data: JSON.stringify(data)
 	}).done(function (data) {
-				console.log(data);
 				location.href='login.html';
 	}).fail(function(object, textStatus, errorThrown){
 				if(errorThrown === "Unprocessable Entity")

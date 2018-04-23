@@ -60,6 +60,7 @@ let group = function(group){
 	//this.chat = ko
 };
 
+
 function AjaxGet(url, callback)
 {
 	$.ajax({
@@ -75,10 +76,42 @@ function AjaxGet(url, callback)
 	});
 }
 
-function GetSkateSpots(curUser, curLocation )
+function GetSkateSpots(curUser)
 {
+	northC  =   map.getBounds().getNorthEast().lat();   
+    eastC   =   map.getBounds().getNorthEast().lng();
+    southC  =   map.getBounds().getSouthWest().lat();   
+    westC   =   map.getBounds().getSouthWest().lng(); 
+	
+	//var filter = {"where":{"and":[{"lat":{"between": [0,0]}},{"long": {"between": [0, 0]}}]}};
 	
 	
+	//AjaxGet("http://localhost:3000/api/skatespots" + "?filter" + filter + "&access_token=" + String(curUser.key), function(data){
+	//	alert("hi");
+	//});
+	
+	
+}
+
+function AjaxPost(url,data)
+{
+	$.ajax({
+			url:url,
+			method: "POST",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				alert("Successfully Posted new Pin!");
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
+
+function PostSkateSpot(userKey, data)
+{
+	AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(userKey), data);
 	
 }
 
@@ -87,10 +120,10 @@ let ViewModel = function () {
     
     let geocoder = new google.maps.Geocoder();
     
-  	/*var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
 	if(curUser === null)
-		location.href = 'login.html';*/
+		alert("not logged in test");
     
     //Search box methods
         
