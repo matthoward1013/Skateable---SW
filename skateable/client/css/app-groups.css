@@ -1,0 +1,147 @@
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+* {
+    font-family: 'Acme', sans-serif;
+}
+html, body { 
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    font-family: Georgia, sans-serif;
+}
+
+a {
+    target-name: new;
+    target-new: tab;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#side-bar {
+    height: 100%;
+    width: 0;
+    position: fixed ;
+    overflow-x: hidden;
+    top: 0;
+    left: 0;
+    background-color: darkgray;
+    z-index: 1;
+    transition: 0.2s;
+}
+
+#side-bar a {
+    padding: 8px, 8px, 8px, 32px;
+    top: 50%;
+    text-decoration: none;
+    display: block;
+    color: #f1f1f1;
+    font-family: 'Acme', sans-serif;
+}
+
+
+
+#side-bar a:hover {
+    color: black;
+}
+
+#sideList {
+    padding-top: 40%;
+}
+
+#side-bar .list {
+    margin-top: 25%;
+    text-align: center;
+    font-size: 25px;
+    visibility: hidden;
+}
+
+#side-bar .login {
+    margin-top: 80%;
+    text-align: center;
+    font-size: 25px;
+    visibility: hidden;
+}
+
+.clsbtn {
+    cursor: pointer;
+    padding-right: 10px;
+    top: 0;
+    float: right;
+    font-size: 40px;
+}
+
+#top-bar {
+    width: 100%;
+    height: 10%;
+    background-color: darkgray;
+    border-color: black;
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+#menu-button {
+    height: 100%;
+    width: 5%;
+    max-width: 5%;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    background-color: darkgray;
+    border: none;
+}
+
+#pinButton {
+    height: 100%;
+    width: 5%;
+    max-width: 5%;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    background-color: darkgray;
+    border: none;
+    
+}
+
+
+#menu-button:focus {
+    outline: 0;
+}
+
+#menu {
+    z-index: 1;
+    display: relative;
+    margin-right: auto;
+    margin-left: auto;
+    height: 45%;
+    cursor: pointer;
+}
+
+#logo {
+    width: 90%;
+    max-height: 100%;
+    text-align: center;
+}
+
+#logo img {
+    height: inherit;
+    height: 100%;
+    max-height: 100%
+}
+
+#main-content {
+    width: 100%;
+    background-color: darkgray;
+    position: relative;
+    height: 90%;
+}
