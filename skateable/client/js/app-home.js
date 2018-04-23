@@ -3,7 +3,6 @@
 let map;
 
 
-
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -34,8 +33,8 @@ function AjaxGet(url, callback)
 			success: function (data) {
 				callback(data);
 			},
-			error: function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload Browser");
+			error: function(object, textStatus, errorThrown){			
+				alert("Could not get SkateSpots! please reload Browser");
 			}
 	});
 }
@@ -51,21 +50,12 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
-				alert("Successfully Posted new Pin!");
-				callback(data);
+				callback();
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
 	});
 }
 
-//temp function will add to addPin once completed
-function PostSkateSpot(userKey, data)
-{
-	AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(userKey), data, function(){
-		alert("hi");
-	});
-	
-}
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
@@ -116,24 +106,24 @@ let ViewModel = function () {
 		southC  =   bounds.getSouthWest().lat();   
 		westC   =   bounds.getSouthWest().lng(); 
 	
-		//test values
-		northC = 0;
-		southC = 0;
-		eastC = 0;
-		westC = 0;
-	
-		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [eastC, westC]}}]}};
+		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
 	
 		AjaxGet("http://localhost:3000/api/skatespots" +"?filter=" +  JSON.stringify(filter) + "&access_token=" + String(curUser.key), function(data){
 			
-		$.each(data, function(i, value){
-			skateSpots[i] = value;
-		});			
+			if(data.length === 0)
+				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
+			else {
+				
+				$.each(data, function(i, value){
+					skateSpots[i] = value;
+				});			
 		
 		//use markers here since Ajax uses async so if markers are used outside of this callback function it could be undefined.
 		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data. 
 			
-			console.log(skateSpots);
+				console.log(skateSpots);
+			}
+					
 		});	  
 	});   
 
@@ -199,28 +189,35 @@ let ViewModel = function () {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
 					
-                    map.setCenter(results[0].geometry.location);
-                    map.setZoom(15);
-                    let markerPark = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location,
-                        title: pinName
-                    });
-                    let contentString = 
-                        `<div id="content-info-window">
-                            <h2>` + pinName + `</h2>
-                            <p>` + pinAddress + `</p>
-                        </div>`;
-                    google.maps.event.addListener(markerPark, 'click', function() {
-                        infoWindow.open(map, this);
-                        infoWindow.setContent(contentString);
-                    });
-                    
-                    $('#createPin').modal('hide');
-                } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-            });
+					var data = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
+					
+					AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
+						
+						//if this runs then the pin was successfully created in db
+						map.setCenter(results[0].geometry.location);
+						map.setZoom(15);
+						let markerPark = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location,
+							title: pinName
+						});
+						let contentString = 
+							`<div id="content-info-window">
+								<h2>` + pinName + `</h2>
+								<p>` + pinAddress + `</p>
+							</div>`;
+						google.maps.event.addListener(markerPark, 'click', function() {
+							infoWindow.open(map, this);
+							infoWindow.setContent(contentString);
+						});
+						
+						$('#createPin').modal('hide');
+					});
+				} else {
+					alert('Geocode was not successful for the following reason: ' + status);
+				}						
+
+			});
         } else if (pinName === '' && pinAddress !== '') {
             alert('Please enter a name!');
         } else if (pinName !== '' && pinAddress === '') {
