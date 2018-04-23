@@ -60,6 +60,28 @@ let group = function(group){
 	//this.chat = ko
 };
 
+function AjaxGet(url, callback)
+{
+	$.ajax({
+			url:url,
+			method: "GET",
+			datatype: "json",
+			success: function (data) {
+				callback(data);
+			},
+			error: function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload Browser");
+			}
+	});
+}
+
+function GetSkateSpots(curUser, curLocation )
+{
+	
+	
+	
+}
+
 let ViewModel = function () {
     let self = this;
     
