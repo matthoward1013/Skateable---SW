@@ -16,6 +16,7 @@
                 <a href="#" class="list">Groups</a>
                 <a href="parks.html" class="list">My Parks</a>
                 <a href="#" class="list">Settings</a>
+                <a href="login.html" class="login">Login</a>
             </div>
             
             <div id="createPin" class="modal fade" role="dialog">
@@ -25,13 +26,16 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Create a Pin</h4>
+                            <h3 class="modal-title">Park Name</h3>
+                            <input type="text" id="pinName">
                         </div>
                         <div class="modal-body">
-                            <p></p>
+                            <button type="button" id="current-location" data-bind="click: getLocation">Use my Location</button><br><h2>Or</h2>
+                            <h4>Search the address of the park</h4>
+                            <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="yesButton" data-dismiss="modal">Add Pin</button>
+                            <button type="button" class="btn btn-success" id="yesButton" data-bind="click: setPin">Add Pin</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -46,8 +50,8 @@
                 <div id="logo"><a href="index.html"><img src="img/Logo.png" alt="Skateable"></a></div>
                 <button id="pinButton" data-bind="click: openModal">Create Pin</button>
             </header>
-            <div id="map"></div>
             
+            <div id="map"></div>
 
         </div>
         
@@ -57,7 +61,7 @@
 
         <script src="js/app-home.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
-        </script>   
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTh2rza-L1ZN7tHtNzOpjGNHor-y7Ld0&v=3&libraries=places,geometry&callback=initMap" onerror="errorHandling()">
+        </script>
     </body>
 </html>
