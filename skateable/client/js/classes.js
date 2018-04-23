@@ -1,3 +1,5 @@
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
+/*jshint esversion: 6*/
 //Classes to be used in JS files
 
 //Class to store each SkateSpot information
