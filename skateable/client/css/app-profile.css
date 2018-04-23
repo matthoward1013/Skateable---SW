@@ -1,23 +1,57 @@
 * {
-    font-family: 'Acme', sans-serif;    
+    font-family: 'Acme', sans-serif;
 }
 
 body {
-    background:  #b3b3b3;
+background:  #b3b3b3;
  }
 
-button {
-    background-color:  #0066cc;
-    color: white;
-    padding: 8px 8px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 10%;
-    text-align: center;
-    border-radius: 4px;
+#ProfilePage
+{
+    margin: 50px auto;
+    width: 625;
+
+    border: 1px solid black;
 }
-  
+
+#LeftCol
+{
+    float: left;
+    width: 200px;
+    text-align: center;
+}
+
+#Photo
+{
+    width: 200px;
+    height: 200px;
+
+}
+
+#Info
+{
+    width: 400px;
+    text-align: center;
+    float: right;
+    height: inherit;
+}   
+
+#Info fields
+{
+    display: inline-block;
+    width: 100px;
+}
+
+#Info span
+{
+    display: inline-block;
+    width: 275px;
+}
+
+img.profilepic {
+   width: inherit;
+    height: inherit;
+}
 
 .footer {
     position: relative;
