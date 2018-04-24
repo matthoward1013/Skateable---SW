@@ -12,7 +12,9 @@ function initMap() {
         minZoom: 5,
         streetViewControl: false
     });
-
+    
+    
+    
     ko.applyBindings(new ViewModel());
 }
 
