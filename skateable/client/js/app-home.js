@@ -100,11 +100,11 @@ let ViewModel = function () {
 	//listen for the bounds to be created and fetch the current skateSpots
     google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
 		  
-		var bounds = map.getBounds();
-		northC  =   bounds.getNorthEast().lat();   
-		eastC   =   bounds.getNorthEast().lng();
-		southC  =   bounds.getSouthWest().lat();   
-		westC   =   bounds.getSouthWest().lng(); 
+		var bounds = map.getBounds(),
+            northC  =   bounds.getNorthEast().lat(),   
+            eastC   =   bounds.getNorthEast().lng(),
+            southC  =   bounds.getSouthWest().lat(),   
+            westC   =   bounds.getSouthWest().lng(); 
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
 	
