@@ -36,7 +36,7 @@ function Login(){
 	
 //example
 	var login = {"email": document.all[12].value,"password": document.all[15].value};
-	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}, "favSpots": {}};
+	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}, "favoriteSpot": {}};
 
 			//Login POST request to loopback. returns a access key and the userID. 
 			AjaxLogin("http://localhost:3000/api/users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
@@ -54,12 +54,8 @@ function Login(){
 					curUser.name = tempUser.name;
 					curUser.email = tempUser.email;
 					curUser.bio = tempUser.bio;
-					$.each(tempUser.groups, function(i, value){
-						curUser.groups[i] = value;
-					});
-					$.each(tempUser.favSpots, function(i, value){
-						curUser.favSpots[i] = value;
-					});
+					curUser.groups = tempUser.groups;
+					curUser.favSpots = tempUser.favSpots;
 					
 					if(curUser.key !== "")
 					{							
