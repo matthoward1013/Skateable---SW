@@ -3,7 +3,6 @@
 let map;
 
 
-
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -23,9 +22,43 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
+
+//function that gets data from server and sends the data to the callback function for processing 
+function AjaxGet(url, callback)
+{
+	$.ajax({
+			url:url,
+			method: "GET",
+			datatype: "json",
+			success: function (data) {
+				callback(data);
+			},
+			error: function(object, textStatus, errorThrown){			
+				alert("Could not get SkateSpots! please reload Browser");
+			}
+	});
+}
+
+//function that posts json data to server
+function AjaxPost(url,data, callback)
+{
+	$.ajax({
+			url:url,
+			method: "POST",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				callback();
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
+
+
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
-	this.id = ko.observable(skateSpot.name);
     this.name = ko.observable(skateSpot.name);
     this.lat = ko.observable(skateSpot.position.lat);
     this.lng = ko.observable(skateSpot.position.lng);
@@ -43,36 +76,60 @@ let meetup = function(meetup){
 	this.dayofMeetup = ko.observable();
 	this.description = ko.observable();
 };
-//class to store the user
-let User = function(user){
-	this.id = ko.observable();
-	this.key = ko.observable();
-	this.name = ko.observable();
-	this.email = ko.observabe();
-	this.password = ko.observable();
-	this.bio = ko.observable();
-};
+
 //to store each group
 let group = function(group){
 	this.id = ko.observable();
 	this.name = ko.observable();
 	this.members= ko.observableArray();
-	//this.chat = ko
 };
+
 
 let ViewModel = function () {
     let self = this;
     
     let geocoder = new google.maps.Geocoder();
     
-  	/*var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
 	if(curUser === null)
-		location.href = 'login.html';*/
-    
+		alert("not logged in test");
+	
+	var skateSpots = [];
+	
+	//listen for the bounds to be created and fetch the current skateSpots
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+		  
+		var bounds = map.getBounds();
+		northC  =   bounds.getNorthEast().lat();   
+		eastC   =   bounds.getNorthEast().lng();
+		southC  =   bounds.getSouthWest().lat();   
+		westC   =   bounds.getSouthWest().lng(); 
+	
+		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
+	
+		AjaxGet("http://localhost:3000/api/skatespots" +"?filter=" +  JSON.stringify(filter) + "&access_token=" + String(curUser.key), function(data){
+			
+			if(data.length === 0)
+				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
+			else {
+				
+				$.each(data, function(i, value){
+					skateSpots[i] = value;
+				});			
+		
+		//use markers here since Ajax uses async so if markers are used outside of this callback function it could be undefined.
+		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data. 
+			
+				console.log(skateSpots);
+			}
+					
+		});	  
+	});   
+
+	  
     //Search box methods
         
-    
     let markers = ko.observableArray([]);
     
     //Init infowindow
@@ -131,28 +188,36 @@ let ViewModel = function () {
         if (pinAddress !== '' && pinName !== '') {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
-                    map.setCenter(results[0].geometry.location);
-                    map.setZoom(15);
-                    let markerPark = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location,
-                        title: pinName
-                    });
-                    let contentString = 
-                        `<div id="content-info-window">
-                            <h2>` + pinName + `</h2>
-                            <p>` + pinAddress + `</p>
-                        </div>`;
-                    google.maps.event.addListener(markerPark, 'click', function() {
-                        infoWindow.open(map, this);
-                        infoWindow.setContent(contentString);
-                    });
-                    
-                    $('#createPin').modal('hide');
-                } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-            });
+					
+					var data = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
+					
+					AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
+						
+						//if this runs then the pin was successfully created in db
+						map.setCenter(results[0].geometry.location);
+						map.setZoom(15);
+						let markerPark = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location,
+							title: pinName
+						});
+						let contentString = 
+							`<div id="content-info-window">
+								<h2>` + pinName + `</h2>
+								<p>` + pinAddress + `</p>
+							</div>`;
+						google.maps.event.addListener(markerPark, 'click', function() {
+							infoWindow.open(map, this);
+							infoWindow.setContent(contentString);
+						});
+						
+						$('#createPin').modal('hide');
+					});
+				} else {
+					alert('Geocode was not successful for the following reason: ' + status);
+				}						
+
+			});
         } else if (pinName === '' && pinAddress !== '') {
             alert('Please enter a name!');
         } else if (pinName !== '' && pinAddress === '') {
