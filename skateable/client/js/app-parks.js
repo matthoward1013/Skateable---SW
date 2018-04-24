@@ -4,6 +4,7 @@ let map;
 
 
 
+
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -31,22 +32,6 @@ let skateSpot = function (skateSpot) {
 	this.rating = ko.observable();
 };
 
-//class to store each meetup at a skatespot
-let meetup = function(meetup){
-	this.id = ko.observable();
-	this.dayofMeetup = ko.observable();
-	this.description = ko.observable();
-};
-//class to store the user
-let user = function(user){
-	this.id = ko.observable();
-	this.key = ko.observable();
-	this.name = ko.observable();
-	this.email = ko.observabe();
-	this.password = ko.observable();
-	this.bio = ko.observable();
-};
-
 let ViewModel = function () {
     //Function for sidebar animation
     let self = this;
@@ -69,4 +54,14 @@ let ViewModel = function () {
         setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
     };
+	
+	//for each favoriteSpot the user has, fetch the spot information from the db
+	$.each(curUser.favoriteSpot, function(i, value){
+		
+		AjaxGet("http://localhost:3000/api/skateSpots/"+ value + "?access_token=" + String(curUser.key), function(data){
+			console.log(data);
+			//input into spot ui list here
+		});
+	
+	});
 };
