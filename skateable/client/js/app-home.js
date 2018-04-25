@@ -117,7 +117,7 @@ let ViewModel = function () {
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
 	
-		AjaxGet("http://localhost:3000/api/skatespots" +"?filter=" +  JSON.stringify(filter) + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet("http://localhost:3000/api/skatespots" +"?access_token=AXf2ttZrOxyUKV5OkXMwzD6KnigzHC09t2r0dT3TIasSibrwZTMjpvBt4gJURYLV", function(data){
 			
 			if(data.length === 0)
 				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
