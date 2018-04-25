@@ -12,7 +12,9 @@ function initMap() {
         minZoom: 5,
         streetViewControl: false
     });
-
+    
+    
+    
     ko.applyBindings(new ViewModel());
 }
 
@@ -96,31 +98,52 @@ let ViewModel = function () {
 		alert("not logged in test");
 	
 	var skateSpots = [];
-	
+	let markers = ko.observableArray([]);
+    
+    //Init infowindow
+    let infoWindow = new google.maps.InfoWindow({
+        maxWidth: 200
+    }), //Init marker
+        marker;
+    
 	//listen for the bounds to be created and fetch the current skateSpots
     google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
 		  
-		var bounds = map.getBounds();
-		northC  =   bounds.getNorthEast().lat();   
-		eastC   =   bounds.getNorthEast().lng();
-		southC  =   bounds.getSouthWest().lat();   
-		westC   =   bounds.getSouthWest().lng(); 
+		var bounds = map.getBounds(),
+            northC  =   bounds.getNorthEast().lat(),   
+            eastC   =   bounds.getNorthEast().lng(),
+            southC  =   bounds.getSouthWest().lat(),   
+            westC   =   bounds.getSouthWest().lng(); 
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
 	
-		AjaxGet("http://localhost:3000/api/skatespots" +"?filter=" +  JSON.stringify(filter) + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet("http://localhost:3000/api/skatespots" +"?access_token=AXf2ttZrOxyUKV5OkXMwzD6KnigzHC09t2r0dT3TIasSibrwZTMjpvBt4gJURYLV", function(data){
 			
 			if(data.length === 0)
 				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
 			else {
 				
-				$.each(data, function(i, value){
+				/*$.each(data, function(i, value){
 					skateSpots[i] = value;
-				});			
+				});	*/		
 		
+                data.forEach(function (spot) {
+                    skateSpots.push(new SkateSpot(spot)); 
+                });
+                
+                skateSpots().forEach(function(spot) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(spot.lat(), spot.lng()),
+                        map: map,
+                        title: spot.name(),
+                        animation: google.maps.Animation.DROP,
+                        width: 20
+                    });
+                });
 		//use markers here since Ajax uses async so if markers are used outside of this callback function it could be undefined.
 		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data. 
 			
+                
 				console.log(skateSpots);
 			}
 					
@@ -128,15 +151,6 @@ let ViewModel = function () {
 	});   
 
 	  
-    //Search box methods
-        
-    let markers = ko.observableArray([]);
-    
-    //Init infowindow
-    let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
-    }), //Init marker
-        marker;
     
     //Create each marker on map
     
