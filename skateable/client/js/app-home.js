@@ -62,14 +62,15 @@ function AjaxPost(url,data, callback)
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
     this.name = ko.observable(skateSpot.name);
-    this.lat = ko.observable(skateSpot.position.lat);
-    this.lng = ko.observable(skateSpot.position.lng);
+    this.lat = ko.observable(skateSpot.lat);
+    this.lng = ko.observable(skateSpot.lng);
     this.id = ko.observable(skateSpot.id);
     this.streetAddress = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(true);
-	this.comments = ko.observableArray();
-	this.rating = ko.observable();
+	this.comments = ko.observableArray(skateSpot.comments);
+	this.meetups = ko.observableArray(skateSpot.meetups);
+	this.rating = ko.observable(skateSpot.rating);
 };
 
 //class to store each meetup at a skatespot
@@ -117,7 +118,7 @@ let ViewModel = function () {
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
 	
-		AjaxGet("http://localhost:3000/api/skatespots" +"?access_token=AXf2ttZrOxyUKV5OkXMwzD6KnigzHC09t2r0dT3TIasSibrwZTMjpvBt4gJURYLV", function(data){
+		AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 			
 			if(data.length === 0)
 				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
@@ -131,7 +132,7 @@ let ViewModel = function () {
                     skateSpots.push(new SkateSpot(spot)); 
                 });
                 
-                skateSpots().forEach(function(spot) {
+                skateSpots.forEach(function(spot) {
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(spot.lat(), spot.lng()),
                         map: map,
@@ -145,16 +146,8 @@ let ViewModel = function () {
 			
                 
 				console.log(skateSpots);
-			}
-					
-		});	  
-	});   
-
-	  
-    
-    //Create each marker on map
-    
-    self.showMarkers = function() {
+				
+				    self.showMarkers = function() {
         let bounds = new google.maps.LatLngBounds();
         markers().forEach(function(marker) {
             marker.setMap(map);
@@ -163,13 +156,23 @@ let ViewModel = function () {
         map.fitBounds(bounds);
         return true;
     };
-    
+					
+					    
     self.hideMarkers = function() {
         markers().forEach(function(marker) {
            marker.setMap(null); 
         });
         return true;
     };
+			}
+					
+		});	  
+	});   
+
+	  
+    
+    //Create each marker on map
+   
     
         let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
     searchBox.setBounds(map.getBounds());

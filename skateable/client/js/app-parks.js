@@ -35,6 +35,7 @@ let skateSpot = function (skateSpot) {
 let ViewModel = function () {
     //Function for sidebar animation
     let self = this;
+	favSpots = [];
     
     let panelVis = false,
         sidebar = $('#side-bar'),
@@ -55,13 +56,36 @@ let ViewModel = function () {
         panelVis = true;
     };
 	
-	//for each favoriteSpot the user has, fetch the spot information from the db
-	$.each(curUser.favoriteSpot, function(i, value){
-		
-		AjaxGet("http://localhost:3000/api/skateSpots/"+ value + "?access_token=" + String(curUser.key), function(data){
-			console.log(data);
-			//input into spot ui list here
-		});
 	
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+	$.each(curUser.favSpots, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
 	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curUser.favSpots[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		//for each group the user has, fetch the group information from the db
+		AjaxGet("http://localhost:3000/api/skateSpots?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+			//console.log(data);
+			
+			$.each(data, function(i, value){
+				favSpots.push(value);
+			});	
+			
+			//input into group ui list here
+			
+			//test to create a group status: working
+			//createGroup(curUser,groupList);
+		});
+	}
 };
