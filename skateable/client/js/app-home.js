@@ -108,7 +108,7 @@ let ViewModel = function () {
         marker;
     
 	//listen for the bounds to be created and fetch the current skateSpots
-    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+    google.maps.event.addListener(map, 'bounds_changed', function() {
 		  
 		var bounds = map.getBounds(),
             northC  =   bounds.getNorthEast().lat(),   
@@ -123,10 +123,7 @@ let ViewModel = function () {
 			if(data.length === 0)
 				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
 			else {
-                
-				/*$.each(data, function(i, value){
-					skateSpots[i] = value;
-				});	*/		
+                //Sets all skatespot data to Skatespots array	
 		      console.log(data[0].spotName);
                 data.forEach(function (spot) {
                     let temp = new SkateSpot();
@@ -139,6 +136,7 @@ let ViewModel = function () {
                     skateSpots.push(temp);
                 });
                 
+                //sets the InfoWindow and Marker for each skatespot
                 skateSpots.forEach(function(spot) {
                     let contentString = 
                         `<div id="content-info-window">
@@ -152,6 +150,7 @@ let ViewModel = function () {
                         animation: google.maps.Animation.DROP,
                         width: 20
                     });
+                    
                     spot.marker = marker;
                     //On click event listener for the markers
                     google.maps.event.addListener(spot.marker, 'click', function() {
