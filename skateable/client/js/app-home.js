@@ -61,16 +61,16 @@ function AjaxPost(url,data, callback)
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
-    this.name = ko.observable(skateSpot.name);
-    this.lat = ko.observable(skateSpot.lat);
-    this.lng = ko.observable(skateSpot.lng);
-    this.id = ko.observable(skateSpot.id);
+    this.name = ko.observable();
+    this.lat = ko.observable();
+    this.lng = ko.observable();
+    this.id = ko.observable();
     this.streetAddress = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(true);
-	this.comments = ko.observableArray(skateSpot.comments);
-	this.meetups = ko.observableArray(skateSpot.meetups);
-	this.rating = ko.observable(skateSpot.rating);
+	this.comments = ko.observableArray();
+	this.meetups = ko.observableArray();
+	this.rating = ko.observable();
 };
 
 //class to store each meetup at a skatespot
@@ -123,47 +123,57 @@ let ViewModel = function () {
 			if(data.length === 0)
 				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
 			else {
-				
+                
 				/*$.each(data, function(i, value){
 					skateSpots[i] = value;
 				});	*/		
-		
+		      console.log(data[0].spotName);
                 data.forEach(function (spot) {
-                    skateSpots.push(new SkateSpot(spot)); 
+                    let temp = new SkateSpot();
+                    temp.name = spot.spotName;
+                    temp.lat = spot.lat;
+                    temp.lng = spot.long;
+                    temp.streetAddress = spot.address;
+                    temp.comments = spot.comments;
+                    temp.rating = spot.rating;
+                    skateSpots.push(temp);
                 });
                 
                 skateSpots.forEach(function(spot) {
+                    let contentString = 
+                        `<div id="content-info-window">
+								<h2>` + spot.name + `</h2>
+								<p>` + spot.streetAddress + `</p>
+				        </div>`;
                     marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(spot.lat(), spot.lng()),
+                        position: new google.maps.LatLng(spot.lat, spot.lng),
                         map: map,
-                        title: spot.name(),
+                        title: spot.name,
                         animation: google.maps.Animation.DROP,
                         width: 20
                     });
+                    spot.marker = marker;
+                    //On click event listener for the markers
+                    google.maps.event.addListener(spot.marker, 'click', function() {
+                        infoWindow.open(map, this);
+                        spot.marker.setAnimation(google.maps.Animation.BOUNCE);
+                        setTimeout(function() {
+                            spot.marker.setAnimation(null);
+                        }, 500);
+                    
+                        infoWindow.setContent(contentString);
+                    });
+                    markers.push(marker);
                 });
 		//use markers here since Ajax uses async so if markers are used outside of this callback function it could be undefined.
-		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data. 
-			
+		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data.
+                markers().forEach(function(marker) {
+                    marker.setMap(map);
+                    bounds.extend(marker.position);
+                });
+                //map.fitBounds(bounds);
                 
 				console.log(skateSpots);
-				
-				    self.showMarkers = function() {
-        let bounds = new google.maps.LatLngBounds();
-        markers().forEach(function(marker) {
-            marker.setMap(map);
-            bounds.extend(marker.position);
-        });
-        map.fitBounds(bounds);
-        return true;
-    };
-					
-					    
-    self.hideMarkers = function() {
-        markers().forEach(function(marker) {
-           marker.setMap(null); 
-        });
-        return true;
-    };
 			}
 					
 		});	  
