@@ -24,6 +24,21 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
+//function that gets data from server and sends the data to the callback function for processing 
+function AjaxSpotTest(url, callback)
+{
+	$.ajax({
+			url:url,
+			method: "GET",
+			datatype: "json",
+			success: function (data) {
+				alert("SkateSpot already exists");
+			},
+			error: function(object, textStatus, errorThrown){			
+				callback(data);
+			}
+	});
+}
 
 //function that gets data from server and sends the data to the callback function for processing 
 function AjaxGet(url, callback)
@@ -215,27 +230,32 @@ let ViewModel = function () {
 					
 					var data = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
 					
-					AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
+					var filter = {"where":{"and":[{"lat":data.lat},{"long":data.long }]}};
+	
+					AjaxSpotTest("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 						
-						//if this runs then the pin was successfully created in db
-						map.setCenter(results[0].geometry.location);
-						map.setZoom(15);
-						let markerPark = new google.maps.Marker({
-							map: map,
-							position: results[0].geometry.location,
-							title: pinName
-						});
-						let contentString = 
-							`<div id="content-info-window">
-								<h2>` + pinName + `</h2>
-								<p>` + pinAddress + `</p>
-							</div>`;
-						google.maps.event.addListener(markerPark, 'click', function() {
-							infoWindow.open(map, this);
-							infoWindow.setContent(contentString);
-						});
+						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
 						
-						$('#createPin').modal('hide');
+							//if this runs then the pin was successfully created in db
+							map.setCenter(results[0].geometry.location);
+							map.setZoom(15);
+							let markerPark = new google.maps.Marker({
+								map: map,
+								position: results[0].geometry.location,
+								title: pinName
+							});
+							let contentString = 
+								`<div id="content-info-window">
+									<h2>` + pinName + `</h2>
+									<p>` + pinAddress + `</p>
+								</div>`;
+							google.maps.event.addListener(markerPark, 'click', function() {
+								infoWindow.open(map, this);
+								infoWindow.setContent(contentString);
+							});
+						
+							$('#createPin').modal('hide');
+						});
 					});
 				} else {
 					alert('Geocode was not successful for the following reason: ' + status);

@@ -2,6 +2,11 @@
 /*jshint esversion: 6 */
 let map;
 
+var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	
+//if null then the user is not logged in
+if(curUser === null)
+	location.href = 'login.html';
 
 
 
@@ -59,7 +64,7 @@ let ViewModel = function () {
 	
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
-	$.each(curUser.favSpots, function(i, value){
+	$.each(curUser.favoriteSpot, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
 		count++;
@@ -69,7 +74,7 @@ let ViewModel = function () {
 	filter += filterEnd;
 	
 	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curUser.favSpots[0] + "\"}}";
+		filter = "{\"where\":{\"id\":\"" + curUser.favoriteSpot[0] + "\"}}";
 	}
 	
 	if (count >= 1)
