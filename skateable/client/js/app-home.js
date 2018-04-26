@@ -95,8 +95,6 @@ let ViewModel = function () {
     
   	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
-	if(curUser === null)
-		alert("not logged in test");
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
