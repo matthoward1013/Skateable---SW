@@ -25,7 +25,7 @@ button {
     border-radius: 4px;
 }
     /* inputs */
-input[type=first],input[type=last],input[type=email],input[type=email2],input[type=password],input[type=password2] {
+input[type=text] {
     width: 35%;
     padding: 4px 4px;
     margin: 2px 0;
@@ -34,6 +34,7 @@ input[type=first],input[type=last],input[type=email],input[type=email2],input[ty
     box-sizing: border-box;
     border-radius: 8px;  
 }
+
 
     /* button */
 h1 {

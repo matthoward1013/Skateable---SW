@@ -1,3 +1,6 @@
+/*global $, location, alert, document*/
+/*jshint esversion: 6*/
+
 //JQuery ajax POST 
 function AjaxPost(url, method, accept, contentType, datatype, data)
 {
