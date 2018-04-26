@@ -133,9 +133,11 @@ a {
 
 #Photo
 {
-    width: 150px;
-    height: 150px;
+    width: 125px;
+    height: 125px;
     margin-right: auto;
+    margin-left: auto;
+
 
 }
 img.profilepic {
