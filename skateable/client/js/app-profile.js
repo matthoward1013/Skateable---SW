@@ -1,6 +1,22 @@
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
+/*jshint esversion: 6 */
 
+let map;
+
+
+
+
+//Initiliazes  the map, using the center of WA state as the center
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 47.6062, lng: -122.3321},
+        zoom: 12,
+        mapTypeControl: false, //Sticks to the classic mapType
+        minZoom: 5,
+        streetViewControl: false
+    });
     ko.applyBindings(new ViewModel());
-
+}
 
 //function that posts json data to server
 function AjaxPatch(url,data, callback)
@@ -57,7 +73,7 @@ function UpdateUser(curUser)
 
 function ChangePassword(curUser)
 {
-	//get the user entered previous password and the new Password here
+	//put the user entered previous password and the new Password here
 	var passwords = {"oldPassword": "", "newPassword": ""};
 	
 	//Post the password change to db if successful the alert will display
@@ -75,10 +91,51 @@ let ViewModel = function () {
 	if(curUser === null)
 		location.href = 'login.html';
 	
+	document.getElementById("name").innerHTML = curUser.name;
+	document.getElementById("mail").innerHTML = "<label>Email: &nbsp</label>" + curUser.email;
+	
+	if(curUser.groups.length !== 0)
+		document.getElementById("groups").innerHTML = "<label>Number of Groups: &nbsp</label>" + String(curUser.groups.length);
+	
+	if(curUser.favSpots.length !== 0)
+		document.getElementById("spots").innerHTML = "<label>Number of Favorite Spots: &nbsp</label>" + String(curUser.favSpots.length);
+	
+	if(curUser.bio !== "")
+		document.getElementById("bio").value = curUser.bio;
+
+	
+	
+	    let panelVis = false,
+        sidebar = $('#side-bar'),
+        menuButton = $("#menu-button"),
+        pinModal = $('#createPin');
+    
+    self.closePanel = function() {
+        sidebar.css("width", "0");
+        setTimeout(function() { 
+            $('#side-bar .list').css("visibility", "hidden"); 
+        }, 200);
+        panelVis = false;
+    };
+    
+    self.openPanel = function() {
+        sidebar.css("width", "15%");
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
+        panelVis = true;
+    };
+    
+    //Create a pin modal function
+    
+    self.openModal = function() {
+        pinModal.modal('show');  
+    };
 	
 	
 	
 	
 	
 };
+
+    ko.applyBindings(new ViewModel());
+
 
