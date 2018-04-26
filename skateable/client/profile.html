@@ -3,43 +3,69 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/app-profile.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="icon" href="img/icon.png">
         <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
-        <title>Skateable | Profile</title>
+        <title>Skateable | My Profile</title>
     </head>
-    <body>      
-      
-      
-<div id="ProfilePage">
+    <body>
+        <div id="container">
+            <div id="side-bar">
+                <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
+                <a href="profile.html" class="list">Profile</a>
+                <a href="groups.html" class="list">Groups</a>
+                <a href="parks.html" class="list">Parks</a>
+                <a href="#" class="list">Settings</a>
+                <a href="login.html">Login</a>
+            </div>
+            
+            <header id="top-bar">
+                <button id="menu-button">
+                    <img id="menu" src="img/menu.png" alt="menu" data-bind="click: openPanel">
+                </button>
+                <div id="logo"><a href="index.html"><img src="img/Logo.png" alt="Skateable"></a></div>
+            </header>
+            
+          <div id="ProfilePage">
 
-    <div id="Info">
-        <p>
-            <fields>Name:</fields>
-            <span>Default</span>
-        </p>
-        <p>
-            <fields>Email:</fields>
-            <span>Default</span>
-        </p>
-        <p>
-            <fields>Bio:</fields>
-            <span>Default</span>
-        </p>
-       
-    </div>
-
-    <div style="clear:both"></div>
-</div>
-        
-        <div class="footer">
-            <p>Get Skateable @ 2018</p>
+<div id="mainContent">
+         <div id="Photo">
+            <img src="img/profilepic.png" class ="profilepic">
         </div>
-                 
+        
+      <div id="info">
+        <div cass="entry">
+                  <div contenteditable = "true" class="self"> 
+            <h1 id ="name"> Obi Wan Kenobi <br />
+              </h1>
+            <ul>
+              <div id ="tel"><label>Phone: &nbsp </label>206-111-2222</div>  
+              <div id ="mail"><label>Email: &nbsp</label>obk@jeditemple.org </div>
+              <div id ="ad"><label>Address: &nbsp</label>1122 Imperial Palace Ave. Coruscant </div>
+            </ul>
+              
+             <div class="entry">
+          <h2>Bio</h2>      
+<textarea rows="4" cols="50" >Enter some information about yourself! 
+Hello there. My name is Obi Wan Kenobi. I am a Jedi master. My Light Saber is Blue. 
+</textarea>
+        </div>        
+          </div>
+        </div>
+         
+</div>
+    </div>
+   
+    <div id="map"></div>
+</div>   
+        </div>
+        
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/lib/knockout-3.4.2.js"></script>
-        <script src="js/app-signup.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
-        </script> 
-          
+        </script>
+        <script src="js/app-parks.js"></script> 
     </body>
 </html>
