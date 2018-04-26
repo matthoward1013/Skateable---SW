@@ -40,7 +40,7 @@ function SignUp(){
 	}
 
 	//Example use
-	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "string", "groups": [], "username" : tempName};
+	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "string", "groups": [], "username" : tempEmail};
 
 	AjaxPost("http://localhost:3000/api/users", "POST",  "application/json",  "application/json",  "json", userData);
 }

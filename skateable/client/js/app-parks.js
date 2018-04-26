@@ -4,6 +4,7 @@ let map;
 
 
 
+
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -31,25 +32,10 @@ let skateSpot = function (skateSpot) {
 	this.rating = ko.observable();
 };
 
-//class to store each meetup at a skatespot
-let meetup = function(meetup){
-	this.id = ko.observable();
-	this.dayofMeetup = ko.observable();
-	this.description = ko.observable();
-};
-//class to store the user
-let user = function(user){
-	this.id = ko.observable();
-	this.key = ko.observable();
-	this.name = ko.observable();
-	this.email = ko.observabe();
-	this.password = ko.observable();
-	this.bio = ko.observable();
-};
-
 let ViewModel = function () {
     //Function for sidebar animation
     let self = this;
+	favSpots = [];
     
     let panelVis = false,
         sidebar = $('#side-bar'),
@@ -69,4 +55,37 @@ let ViewModel = function () {
         setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
         panelVis = true;
     };
+	
+	
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+	$.each(curUser.favSpots, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curUser.favSpots[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		//for each group the user has, fetch the group information from the db
+		AjaxGet("http://localhost:3000/api/skateSpots?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+			//console.log(data);
+			
+			$.each(data, function(i, value){
+				favSpots.push(value);
+			});	
+			
+			//input into group ui list here
+			
+			//test to create a group status: working
+			//createGroup(curUser,groupList);
+		});
+	}
 };
