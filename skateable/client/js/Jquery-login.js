@@ -3,6 +3,17 @@
 //Jquery Login to loopback
 
 
+var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	
+//if not null then the user wnats to log out
+if(curUser !== null){
+			//Post the password change to db if successful the alert will display
+	AjaxPost("http://localhost:3000/api/users/logout?access_token=" + curUser.key,  passwords, function(data){
+				sessionStorage.removeItem("curUser");
+	});
+}
+
+
 function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 {
 	$.ajax({
@@ -31,6 +42,24 @@ function AjaxGet(url, method, datatype, callback)
 				alert("Could not connect to the server! please reload Browser");
 	});
 }
+
+//function that posts json data to server
+function AjaxPost(url,data, callback)
+{
+	$.ajax({
+			url:url,
+			method: "POST",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				callback(data);
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
+
 
 function Login(){
 	

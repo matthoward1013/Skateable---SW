@@ -69,12 +69,13 @@ function ChangePassword(curUser)
 
 let ViewModel = function () {
 	
-	this should be in the main function but just to show how to get the curUser and what to check for
 	  var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
 	//if null then the user is not logged in
 	if(curUser === null)
 		location.href = 'login.html';
+	
+	
 	
 	
 	
