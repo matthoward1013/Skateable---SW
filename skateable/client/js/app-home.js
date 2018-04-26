@@ -52,6 +52,7 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
+		console.log(data);
 				callback();
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
@@ -213,15 +214,15 @@ let ViewModel = function () {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
 					
-					var data = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
+					var dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
 					
-					var filter = {"where":{"and":[{"lat":data.lat},{"long":data.long }]}};
+					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
 					AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
-						
-					if(data === [])
+						console.log(data);
+					if(data.length === 0)
 					{
-						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
+						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
 						
 							//if this runs then the pin was successfully created in db
 							map.setCenter(results[0].geometry.location);
