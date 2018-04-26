@@ -88,10 +88,10 @@ function AddGroup(curUser, groupList)
 		
 		groupList.push(data);
 		
-		var groupPatchData = grouplist[length - 1].members;
+		var groupPatchData = groupList[groupList.length - 1].members;
 		groupPatchData.push(curUser.name);
 
-		AjaxPatch("http://localhost:3000/api/groups/"+ String(groupList[length - 1].id) + "?access_token=" + String(curUser.key), groupPatchData, function(data){
+		AjaxPatch("http://localhost:3000/api/groups/"+ String(groupList[groupList.length - 1].id) + "?access_token=" + String(curUser.key), groupPatchData, function(data){
 		
 			curUser.groups.push(data.id);
 			

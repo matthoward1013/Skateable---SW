@@ -85,7 +85,7 @@ function Login(){
 					curUser.email = tempUser.email;
 					curUser.bio = tempUser.bio;
 					curUser.groups = tempUser.groups;
-					curUser.favSpots = tempUser.favSpots;
+					curUser.favoriteSpot = tempUser.favoriteSpot;
 					
 					if(curUser.key !== "")
 					{							

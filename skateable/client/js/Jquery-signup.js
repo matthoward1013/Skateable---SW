@@ -8,14 +8,16 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 			url:url,
 			method: method,
 			accept: accept,
-            	contentType: contentType,
+            contentType: contentType,
 			datatype: datatype,
 			data: JSON.stringify(data)
 	}).done(function (data) {
 				location.href='login.html';
 	}).fail(function(object, textStatus, errorThrown){
-				if(errorThrown === "Unprocessable Entity")
+				if(errorThrown === "Unprocessable Entity"){
 					alert("Please Enter Valid Fields");
+                }
+                
 				else
 				{
 						alert(errorThrown);
@@ -23,7 +25,7 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 	});
 }
 
-function SignUp(){
+function signUp(){
 
 	var tempName = document.all[16].value +" "+ document.all[21].value;
 	
@@ -31,14 +33,16 @@ function SignUp(){
 		var tempEmail = document.all[26].value;
 	else 
 	{
-		alert("Email does not match");
+        let errorMsg = $("<p class='error'></p>").text("Email does not match");
+        $("#emailTwo").before(errorMsg);
 		return;
 	}
 	if(document.all[36].value === document.all[41].value)
 			var tempPsw = document.all[36].value;
 	else
 	{
-		alert("password does not match");
+        let errorMsg = $("<p class='error'></p>").text("Password does not match");
+        $("#passTwo").before(errorMsg);
 		return;
 	}
 

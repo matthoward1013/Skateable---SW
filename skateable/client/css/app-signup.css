@@ -35,6 +35,10 @@ input[type=text] {
     border-radius: 8px;  
 }
 
+.error {
+    color: #FF0000;
+    font-size: 14px;
+}
 
     /* button */
 h1 {
