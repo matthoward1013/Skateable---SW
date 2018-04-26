@@ -92,9 +92,16 @@ let ViewModel = function () {
 		location.href = 'login.html';
 	
 	document.getElementById("name").innerHTML = curUser.name;
-	document.getElementById("mail").innerHTML = curUser.email;
-	document.getElementById("bio").value = curUser.bio;
-
+	document.getElementById("mail").innerHTML = "<label>Email: &nbsp</label>" + curUser.email;
+	
+	if(curUser.groups.length !== 0)
+		document.getElementById("groups").innerHTML = "<label>Number of Groups: &nbsp</label>" + String(curUser.groups.length);
+	
+	if(curUser.favSpots.length !== 0)
+		document.getElementById("spots").innerHTML = "<label>Number of Favorite Spots: &nbsp</label>" + String(curUser.favSpots.length);
+	
+	if(curUser.bio !== "")
+		document.getElementById("bio").value = curUser.bio;
 
 	
 	
