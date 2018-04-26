@@ -95,8 +95,6 @@ let ViewModel = function () {
     
   	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
-	if(curUser === null)
-		alert("not logged in test");
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
@@ -108,7 +106,7 @@ let ViewModel = function () {
         marker;
     
 	//listen for the bounds to be created and fetch the current skateSpots
-    google.maps.event.addListener(map, 'bounds_changed', function() {
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
 		  
 		var bounds = map.getBounds(),
             northC  =   bounds.getNorthEast().lat(),   
