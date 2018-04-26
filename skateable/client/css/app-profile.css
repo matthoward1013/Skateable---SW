@@ -21,13 +21,6 @@ background:  #b3b3b3;
     text-align: center;
 }
 
-#Photo
-{
-    width: 200px;
-    height: 200px;
-
-}
-
 #Info
 {
     width: 400px;
@@ -46,11 +39,6 @@ background:  #b3b3b3;
 {
     display: inline-block;
     width: 275px;
-}
-
-img.profilepic {
-   width: inherit;
-    height: inherit;
 }
 
 .footer {
