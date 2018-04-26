@@ -22,7 +22,7 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 
 function SignUp(){
 
-	var tempName = document.all[16].value + document.all[21].value;
+	var tempName = document.all[16].value +" "+ document.all[21].value;
 	
 	if(document.all[26].value === document.all[31].value)
 		var tempEmail = document.all[26].value;
@@ -40,7 +40,7 @@ function SignUp(){
 	}
 
 	//Example use
-	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "string", "groups": [], "username" : tempEmail};
+	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "", "groups": [], "favoriteSpot":[], "username" : tempEmail};
 
 	AjaxPost("http://localhost:3000/api/users", "POST",  "application/json",  "application/json",  "json", userData);
 }
