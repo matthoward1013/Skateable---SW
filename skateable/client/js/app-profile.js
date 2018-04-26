@@ -3,6 +3,11 @@
 
 let map;
 
+var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	
+//if null then the user is not logged in
+if(curUser === null)
+	location.href = 'login.html';
 
 
 
@@ -51,7 +56,7 @@ function AjaxPost(url,data, callback)
 	});
 }
 
-function UpdateUser(curUser)
+function UpdateUser()
 {	
 	
 	//enter in changed name and or bio here where the curUser.name and bio is
@@ -71,7 +76,7 @@ function UpdateUser(curUser)
 	
 }
 
-function ChangePassword(curUser)
+function ChangePassword()
 {
 	//put the user entered previous password and the new Password here
 	var passwords = {"oldPassword": "", "newPassword": ""};
@@ -85,23 +90,14 @@ function ChangePassword(curUser)
 
 let ViewModel = function () {
 	
-	  var curUser = JSON.parse(sessionStorage.getItem("curUser"));
-	
-	//if null then the user is not logged in
-	if(curUser === null)
-		location.href = 'login.html';
-	
 	document.getElementById("name").innerHTML = curUser.name;
 	document.getElementById("mail").innerHTML = "<label>Email: &nbsp</label>" + curUser.email;
 	
-	if(curUser.groups.length !== 0)
-		document.getElementById("groups").innerHTML = "<label>Number of Groups: &nbsp</label>" + String(curUser.groups.length);
-	
-	if(curUser.favSpots.length !== 0)
-		document.getElementById("spots").innerHTML = "<label>Number of Favorite Spots: &nbsp</label>" + String(curUser.favSpots.length);
+	document.getElementById("groups").innerHTML ="<label>Number of Groups: &nbsp</label>" + String(curUser.groups.length);
+	document.getElementById("spots").innerHTML =  "<label>Number of Favorite Spots: &nbsp</label>" + String(curUser.favoriteSpot.length);
 	
 	if(curUser.bio !== "")
-		document.getElementById("bio").value = curUser.bio;
+		$("bio").val = curUser.bio;
 
 	
 	
@@ -129,13 +125,5 @@ let ViewModel = function () {
     self.openModal = function() {
         pinModal.modal('show');  
     };
-	
-	
-	
-	
-	
+
 };
-
-    ko.applyBindings(new ViewModel());
-
-

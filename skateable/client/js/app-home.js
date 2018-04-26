@@ -24,21 +24,6 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
-//function that gets data from server and sends the data to the callback function for processing 
-function AjaxSpotTest(url, callback)
-{
-	$.ajax({
-			url:url,
-			method: "GET",
-			datatype: "json",
-			success: function (data) {
-				alert("SkateSpot already exists");
-			},
-			error: function(object, textStatus, errorThrown){			
-				callback(data);
-			}
-	});
-}
 
 //function that gets data from server and sends the data to the callback function for processing 
 function AjaxGet(url, callback)
@@ -232,8 +217,10 @@ let ViewModel = function () {
 					
 					var filter = {"where":{"and":[{"lat":data.lat},{"long":data.long }]}};
 	
-					AjaxSpotTest("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
+					AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 						
+					if(data === [])
+					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
 						
 							//if this runs then the pin was successfully created in db
@@ -256,6 +243,11 @@ let ViewModel = function () {
 						
 							$('#createPin').modal('hide');
 						});
+					}
+					else
+					{
+						alert("Skatespot already exists");
+					}
 					});
 				} else {
 					alert('Geocode was not successful for the following reason: ' + status);
