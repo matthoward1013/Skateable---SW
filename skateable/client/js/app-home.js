@@ -97,6 +97,41 @@ function UpdateSkateSpot(curSkateSpot)
 	
 }
 
+function GetMeetups(curSkateSpot)
+{
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+	$.each(curSkateSpot.meetups, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curUser.groups[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		//for each group the user has, fetch the group information from the db
+		AjaxGet("http://localhost:3000/api/groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+			//console.log(data);
+			
+			$.each(data, function(i, value){
+				groupList.push(value);
+			});	
+			
+			//input into group ui list here
+			
+			//test to create a group status: working
+			//createGroup(curUser,groupList);
+		});
+	}
+}
+
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
@@ -174,6 +209,7 @@ let ViewModel = function () {
                     temp.streetAddress = spot.address;
                     temp.comments = spot.comments;
                     temp.rating = spot.rating;
+					temp.currentMeetups = spot.currentMeetups;
                     skateSpots.push(temp);
                 });
                 
