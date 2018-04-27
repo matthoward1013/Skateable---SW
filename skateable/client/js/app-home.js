@@ -58,11 +58,50 @@ function AjaxPost(url,data, callback)
 				alert("Could not connect to the server! please reload browser");
 	});
 }
+//function that posts json data to server
+function AjaxPatch(url,data, callback)
+{
+	$.ajax({
+			url:url,
+			method: "PATCH",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				callback(data);
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
+
+
+
+//needs skateSpot id to patch 
+function UpdateSkateSpot(curSkateSpot)
+{
+	var newComment = "from ui text";
+	curSkateSpot.comments.append(newComment);
+	var newRating = 1;//from skateSpot window
+	curSkateSpot.rating = curSkateSpot.rating + newRating;
+	
+	var patchData = {"comments":skateSpot.comments, };
+		//patches the user data to include the new group
+	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+		sessionStorage.setItem("curUser", JSON.stringify(curUser));
+		//console.log(data);
+			
+		//input into group ui list here
+	});
+	
+}
 
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
     this.name = ko.observable();
+	this.id = ko.observable();
     this.lat = ko.observable();
     this.lng = ko.observable();
     this.id = ko.observable();
@@ -116,7 +155,9 @@ let ViewModel = function () {
             westC   =   bounds.getSouthWest().lng(); 
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
-	
+		
+		//below gets every skatespot in db
+		//AjaxGet("http://localhost:3000/api/skatespots?access_token=" + curUser.key, function(data){});
 		AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 			
 			if(data.length === 0)
@@ -127,6 +168,7 @@ let ViewModel = function () {
                 data.forEach(function (spot) {
                     let temp = new SkateSpot();
                     temp.name = spot.spotName;
+					temp.id = spot.id;
                     temp.lat = spot.lat;
                     temp.lng = spot.long;
                     temp.streetAddress = spot.address;
