@@ -40,7 +40,9 @@ let skateSpot = function (skateSpot) {
 let ViewModel = function () {
     //Function for sidebar animation
     let self = this;
-	favSpots = [];
+	
+	var favSpots = [];
+	var count = 0;
     
     let panelVis = false,
         sidebar = $('#side-bar'),
