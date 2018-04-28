@@ -10,13 +10,10 @@
       "type": "string",
       "required": true
     },
-    "chatFileName": {
-      "type": "string",
-      "required": true
-    },
     "groupID": {
-      "type": "number",
-      "required": true
+      "type": "string",
+      "required": true,
+      "index": {"unique": true}
     },
     "members": {
       "type": [

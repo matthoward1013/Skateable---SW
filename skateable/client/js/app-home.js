@@ -24,21 +24,6 @@ function errorHandling() {
     alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
-//function that gets data from server and sends the data to the callback function for processing 
-function AjaxSpotTest(url, callback)
-{
-	$.ajax({
-			url:url,
-			method: "GET",
-			datatype: "json",
-			success: function (data) {
-				alert("SkateSpot already exists");
-			},
-			error: function(object, textStatus, errorThrown){			
-				callback(data);
-			}
-	});
-}
 
 //function that gets data from server and sends the data to the callback function for processing 
 function AjaxGet(url, callback)
@@ -67,16 +52,91 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
+		console.log(data);
 				callback();
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
+//function that posts json data to server
+function AjaxPatch(url,data, callback)
+{
+	$.ajax({
+			url:url,
+			method: "PATCH",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
 	});
 }
 
 
+
+//needs skateSpot id to patch 
+function UpdateSkateSpot(curSkateSpot)
+{
+	var newComment = "from ui text";
+	curSkateSpot.comments.append(newComment);
+	var newRating = 1;//from skateSpot window
+	curSkateSpot.rating = curSkateSpot.rating + newRating;
+	
+	var patchData = {"comments":skateSpot.comments, };
+		//patches the user data to include the new group
+	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+		sessionStorage.setItem("curUser", JSON.stringify(curUser));
+		//console.log(data);
+			
+		//input into group ui list here
+	});
+	
+}
+
+function GetMeetups(curSkateSpot)
+{
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+	$.each(curSkateSpot.meetups, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curUser.groups[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		//for each group the user has, fetch the group information from the db
+		AjaxGet("http://localhost:3000/api/groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+			//console.log(data);
+			
+			$.each(data, function(i, value){
+				groupList.push(value);
+			});	
+			
+			//input into group ui list here
+			
+			//test to create a group status: working
+			//createGroup(curUser,groupList);
+		});
+	}
+}
+
+
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
     this.name = ko.observable();
+	this.id = ko.observable();
     this.lat = ko.observable();
     this.lng = ko.observable();
     this.id = ko.observable();
@@ -130,7 +190,9 @@ let ViewModel = function () {
             westC   =   bounds.getSouthWest().lng(); 
 	
 		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
-	
+		
+		//below gets every skatespot in db
+		//AjaxGet("http://localhost:3000/api/skatespots?access_token=" + curUser.key, function(data){});
 		AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 			
 			if(data.length === 0)
@@ -141,11 +203,13 @@ let ViewModel = function () {
                 data.forEach(function (spot) {
                     let temp = new SkateSpot();
                     temp.name = spot.spotName;
+					temp.id = spot.id;
                     temp.lat = spot.lat;
                     temp.lng = spot.long;
                     temp.streetAddress = spot.address;
                     temp.comments = spot.comments;
                     temp.rating = spot.rating;
+					temp.currentMeetups = spot.currentMeetups;
                     skateSpots.push(temp);
                 });
                 
@@ -228,13 +292,15 @@ let ViewModel = function () {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
 					
-					var data = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
+					var dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
 					
-					var filter = {"where":{"and":[{"lat":data.lat},{"long":data.long }]}};
+					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
-					AjaxSpotTest("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
-						
-						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), data, function(){
+					AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
+						console.log(data);
+					if(data.length === 0)
+					{
+						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
 						
 							//if this runs then the pin was successfully created in db
 							map.setCenter(results[0].geometry.location);
@@ -256,6 +322,11 @@ let ViewModel = function () {
 						
 							$('#createPin').modal('hide');
 						});
+					}
+					else
+					{
+						alert("Skatespot already exists");
+					}
 					});
 				} else {
 					alert('Geocode was not successful for the following reason: ' + status);
