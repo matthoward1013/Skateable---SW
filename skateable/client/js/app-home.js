@@ -139,6 +139,14 @@ function GetMeetups(curSkateSpot)
 	}
 }
 
+function CreateMeetup(curSkateSpot)
+{
+	
+	
+	
+	
+}
+
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {

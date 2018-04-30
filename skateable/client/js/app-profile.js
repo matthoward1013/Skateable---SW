@@ -36,7 +36,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				document.getElementById("savebttn").disabled = false;
+				document.getElementById("editProfBtn").disabled = false;
 				alert("Could not connect to the server! please reload browser");
 	});
 }
@@ -53,7 +53,7 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				document.getElementById("pwbutton").disabled = false;
+				document.getElementById("savebttn").disabled = false;
 				alert("Could not change Password! Please try again.");
 	});
 }
@@ -76,7 +76,7 @@ let ViewModel = function () {
 		$("#bio").val(curUser.bio);
 	
 	self.changePassword = function(){
-		document.getElementById("pwbutton").disabled = true;
+		document.getElementById("savebttn").disabled = true;
 
 		//console.log($("#oldPass").val());
 		if($("#oldPass").val() !== "")
@@ -89,19 +89,19 @@ let ViewModel = function () {
 				//Post the password change to db if successful the alert will display
 				AjaxPost("http://localhost:3000/api/users/change-password?access_token=" + curUser.key,  passwords, function(data){
 						alert("password was successfully changed");
-						document.getElementById("pwbutton").disabled = false;
+						document.getElementById("savebttn").disabled = false;
 						location.href = 'profile.html';
 
 
 				});	
 			}
 			else{
-				document.getElementById("pwbutton").disabled = false;
+				document.getElementById("savebttn").disabled = false;
 				alert("New password does not match");
 			}
 		}
 		else{
-			document.getElementById("pwbutton").disabled = false;
+			document.getElementById("savebttn").disabled = false;
 			//display red font as error here for old password
 			alert("Please enter old Password");
 		}
@@ -109,7 +109,7 @@ let ViewModel = function () {
 	
 	self.updateUser = function(){
 		
-		document.getElementById("savebttn").disabled = true;
+		document.getElementById("editProfBtn").disabled = true;
 		
 		var changedData = {};
 		if($("#name").text() !== curUser.name && $("#name").text() !== "")
@@ -135,13 +135,13 @@ let ViewModel = function () {
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			
 				console.log(data);
-				document.getElementById("savebttn").disabled = false;
+				document.getElementById("editProfBtn").disabled = false;
 				location.href = 'profile.html';
 						
 			});		
 		}
 		else{
-			document.getElementById("savebttn").disabled = false;
+			document.getElementById("editProfBtn").disabled = false;
 		}
 			
 	};
