@@ -36,24 +36,66 @@
       <div id="info">
         <div cass="entry">
                   <div contenteditable = "true" class="self"> 
-            <h1 id ="name"><br />
+            <h1 id ="name"><br/>
               </h1>
             <ul>
-              <div id ="mail"><label>Email: &nbsp</label> </div>
-			  <div id ="groups"><label>Number of Groups: &nbsp</label>0 </div>
-			  <div id ="spots"><label>Number of Favorite Spots: &nbsp</label>0 </div>
+              <label>Email: </label>
+                <div id ="mail"></div>
+			  <label>Number of Groups: </label>
+                <div id ="groups"></div>
+			  <label>Number of Spots: </label>
+                <div id ="spots"></div>
             </ul>
               
              <div class="entry">
           <h2>Bio</h2>      
-<textarea id="bio" rows="4" cols="50" >Enter some information about yourself! 
+<textarea id="bio" rows="4" cols="40" >Enter some information about yourself! 
 </textarea>
         </div>        
           </div>
         </div>    
 </div>
+    
     <div class="settingsButton">
     <button type="button" onclick="">Edit Profile</button>
+    <button class="pwbutton">Change Password</button>
+        <div class="panel">
+        <label>
+              Enter Old Password<span class="req">*</span>
+              </label>
+              <br>
+            <input type="text" id="oldPass" required autocomplete="off"/>
+              <br>  
+               <label>
+              Enter New Password<span class="req">*</span>
+            </label>
+              <br>
+            <input type="text" id="newPass" required autocomplete="off"/>
+              <br>
+               <label>
+              Re-Enter New Password<span class="req">*</span>
+            </label>
+              <br>
+            <input type="text" id="newPass2" required autocomplete="off"/>
+              <br>  <br>
+        <button type="button" class="savebttn" onclick="location.href='profile.html'"> Save</button> 
+        </div>
+        <script>
+var acc = document.getElementsByClassName("pwbutton");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
+</script>
     </div>
     </div>
    

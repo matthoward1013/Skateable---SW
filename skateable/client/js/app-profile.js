@@ -91,10 +91,10 @@ function ChangePassword()
 let ViewModel = function () {
 	
 	document.getElementById("name").innerHTML = curUser.name;
-	document.getElementById("mail").innerHTML = "<label>Email: &nbsp</label>" + curUser.email;
+	document.getElementById("mail").innerHTML = curUser.email;
 	
-	document.getElementById("groups").innerHTML ="<label>Number of Groups: &nbsp</label>" + String(curUser.groups.length);
-	document.getElementById("spots").innerHTML =  "<label>Number of Favorite Spots: &nbsp</label>" + String(curUser.favoriteSpot.length);
+	document.getElementById("groups").innerHTML = String(curUser.groups.length);
+	document.getElementById("spots").innerHTML = String(curUser.favoriteSpot.length);
 	
 	if(curUser.bio !== "")
 		$("bio").val = curUser.bio;
