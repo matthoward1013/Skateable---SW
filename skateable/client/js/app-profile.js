@@ -62,15 +62,9 @@ function AjaxPost(url,data, callback)
 let ViewModel = function () {
 	
 	$("#name").text(curUser.name);
-	//document.getElementById("name").innerHTML = curUser.name;
 	$("#mail").text(curUser.email);
-	//document.getElementById("mail").innerHTML = curUser.email;
 	$("#groups").html(String(curUser.groups.length));
-	//document.getElementById("groups").innerHTML = String(curUser.groups.length);
 	$("#spots").html(String(curUser.favoriteSpot.length));
-	//document.getElementById("spots").innerHTML = String(curUser.favoriteSpot.length);
-	
-	console.log(curUser);
 	
 	if(curUser.bio !== "")
 		$("#bio").val(curUser.bio);
