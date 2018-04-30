@@ -2,6 +2,11 @@
 /*jshint esversion: 6 */
 let map;
 
+  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	
+	if(curUser === null)
+		location.href = 'login.html';
+
 
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
@@ -85,7 +90,7 @@ function UpdateSkateSpot(curSkateSpot)
 	var newRating = 1;//from skateSpot window
 	curSkateSpot.rating = curSkateSpot.rating + newRating;
 	
-	var patchData = {"comments":skateSpot.comments, };
+	var patchData = {"comments":curSkateSpot.comments, "rating": curSkateSpot.rating};
 		//patches the user data to include the new group
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
@@ -99,6 +104,8 @@ function UpdateSkateSpot(curSkateSpot)
 
 function GetMeetups(curSkateSpot)
 {
+	var meetUpList = [];
+	
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
 	$.each(curSkateSpot.meetups, function(i, value){
@@ -111,17 +118,17 @@ function GetMeetups(curSkateSpot)
 	filter += filterEnd;
 	
 	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curUser.groups[0] + "\"}}";
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
 	}
 	
 	if (count >= 1)
 	{
 		//for each group the user has, fetch the group information from the db
-		AjaxGet("http://localhost:3000/api/groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet("http://localhost:3000/api/meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 			//console.log(data);
 			
 			$.each(data, function(i, value){
-				groupList.push(value);
+				meetupList.push(value);
 			});	
 			
 			//input into group ui list here
@@ -167,8 +174,6 @@ let ViewModel = function () {
     let self = this;
     
     let geocoder = new google.maps.Geocoder();
-    
-  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	
 	
 	var skateSpots = [];
@@ -264,6 +269,9 @@ let ViewModel = function () {
     searchBox.setBounds(map.getBounds());
     
     self.getLocation = function() {
+		
+		document.getElementById("current-location").disabled = true;
+		
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 let crd = position.coords;
@@ -279,6 +287,8 @@ let ViewModel = function () {
                 console.log(`Latitude : ${crd.latitude}`);
                 console.log(`Longitude: ${crd.longitude}`);
                 console.log(`More or less ${crd.accuracy} meters.`);
+				
+				document.getElementById("current-location").disabled = false;
             });
         } else {
             alert("Geolocation is not supported by this browser");
@@ -286,6 +296,8 @@ let ViewModel = function () {
     };
     
     self.setPin = function() {
+		document.getElementById("yesButton").disabled = true;
+		
         let pinAddress = $('#places-search').val();
         let pinName = $('#pinName').val();
         if (pinAddress !== '' && pinName !== '') {
@@ -302,6 +314,7 @@ let ViewModel = function () {
 					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
 						
+							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db
 							map.setCenter(results[0].geometry.location);
 							map.setZoom(15);
@@ -318,6 +331,8 @@ let ViewModel = function () {
 							google.maps.event.addListener(markerPark, 'click', function() {
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
+								
+						
 							});
 						
 							$('#createPin').modal('hide');
@@ -325,19 +340,24 @@ let ViewModel = function () {
 					}
 					else
 					{
+						document.getElementById("yesButton").disabled = false;
 						alert("Skatespot already exists");
 					}
 					});
 				} else {
+					document.getElementById("yesButton").disabled = false;
 					alert('Geocode was not successful for the following reason: ' + status);
 				}						
 
 			});
         } else if (pinName === '' && pinAddress !== '') {
+			document.getElementById("yesButton").disabled = false;
             alert('Please enter a name!');
         } else if (pinName !== '' && pinAddress === '') {
+			document.getElementById("yesButton").disabled = false;
             alert('Please enter an address!');
         } else {
+			document.getElementById("yesButton").disabled = false;
             alert('Please enter a name and address!');
         }
     };

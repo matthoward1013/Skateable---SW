@@ -89,10 +89,9 @@ let ViewModel = function () {
 				favSpots.push(value);
 			});	
 			
-			//input into group ui list here
+			//input into skateSpot ui list here
 			
-			//test to create a group status: working
-			//createGroup(curUser,groupList);
+
 		});
 	}
 };

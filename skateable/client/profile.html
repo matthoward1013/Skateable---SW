@@ -58,7 +58,7 @@
     
     <div class="settingsButton">
     <button type="button" data-bind="click: updateUser">Edit Profile</button>
-    <button class="pwbutton">Change Password</button>
+    <button id="pwbutton">Change Password</button>
         <div class="panel">
         <label>
               Enter Old Password<span class="req">*</span>
@@ -78,7 +78,7 @@
               <br>
             <input type="text" id="newPass2" required autocomplete="off"/>
               <br>  <br>
-        <button type="button" class="savebttn" data-bind="click: changePassword"> Save</button> 
+        <button type="button" id="savebttn" data-bind="click: changePassword"> Save</button> 
         </div>
         <script>
 var acc = document.getElementsByClassName("pwbutton");

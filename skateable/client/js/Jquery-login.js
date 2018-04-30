@@ -16,7 +16,7 @@ function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 	}).done(function (newData) {
 		callback(newData);
 	}).fail(function(textStatus, errorThrown){
-		$('loginbtn').prop('disabled', false);
+		document.getElementById("loginbtn").disabled = false;	
 		alert("Login Failed! Please reenter your email and password");
 	});
 }
@@ -65,9 +65,8 @@ if(curUser !== null){
 
 function Login(){
 	
-	$('loginbtn').prop('disabled', true);
-	
-//example
+	document.getElementById("loginbtn").disabled = true;
+
 	var login = {"email": document.all[12].value,"password": document.all[15].value};
 	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}, "favoriteSpot": {}};
 
@@ -95,7 +94,7 @@ function Login(){
 					location.href = 'index.html';
 				}	
 			});
-		});	
+		});
 }
 	
 
