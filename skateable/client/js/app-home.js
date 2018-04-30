@@ -3,6 +3,7 @@
 let map;
 
   	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+	var meetUpList = [];
 	
 	if(curUser === null)
 		location.href = 'login.html';
@@ -86,26 +87,32 @@ function AjaxPatch(url,data, callback)
 function UpdateSkateSpot(curSkateSpot)
 {
 	var newComment = "from ui text";
-	curSkateSpot.comments.append(newComment);
 	var newRating = 1;//from skateSpot window
-	curSkateSpot.rating = curSkateSpot.rating + newRating;
-	
-	var patchData = {"comments":curSkateSpot.comments, "rating": curSkateSpot.rating};
+
+	var patchData = {};
+	if(newComment !== "")
+	{
+		curSkateSpot.comments.append(newComment);
+		patchData["comments"] = curSkateSpot.comments;
+	}
+	if(newRating !== curSkateSpot.rating)
+	{
+		curSkateSpot.rating = curSkateSpot.rating + newRating;
+		patchData["rating"] = curSkateSpot.rating;
+	}
+
 		//patches the user data to include the new group
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-		//console.log(data);
+		console.log(data);
 			
-		//input into group ui list here
+		//input into ui here
 	});
 	
 }
 
 function GetMeetups(curSkateSpot)
 {
-	var meetUpList = [];
-	
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
 	$.each(curSkateSpot.meetups, function(i, value){
@@ -131,19 +138,50 @@ function GetMeetups(curSkateSpot)
 				meetupList.push(value);
 			});	
 			
-			//input into group ui list here
-			
 			//test to create a group status: working
-			//createGroup(curUser,groupList);
 		});
 	}
 }
 
 function CreateMeetup(curSkateSpot)
 {
+	meetupList = curSkateSpot.meetups;
+	//insert data from form into here
+	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
 	
-	
-	
+	AjaxPost("http://localhost:3000/api/meetups?access_token=" + String(curUser.key), data, function(data){
+		
+		meetupList.push(data);
+		curSkateSpot.meetups.push(data.id);
+				
+		var patchData = {"meetups": curSkateSpot.meetups};
+		
+		//patches the user data to include the new group
+		AjaxPatch("http://localhost:3000/api/skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+			return data;
+			
+			//input into group ui list here
+		});		
+	});
+}
+
+//needs skateSpot id to patch 
+function UpdateMeetup(curMeetup)
+{
+	var patchData = {};
+	var newMember = curUser.name;
+
+	curMeetup.members.append(newMember);
+	patchData["members"] = curSkateSpot.members;
+
+		//patches the user data to include the new group
+	AjaxPatch("http://localhost:3000/api/meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+		console.log(data);
+			
+		//input into ui here
+	});
 	
 }
 
