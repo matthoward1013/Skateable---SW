@@ -49,7 +49,12 @@ a {
     font-family: 'Acme', sans-serif;
 }
 
-
+#side-bar .login {
+    margin-top: 80%;
+    text-align: center;
+    font-size: 25px;
+    visibility: hidden;
+}
 
 #side-bar a:hover {
     color: black;
