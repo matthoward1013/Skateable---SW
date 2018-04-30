@@ -36,6 +36,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
+				document.getElementById("savebttn").disabled = false;
 				alert("Could not connect to the server! please reload browser");
 	});
 }
@@ -52,28 +53,9 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				document.getElementById("pwbutton").disabled = false;
+				alert("Could not change Password! Please try again.");
 	});
-}
-
-function UpdateUser()
-{	
-	
-	//enter in changed name and or bio here where the curUser.name and bio is
-	var changedData = {"name": curUser.name, "bio": curUser.bio, "email":curUser.email}
-
-	curUser.name = changedData.name;
-	curUser.bio = changedData.bio;
-	//json to store the new information
-	var userPatchData = {"bio":curUser.name,"name":curUser.bio};
-	
-	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
-		//store the changes to the curUser in sessionStorage
-		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				//console.log(data);
-				//input into group ui here
-			});		
-	
 }
 
 
@@ -94,6 +76,8 @@ let ViewModel = function () {
 		$("#bio").val(curUser.bio);
 	
 	self.changePassword = function(){
+		document.getElementById("pwbutton").disabled = true;
+
 		//console.log($("#oldPass").val());
 		if($("#oldPass").val() !== "")
 		{
@@ -105,19 +89,27 @@ let ViewModel = function () {
 				//Post the password change to db if successful the alert will display
 				AjaxPost("http://localhost:3000/api/users/change-password?access_token=" + curUser.key,  passwords, function(data){
 						alert("password was successfully changed");
+						document.getElementById("pwbutton").disabled = false;
+						location.href = 'profile.html';
+
+
 				});	
 			}
 			else{
+				document.getElementById("pwbutton").disabled = false;
 				alert("New password does not match");
 			}
 		}
 		else{
+			document.getElementById("pwbutton").disabled = false;
 			//display red font as error here for old password
 			alert("Please enter old Password");
 		}
 	};
 	
 	self.updateUser = function(){
+		
+		document.getElementById("savebttn").disabled = true;
 		
 		var changedData = {};
 		if($("#name").text() !== curUser.name && $("#name").text() !== "")
@@ -143,8 +135,13 @@ let ViewModel = function () {
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			
 				console.log(data);
+				document.getElementById("savebttn").disabled = false;
+				location.href = 'profile.html';
 						
 			});		
+		}
+		else{
+			document.getElementById("savebttn").disabled = false;
 		}
 			
 	};
