@@ -158,11 +158,22 @@ a {
     text-align: center;
 }
 
-#group-list h1 {
+#groupContainer h1 {
     color: white;
+    display: inline-block;
+    max-width: 50%;
+    margin: 0;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    position: relative;
 }
 
-#group-list ul {
+.btn {
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+
+#groupContainer ul {
     overflow-y: scroll;
     list-style-type: none;
     margin: 0 auto;
@@ -171,7 +182,7 @@ a {
     max-width: 100%;
 }
 
-#group-list li {
+#groupContainer li {
     width: 100%;
     padding: 15px 15px 15px 15px;
     background-color: lightgray;
