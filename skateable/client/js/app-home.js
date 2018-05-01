@@ -11,13 +11,29 @@ let map;
 
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.6062, lng: -122.3321},
-        zoom: 12,
-        mapTypeControl: false, //Sticks to the classic mapType
-        minZoom: 5,
-        streetViewControl: false
-    });
+    let geocoder = new google.maps.Geocoder();
+    if (navigator.geolocation) {
+        let crd;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                crd = position.coords;
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: crd.latitude, lng: crd.longitude},
+                    zoom: 15,
+                    mapTypeControl: false, //Sticks to the classic mapType
+                    minZoom: 5,
+                    streetViewControl: false
+                });
+            });
+    } else {
+        alert("Geolocation is not supported by this browser");
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 47.6062, lng: -122.3321},
+            zoom: 12,
+            mapTypeControl: false, //Sticks to the classic mapType
+            minZoom: 5,
+            streetViewControl: false
+        });
+    }
     
     
     
