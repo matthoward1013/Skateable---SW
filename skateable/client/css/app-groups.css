@@ -149,6 +149,8 @@ a {
     background-color: darkgray;
     position: absolute;
     height: 90%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #group-list {
@@ -156,11 +158,22 @@ a {
     text-align: center;
 }
 
-#group-list h1 {
+#groupContainer h1 {
     color: white;
+    display: inline-block;
+    max-width: 50%;
+    margin: 0;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    position: relative;
 }
 
-#group-list ul {
+.btn {
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+
+#groupContainer ul {
     overflow-y: scroll;
     list-style-type: none;
     margin: 0 auto;
@@ -169,11 +182,78 @@ a {
     max-width: 100%;
 }
 
-#group-list li {
+#groupContainer li {
     width: 100%;
     padding: 15px 15px 15px 15px;
     background-color: lightgray;
     border: 2px solid;
-    border-radius: 25px;
+    border-radius: 15px;
     border-color: black;
+}
+
+#messageContainer {
+    width: 50%;
+    text-align: center;
+}
+
+#messageContainer h1 {
+    color: white;
+}
+
+#chatBox {
+    background-color: white;
+    height: 70%;
+    max-width: 500px;
+    width: 90%;
+    margin: 0 auto;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: 2px solid black;
+    opacity: 0.7;
+}
+
+#message {
+    max-width: 420px;
+    width: 80%;
+    border: 2px solid black;
+    border-bottom-left-radius: 5px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+#msgButton {
+    height: 30px;
+    max-width: 70px;
+    width: 10%;
+    border-bottom-right-radius: 5px;
+}
+
+#cursor {
+    position: relative;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    
+}
+
+#cursor i {
+    position: absolute;
+	width: 1px;
+	height: 80%;
+	background-color: gray;
+	left: 5px;
+	top: 10%;
+	animation-name: blink;
+	animation-duration: 1000ms;
+	animation-iteration-count: infinite;
+	opacity: 1;
+}
+
+.cursor input:focus + i {
+	display: none;
+}
+@keyframes blink {
+	from { opacity: 1; }
+	to { opacity: 0; }
 }

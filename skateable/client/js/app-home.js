@@ -11,13 +11,29 @@ let map;
 
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.6062, lng: -122.3321},
-        zoom: 12,
-        mapTypeControl: false, //Sticks to the classic mapType
-        minZoom: 5,
-        streetViewControl: false
-    });
+    let geocoder = new google.maps.Geocoder();
+    if (navigator.geolocation) {
+        let crd;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                crd = position.coords;
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: crd.latitude, lng: crd.longitude},
+                    zoom: 15,
+                    mapTypeControl: false, //Sticks to the classic mapType
+                    minZoom: 5,
+                    streetViewControl: false
+                });
+            });
+    } else {
+        alert("Geolocation is not supported by this browser");
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 47.6062, lng: -122.3321},
+            zoom: 12,
+            mapTypeControl: false, //Sticks to the classic mapType
+            minZoom: 5,
+            streetViewControl: false
+        });
+    }
     
     
     
@@ -115,6 +131,8 @@ function GetMeetups(curSkateSpot)
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
+    let count = 0;
+    let meetupList = [];
 	$.each(curSkateSpot.meetups, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
@@ -145,7 +163,7 @@ function GetMeetups(curSkateSpot)
 
 function CreateMeetup(curSkateSpot)
 {
-	meetupList = curSkateSpot.meetups;
+	let meetupList = curSkateSpot.meetups;
 	//insert data from form into here
 	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
 	
@@ -195,7 +213,7 @@ let SkateSpot = function (skateSpot) {
     this.id = ko.observable();
     this.streetAddress = ko.observable('');
     this.marker = ko.observable();
-    this.visible = ko.observable(true);
+    this.visible = ko.observable(false);
 	this.comments = ko.observableArray();
 	this.meetups = ko.observableArray();
 	this.rating = ko.observable();
@@ -231,8 +249,53 @@ let ViewModel = function () {
     }), //Init marker
         marker;
     
+    AjaxGet("http://localhost:3000/api/skatespots?access_token=" + curUser.key, function(data){
+        if (data !== null) {
+            data.forEach(function (spot) {
+                let temp = new SkateSpot();
+                temp.name = spot.spotName;
+				temp.id = spot.id;
+                temp.lat = spot.lat;
+                temp.lng = spot.long;
+                temp.streetAddress = spot.address;
+                temp.comments = spot.comments;
+                temp.rating = spot.rating;
+				temp.currentMeetups = spot.currentMeetups;
+                skateSpots.push(temp);
+            });
+        //sets the InfoWindow and Marker for each skatespot
+            skateSpots.forEach(function(spot) {
+                let contentString = 
+                    `<div id="content-info-window">
+				    <h2>` + spot.name + `</h2>
+				    <p>` + spot.streetAddress + `</p>
+                    </div>`;
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(spot.lat, spot.lng),
+                    map: map,
+                    title: spot.name,
+                    animation: google.maps.Animation.DROP,
+                    width: 20
+                });
+    
+                spot.marker = marker;
+                //On click event listener for the markers
+                google.maps.event.addListener(spot.marker, 'click', function() {
+                    infoWindow.open(map, this);
+                    spot.marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(function() {
+                        spot.marker.setAnimation(null);
+                    }, 500);
+                
+                    infoWindow.setContent(contentString);
+                });
+                markers.push(marker);
+            });          
+        }
+    });
+    
 	//listen for the bounds to be created and fetch the current skateSpots
-    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+    /*google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
 		  
 		var bounds = map.getBounds(),
             northC  =   bounds.getNorthEast().lat(),   
@@ -304,7 +367,7 @@ let ViewModel = function () {
 			}
 					
 		});	  
-	});   
+	});*/   
 
 	  
     

@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/app-groups.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="icon" href="img/icon.png">
         <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
         <title>Skateable | Groups</title>
@@ -26,14 +26,27 @@
             </header>
             <div id="main-content">
                 <div id="group-list">
-                    <h1>Groups</h1>
-                    <ul>
-                        <li>
+                    <div id="groupContainer">
+                        <h1 align="center">Groups</h1>
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <ul>
+                            <li>
                             <h4><strong>Group Name</strong></h4>
-                            <h5></h5>
-                            <h6>Location</h6>
-                        </li>
-                    </ul>
+                            <h5>Location</h5>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="messageContainer">
+                    <h1>Chat Messages</h1>
+                    <div id="chatBox"></div>
+                    <form class="cursor">
+                        <input type="text" id="message" placeholder="Your message here...">
+                        <i></i>
+                        <input type="submit" id="msgButton">
+                    </form>
                 </div>
             </div>
 
