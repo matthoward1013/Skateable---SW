@@ -176,7 +176,7 @@ let ViewModel = function () {
 	filter = filter.replace(/,\s*$/, "");
 	filter += filterEnd;
 	
-	if(count == 1){
+	if(count == 1) {
 		filter = "{\"where\":{\"id\":\"" + curUser.groups[0] + "\"}}";
 	}
 	
@@ -184,7 +184,7 @@ let ViewModel = function () {
 	{
 		//for each group the user has, fetch the group information from the db
 		AjaxGet("http://localhost:3000/api/groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-			//console.log(data);
+			console.log(data);
 			
 			$.each(data, function(i, value){
 				groupList.push(value);
@@ -192,6 +192,11 @@ let ViewModel = function () {
 			
 			//input into group ui list here
 			
+            groupList.forEach(function(group) {
+                let name = group.name,
+                    id = group.id;
+            });
+            
 			//test to create a group status: working
 			//createGroup(curUser,groupList);
 		});
