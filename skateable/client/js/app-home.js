@@ -290,7 +290,12 @@ let ViewModel = function () {
                     infoWindow.setContent(contentString);
                 });
                 markers.push(marker);
-            });          
+            });
+
+			google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+				let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
+				searchBox.setBounds(map.getBounds());
+			});			
         }
     });
     
@@ -373,10 +378,8 @@ let ViewModel = function () {
     
     //Create each marker on map
    
-    
-        let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
-    searchBox.setBounds(map.getBounds());
-    
+
+	
     self.getLocation = function() {
 		
 		document.getElementById("current-location").disabled = true;
