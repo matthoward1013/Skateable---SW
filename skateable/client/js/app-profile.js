@@ -36,6 +36,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
+				document.getElementById("editProfBtn").disabled = false;
 				alert("Could not connect to the server! please reload browser");
 	});
 }
@@ -52,56 +53,96 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				document.getElementById("savebttn").disabled = false;
+				alert("Could not change Password! Please try again.");
 	});
 }
 
-function UpdateUser()
-{	
-	
-	//enter in changed name and or bio here where the curUser.name and bio is
-	var changedData = {"name": curUser.name, "bio": curUser.bio, "email":curUser.email}
-
-	curUser.name = changedData.name;
-	curUser.bio = changedData.bio;
-	//json to store the new information
-	var userPatchData = {"bio":curUser.name,"name":curUser.bio};
-	
-	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
-		//store the changes to the curUser in sessionStorage
-		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				//console.log(data);
-				//input into group ui here
-			});		
-	
-}
-
-function ChangePassword()
-{
-	//put the user entered previous password and the new Password here
-	var passwords = {"oldPassword": "", "newPassword": ""};
-	
-	//Post the password change to db if successful the alert will display
-	AjaxPost("http://localhost:3000/api/users/change-password?access_token=" + curUser.key,  passwords, function(data){
-			alert("password was successfully changed");
-	});
-	
-}
 
 let ViewModel = function () {
 	
-	document.getElementById("name").innerHTML = curUser.name;
-	document.getElementById("mail").innerHTML = curUser.email;
-	
-	document.getElementById("groups").innerHTML = String(curUser.groups.length);
-	document.getElementById("spots").innerHTML = String(curUser.favoriteSpot.length);
+	$("#name").text(curUser.name);
+	$("#mail").text(curUser.email);
+	$("#groups").html(String(curUser.groups.length));
+	$("#spots").html(String(curUser.favoriteSpot.length));
 	
 	if(curUser.bio !== "")
-		$("bio").val = curUser.bio;
+		$("#bio").val(curUser.bio);
+	
+	self.changePassword = function(){
+		document.getElementById("savebttn").disabled = true;
+
+		//console.log($("#oldPass").val());
+		if($("#oldPass").val() !== "")
+		{
+			if($("#newPass").val() === $("#newPass2").val())
+			{
+				//put the user entered previous password and the new Password here
+				var passwords = {"oldPassword": $("#oldPass").val(), "newPassword": $("#newPass").val()};
+	
+				//Post the password change to db if successful the alert will display
+				AjaxPost("http://localhost:3000/api/users/change-password?access_token=" + curUser.key,  passwords, function(data){
+						alert("password was successfully changed");
+						document.getElementById("savebttn").disabled = false;
+						location.href = 'profile.html';
+
+
+				});	
+			}
+			else{
+				document.getElementById("savebttn").disabled = false;
+				alert("New password does not match");
+			}
+		}
+		else{
+			document.getElementById("savebttn").disabled = false;
+			//display red font as error here for old password
+			alert("Please enter old Password");
+		}
+	};
+	
+	self.updateUser = function(){
+		
+		document.getElementById("editProfBtn").disabled = true;
+		
+		var changedData = {};
+		if($("#name").text() !== curUser.name && $("#name").text() !== "")
+		{
+			changedData["name"] = $("#name").text();
+			curUser.name = changedData.name;
+		}
+		if($("#mail").text() !== curUser.email && $("#mail").text() !== "")
+		{
+			changedData["email"] = $("#mail").text();
+			curUser.email = changedData.email;
+		}
+		if($("#bio").val() !== curUser.bio)
+		{
+			changedData["bio"] = $("#bio").val();
+			curUser.bio = changedData.bio;
+		}
+		
+		if(changedData["name"] !== undefined || changedData["email"] !== undefined || changedData["bio"] !== undefined){
+			
+			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), changedData ,function(data){
+				//store the changes to the curUser in sessionStorage
+				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+			
+				console.log(data);
+				document.getElementById("editProfBtn").disabled = false;
+				location.href = 'profile.html';
+						
+			});		
+		}
+		else{
+			document.getElementById("editProfBtn").disabled = false;
+		}
+			
+	};
 
 	
 	
-	    let panelVis = false,
+	let panelVis = false,
         sidebar = $('#side-bar'),
         menuButton = $("#menu-button"),
         pinModal = $('#createPin');
@@ -125,5 +166,6 @@ let ViewModel = function () {
     self.openModal = function() {
         pinModal.modal('show');  
     };
+	
 
 };

@@ -16,6 +16,7 @@ function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 	}).done(function (newData) {
 		callback(newData);
 	}).fail(function(textStatus, errorThrown){
+		document.getElementById("loginbtn").disabled = false;	
 		alert("Login Failed! Please reenter your email and password");
 	});
 }
@@ -64,35 +65,35 @@ if(curUser !== null){
 
 function Login(){
 	
-//example
+	document.getElementById("loginbtn").disabled = true;
+
 	var login = {"email": document.all[12].value,"password": document.all[15].value};
 	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": {}, "favoriteSpot": {}};
 
-			//Login POST request to loopback. returns a access key and the userID. 
-			AjaxLogin("http://localhost:3000/api/users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
-				var temp = data;
+		//Login POST request to loopback. returns a access key and the userID. 
+		AjaxLogin("http://localhost:3000/api/users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
+			
+			var temp = data;
+								
+			curUser.id = temp.userId;
+			curUser.key = temp.id;
 				
-				console.log(temp);
-				
-				curUser.id = temp.userId;
-				curUser.key = temp.id;
-				
-				var url = "http://localhost:3000/api/users/" + String(curUser.id) + "?access_token=" + String(curUser.key);
-				//GET request to loopback based on the userId from the login
-				AjaxGet(url, "GET",   "json", function(newData){
-					var tempUser = newData;
-					curUser.name = tempUser.name;
-					curUser.email = tempUser.email;
-					curUser.bio = tempUser.bio;
-					curUser.groups = tempUser.groups;
-					curUser.favoriteSpot = tempUser.favoriteSpot;
+			var url = "http://localhost:3000/api/users/" + String(curUser.id) + "?access_token=" + String(curUser.key);
+			//GET request to loopback based on the userId from the login
+			AjaxGet(url, "GET",   "json", function(newData){
+				var tempUser = newData;
+				curUser.name = tempUser.name;
+				curUser.email = tempUser.email;
+				curUser.bio = tempUser.bio;
+				curUser.groups = tempUser.groups;
+				curUser.favoriteSpot = tempUser.favoriteSpot;
 					
-					if(curUser.key !== "")
-					{							
-							sessionStorage.setItem("curUser", JSON.stringify(curUser));
-							location.href = 'index.html';
-					}	
-				});
+				if(curUser.key !== "")
+				{							
+					sessionStorage.setItem("curUser", JSON.stringify(curUser));
+					location.href = 'index.html';
+				}	
+			});
 		});
 }
 	

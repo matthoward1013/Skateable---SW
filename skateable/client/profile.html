@@ -15,8 +15,7 @@
                 <a href="profile.html" class="list">Profile</a>
                 <a href="groups.html" class="list">Groups</a>
                 <a href="parks.html" class="list">Parks</a>
-                <a href="#" class="list">Settings</a>
-                <a href="login.html">Login</a>
+                <a href="login.html" class="login">Login/Logout</a>
             </div>
             
             <header id="top-bar">
@@ -35,12 +34,13 @@
         
       <div id="info">
         <div cass="entry">
-                  <div contenteditable = "true" class="self"> 
-            <h1 id ="name"><br/>
+                  <div class="self"> 
+			<label>Name: </label>
+            <h1 contenteditable = "true" id ="name"><br/>
               </h1>
             <ul>
               <label>Email: </label>
-                <div id ="mail"></div>
+                <div contenteditable = "true" id ="mail"></div>
 			  <label>Number of Groups: </label>
                 <div id ="groups"></div>
 			  <label>Number of Spots: </label>
@@ -57,7 +57,7 @@
 </div>
     
     <div class="settingsButton">
-    <button type="button" onclick="">Edit Profile</button>
+    <button type="button" id = "editProfBtn" data-bind="click: updateUser">Edit Profile</button>
     <button class="pwbutton">Change Password</button>
         <div class="panel">
         <label>
@@ -78,7 +78,7 @@
               <br>
             <input type="text" id="newPass2" required autocomplete="off"/>
               <br>  <br>
-        <button type="button" class="savebttn" onclick="location.href='profile.html'"> Save</button> 
+        <button type="button" id="savebttn" data-bind="click: changePassword"> Save</button> 
         </div>
         <script>
 var acc = document.getElementsByClassName("pwbutton");

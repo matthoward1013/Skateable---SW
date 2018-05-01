@@ -48,10 +48,15 @@ a {
     font-family: 'Acme', sans-serif;
 }
 
-
-
 #side-bar a:hover {
     color: black;
+}
+
+#side-bar .login {
+    margin-top: 80%;
+    text-align: center;
+    font-size: 25px;
+    visibility: hidden;
 }
 
 #sideList {

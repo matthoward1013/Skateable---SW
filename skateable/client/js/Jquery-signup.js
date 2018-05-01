@@ -26,6 +26,7 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 }
 
 function signUp(){
+	signupbtn
 
 	var tempName = document.all[16].value +" "+ document.all[21].value;
 	
