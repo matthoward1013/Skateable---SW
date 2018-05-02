@@ -108,7 +108,7 @@ function UpdateSkateSpot(curSkateSpot)
 	var patchData = {};
 	if(newComment !== "")
 	{
-		curSkateSpot.comments.append(newComment);
+		curSkateSpot.comments.push(newComment);
 		patchData["comments"] = curSkateSpot.comments;
 	}
 	if(newRating !== curSkateSpot.rating)
@@ -117,7 +117,7 @@ function UpdateSkateSpot(curSkateSpot)
 		patchData["rating"] = curSkateSpot.rating;
 	}
 
-		//patches the user data to include the new group
+		//patches the skatespot data to include the new rating and or comment
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 		console.log(data);
@@ -125,6 +125,35 @@ function UpdateSkateSpot(curSkateSpot)
 		//input into ui here
 	});
 	
+}
+
+function UpdateFavoriteSkateSpot(curSkateSpot)
+{
+	var patchData = {};
+	
+	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
+	
+	//if the current skatespot is not in the curuser favorite spot array
+	if(index === -1)
+	{
+		curUser.favoriteSpot.push(curSkateSpot.id);
+	}
+	//else if the user wants to unfavorite the spot
+	else{
+		curUser.favoriteSpot.splice(index,1);
+	}
+	
+	patchData = {"favoriteSpot":curUser.favoriteSpot};
+	
+	//patches the user with new fav skatespots
+	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		
+		sessionStorage.setItem("curUser", JSON.stringify(curUser));
+	
+		console.log(data);
+			
+		//input into ui here
+	});
 }
 
 function GetMeetups(curSkateSpot)
@@ -281,6 +310,8 @@ let ViewModel = function () {
                 spot.marker = marker;
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
+					
+					//UpdateFavoriteSkateSpot(spot); used at test
                     infoWindow.open(map, this);
                     spot.marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function() {
