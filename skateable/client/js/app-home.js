@@ -88,7 +88,7 @@ function AjaxPost(url,data, callback)
 			data: JSON.stringify(data)
 	}).done(function (data) {
 		console.log(data);
-				callback();
+				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
 	});
@@ -290,7 +290,7 @@ function CreateMeetup()
 		//patches the user data to include the new group
 		AjaxPatch("http://localhost:3000/api/skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-			return data;
+			//return data;
 			
 			//input into group ui list here
 		});		
@@ -467,10 +467,10 @@ let ViewModel = function () {
 						console.log(data);
 					if(data.length === 0)
 					{
-						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
+						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
 							curSkateSpot = data;
-							console.log(curSkateSpot);
-							UpdateFavoriteSkateSpot(data);
+							//console.log(curSkateSpot);
+							UpdateFavoriteSkateSpot(curSkateSpot);
 						
 							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db
@@ -492,6 +492,7 @@ let ViewModel = function () {
                     <button id="nayBtn" onclick ="nayRating();">Nay </button>
                     </div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
+								curSkateSpot = data;
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
 								
