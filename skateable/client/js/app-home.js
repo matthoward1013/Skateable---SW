@@ -1,19 +1,18 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
-let map;
+var map;
 
-	var curSkateSpot = {};
-  	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
-	var meetUpList = [];
+var curSkateSpot = {};
+var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+var meetUpList = [];
 	
-	if(curUser === null)
-		location.href = 'login.html';
+if(curUser === null)
+	location.href = 'login.html';
 
 
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     let geocoder = new google.maps.Geocoder();
-
 	
     if (navigator.geolocation) {
         let crd;
@@ -26,11 +25,23 @@ function initMap() {
                     minZoom: 5,
                     streetViewControl: false
                 });
-            });
-	
+				
+				 ko.applyBindings(new ViewModel());
+            },
+			function(error){
+				
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: {lat: 47.6062, lng: -122.3321},
+					zoom: 12,
+					mapTypeControl: false, //Sticks to the classic mapType
+					minZoom: 5,
+					streetViewControl: false
+				});
+				ko.applyBindings(new ViewModel());	
+			});
     } 
-	 }else {
-      / alert("Geolocation is not supported by this browser");
+	else {
+       alert("Geolocation is not supported by this browser");
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6062, lng: -122.3321},
             zoom: 12,
@@ -38,11 +49,8 @@ function initMap() {
             minZoom: 5,
             streetViewControl: false
        });
+	       ko.applyBindings(new ViewModel());
     }
-    
-    
-    
-    ko.applyBindings(new ViewModel());
 }
 
 //Error handling for map
@@ -188,8 +196,8 @@ function GetMeetups()
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
-    let count = 0;
-    let meetupList = [];
+    var count = 0;
+    var meetupList = [];
 	$.each(curSkateSpot.meetups, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
@@ -220,7 +228,7 @@ function GetMeetups()
 
 function CreateMeetup()
 {
-	let meetupList = curSkateSpot.meetups;
+	var meetupList = curSkateSpot.meetups;
 	//insert data from form into here
 	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
 	
@@ -366,13 +374,6 @@ let ViewModel = function () {
 			});			
         }
     });
-    
-
-    //Create each marker on map
-   
-    self.favorite = function () {
-        UpdateFavoriteSkateSpot();  
-    };
 	
     self.getLocation = function() {
 		
@@ -421,7 +422,7 @@ let ViewModel = function () {
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
 							curSkateSpot = data;
 							console.log(curSkateSpot);
-							//UpdateFavoriteSkateSpot(data);
+							UpdateFavoriteSkateSpot(data);
 						
 							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db
