@@ -2,6 +2,7 @@
 /*jshint esversion: 6 */
 let map;
 
+	var curSkateSpot = {};
   	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	var meetUpList = [];
 	
@@ -100,7 +101,7 @@ function AjaxPatch(url,data, callback)
 
 
 //needs skateSpot id to patch 
-function UpdateSkateSpot(curSkateSpot)
+function UpdateSkateSpot()
 {
 	var newComment = "from ui text";
 	var newRating = 1;//from skateSpot window
@@ -108,7 +109,7 @@ function UpdateSkateSpot(curSkateSpot)
 	var patchData = {};
 	if(newComment !== "")
 	{
-		curSkateSpot.comments.append(newComment);
+		curSkateSpot.comments.push(newComment);
 		patchData["comments"] = curSkateSpot.comments;
 	}
 	if(newRating !== curSkateSpot.rating)
@@ -117,7 +118,7 @@ function UpdateSkateSpot(curSkateSpot)
 		patchData["rating"] = curSkateSpot.rating;
 	}
 
-		//patches the user data to include the new group
+		//patches the skatespot data to include the new rating and or comment
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 		console.log(data);
@@ -127,7 +128,36 @@ function UpdateSkateSpot(curSkateSpot)
 	
 }
 
-function GetMeetups(curSkateSpot)
+function UpdateFavoriteSkateSpot()
+{
+	var patchData = {};
+	
+	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
+	
+	//if the current skatespot is not in the curuser favorite spot array
+	if(index === -1)
+	{
+		curUser.favoriteSpot.push(curSkateSpot.id);
+	}
+	//else if the user wants to unfavorite the spot
+	else{
+		curUser.favoriteSpot.splice(index,1);
+	}
+	
+	patchData = {"favoriteSpot":curUser.favoriteSpot};
+	
+	//patches the user with new fav skatespots
+	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		
+		sessionStorage.setItem("curUser", JSON.stringify(curUser));
+	
+		console.log(data);
+			
+		//input into ui here
+	});
+}
+
+function GetMeetups()
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
@@ -161,7 +191,7 @@ function GetMeetups(curSkateSpot)
 	}
 }
 
-function CreateMeetup(curSkateSpot)
+function CreateMeetup()
 {
 	let meetupList = curSkateSpot.meetups;
 	//insert data from form into here
@@ -185,7 +215,7 @@ function CreateMeetup(curSkateSpot)
 }
 
 //needs skateSpot id to patch 
-function UpdateMeetup(curMeetup)
+function UpdateMeetup()
 {
 	var patchData = {};
 	var newMember = curUser.name;
@@ -245,7 +275,7 @@ let ViewModel = function () {
     
     //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
+        maxWidth: 300
     }), //Init marker
         marker;
     
@@ -269,6 +299,10 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <p>` + spot.streetAddress + `</p>
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot()">Favorite</button>
+                    <div id="comment-box"></div>
+                    <button id="yayBtn">Yay </button>
+                    <button id="nayBtn">Nay </button>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),
@@ -281,8 +315,11 @@ let ViewModel = function () {
                 spot.marker = marker;
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
+					curSkateSpot = spot;
+					console.log(curSkateSpot.name);
+					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
-                    spot.marker.setAnimation(google.maps.Animation.BOUNCE);
+                    map.panTo(this.getPosition());
                     setTimeout(function() {
                         spot.marker.setAnimation(null);
                     }, 500);
@@ -378,7 +415,9 @@ let ViewModel = function () {
     
     //Create each marker on map
    
-
+    self.favorite = function () {
+        UpdateFavoriteSkateSpot();  
+    };
 	
     self.getLocation = function() {
 		
@@ -425,6 +464,8 @@ let ViewModel = function () {
 					if(data.length === 0)
 					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
+							
+							UpdateFavoriteSkateSpot(data);
 						
 							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db

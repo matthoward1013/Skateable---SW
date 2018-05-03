@@ -1,6 +1,14 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
 
+
+var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+var groupList = [];
+	
+//if null then the user is not logged in
+if(curUser === null)
+	location.href = 'login.html';
+
 function AjaxGet(url, callback)
 {
 	$.ajax({
@@ -51,7 +59,7 @@ function AjaxPatch(url,data, callback)
 }
 
 //creates a new group
-function createGroup(curUser, groupList)
+function createGroup()
 {
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
@@ -77,7 +85,7 @@ function createGroup(curUser, groupList)
 }
 
 //adds a preexisting group
-function AddGroup(curUser, groupList)
+function AddGroup()
 {
 	//insert data from form into here
 	//user enters in groupId and from that it will query the db
@@ -109,7 +117,7 @@ function AddGroup(curUser, groupList)
 }
 
 //group is the currently selected group when the user hits the leave group button
-function leaveGroup(curUser, groupList, group)
+function leaveGroup(group)
 {
 	var groupPatchData;
 	for (var i = 0; i < groupList.length; i++)
@@ -136,13 +144,7 @@ function leaveGroup(curUser, groupList, group)
 
 let ViewModel = function () {
     let self = this;
-	
-	var groupList = [];
-	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	var count = 0;
-	
-	if(curUser === null)
-		alert("not logged in test");
     
     //Function for sidebar animation
     
