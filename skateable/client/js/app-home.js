@@ -299,7 +299,7 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <p>` + spot.streetAddress + `</p>
-                    <button id="favBtn">Favorite</button><br>
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot()">Favorite</button>
                     <div id="comment-box"></div>
                     <button id="yayBtn">Yay </button>
                     <button id="nayBtn">Nay </button>
@@ -316,7 +316,7 @@ let ViewModel = function () {
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
-					console.log(curSkateSpot);
+					console.log(curSkateSpot.name);
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
@@ -415,7 +415,9 @@ let ViewModel = function () {
     
     //Create each marker on map
    
-
+    self.favorite = function () {
+        UpdateFavoriteSkateSpot();  
+    };
 	
     self.getLocation = function() {
 		
