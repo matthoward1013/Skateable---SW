@@ -311,7 +311,7 @@ let ViewModel = function () {
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					
-					//UpdateFavoriteSkateSpot(spot); used at test
+					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     spot.marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function() {
@@ -456,6 +456,8 @@ let ViewModel = function () {
 					if(data.length === 0)
 					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
+							
+							UpdateFavoriteSkateSpot(data);
 						
 							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db
