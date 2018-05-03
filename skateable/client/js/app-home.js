@@ -112,34 +112,75 @@ function AjaxPatch(url,data, callback)
 
 function yayRating()
 {
-	patchData = {};
+	
+	var spotPatchData = {};	
+	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
+	{
+		curSkateSpot.rating = curSkateSpot.rating - 1;
+		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
+			
+	}
+	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
+	{
+		curSkateSpot.rating = curSkateSpot.rating + 2;
+		
+		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);	
+		curUser.likeSpot.push(curSkateSpot.id + "yay");			
+	}
+	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
+	{
 		curSkateSpot.rating = curSkateSpot.rating + 1;
-		patchData["rating"] = curSkateSpot.rating;
+		curUser.likeSpot.push(curSkateSpot.id + "yay");
+	}
+	
+		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
-		console.log(data);
-			
-		//input into ui here
-	});
+					//patches the skatespot data to include the new rating and or comment
+			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+	
+				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				console.log(data);
+			});
+		});
+	
 }
 
 function nayRating()
 {
-	var patchData = {};
+	var spotPatchData = {};	
+	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
+	{
+			curSkateSpot.rating = curSkateSpot.rating - 2;
+			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
+			curUser.likeSpot.push(curSkateSpot.id + "nay");
+			
+	}
+	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
+	{
+			curSkateSpot.rating = curSkateSpot.rating + 1;
+			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);		
+	}
+	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
+	{
 		curSkateSpot.rating = curSkateSpot.rating - 1;
-		patchData["rating"] = curSkateSpot.rating;
+		curUser.likeSpot.push(curSkateSpot.id + "nay");
+	}
+	
+		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
-		console.log(data);
-			
-		//input into ui here
-	});
+					//patches the skatespot data to include the new rating and or comment
+			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
-	
+				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				console.log(data);
+			});
+		});
 }
 
 //needs skateSpot id to patch 
@@ -152,6 +193,13 @@ function UpdateComment()
 	{
 		curSkateSpot.comments.push(newComment);
 		patchData["comments"] = curSkateSpot.comments;
+	}else if (curSkateSpot.comments.length >= 10)
+	{
+		curSkateSpot.comments.reverse();
+		curSkateSpot.comments.pop();
+		curSkateSpot.comments.reverse();
+		curSkateSpotcomments.push(newComment);
+		
 	}
 
 		//patches the skatespot data to include the new rating and or comment

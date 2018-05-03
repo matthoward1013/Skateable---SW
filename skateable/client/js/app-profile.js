@@ -4,6 +4,7 @@
 let map;
 
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+console.log(curUser);
 	
 //if null then the user is not logged in
 if(curUser === null)
@@ -115,6 +116,7 @@ let ViewModel = function () {
 		{
 			changedData["email"] = $("#mail").text();
 			curUser.email = changedData.email;
+			changedData["username"] = curUser.email;
 		}
 		if($("#bio").val() !== curUser.bio)
 		{
