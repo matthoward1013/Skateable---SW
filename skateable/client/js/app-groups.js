@@ -3,6 +3,7 @@
 
 
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+var groupList = [];
 	
 //if null then the user is not logged in
 if(curUser === null)
@@ -58,7 +59,7 @@ function AjaxPatch(url,data, callback)
 }
 
 //creates a new group
-function createGroup(groupList)
+function createGroup()
 {
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
@@ -84,7 +85,7 @@ function createGroup(groupList)
 }
 
 //adds a preexisting group
-function AddGroup(groupList)
+function AddGroup()
 {
 	//insert data from form into here
 	//user enters in groupId and from that it will query the db
@@ -116,7 +117,7 @@ function AddGroup(groupList)
 }
 
 //group is the currently selected group when the user hits the leave group button
-function leaveGroup(groupList, group)
+function leaveGroup(group)
 {
 	var groupPatchData;
 	for (var i = 0; i < groupList.length; i++)
@@ -143,8 +144,6 @@ function leaveGroup(groupList, group)
 
 let ViewModel = function () {
     let self = this;
-	
-	var groupList = [];
 	var count = 0;
     
     //Function for sidebar animation
