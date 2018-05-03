@@ -2,6 +2,7 @@
 /*jshint esversion: 6 */
 let map;
 
+	var curSkateSpot = {};
   	var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 	var meetUpList = [];
 	
@@ -100,7 +101,7 @@ function AjaxPatch(url,data, callback)
 
 
 //needs skateSpot id to patch 
-function UpdateSkateSpot(curSkateSpot)
+function UpdateSkateSpot()
 {
 	var newComment = "from ui text";
 	var newRating = 1;//from skateSpot window
@@ -127,7 +128,7 @@ function UpdateSkateSpot(curSkateSpot)
 	
 }
 
-function UpdateFavoriteSkateSpot(curSkateSpot)
+function UpdateFavoriteSkateSpot()
 {
 	var patchData = {};
 	
@@ -156,7 +157,7 @@ function UpdateFavoriteSkateSpot(curSkateSpot)
 	});
 }
 
-function GetMeetups(curSkateSpot)
+function GetMeetups()
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
@@ -190,7 +191,7 @@ function GetMeetups(curSkateSpot)
 	}
 }
 
-function CreateMeetup(curSkateSpot)
+function CreateMeetup()
 {
 	let meetupList = curSkateSpot.meetups;
 	//insert data from form into here
@@ -214,7 +215,7 @@ function CreateMeetup(curSkateSpot)
 }
 
 //needs skateSpot id to patch 
-function UpdateMeetup(curMeetup)
+function UpdateMeetup()
 {
 	var patchData = {};
 	var newMember = curUser.name;
@@ -313,7 +314,8 @@ let ViewModel = function () {
                 spot.marker = marker;
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
-					
+					curSkateSpot = spot;
+					console.log(curSkateSpot);
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
