@@ -180,18 +180,24 @@ ul {
 .self{
         font-size: 18px;
 }
+h{
+    background-color: lightgray;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 textarea {
     width: 100%;
     height: 20%;
     box-sizing: border-box;
     border: 2px solid #ccc;
-    border-radius: 4px;
+   
     background-color: gainsboro;
     resize: none;
 }
 
 .panel{
-width: 395px;
+width: 38%;
 display: none;
 background-color: white;
 overflow: hidden;
@@ -210,6 +216,7 @@ button {
     border-radius: 4px;
 
 }
+
 #map {
     height: 90%;
     width: 65%;
