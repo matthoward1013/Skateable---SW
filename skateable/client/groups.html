@@ -12,6 +12,7 @@
         <div id="container">
             <div id="side-bar">
                 <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
+                <a href="index.html" class="login">Home</a>
                 <a href="profile.html" class="list">Profile</a>
                 <a href="groups.html" class="list">Groups</a>
                 <a href="parks.html" class="list">My Parks</a>
@@ -22,7 +23,7 @@
                 <button id="menu-button">
                     <img id="menu" src="img/menu.png" alt="menu" data-bind="click: openPanel">
                 </button>
-                <div id="logo"><a href="index.html"><img src="img/Logo.png" alt="Skateable"></a></div>
+                <div id="logo"><a href="index.html"><img src="img/icon.png" alt="Skateable"></a></div>
             </header>
             <div id="main-content">
                 <div id="group-list">
@@ -32,9 +33,13 @@
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
                         <ul>
-                            <li>
-                            <h4><strong>Group Name</strong></h4>
-                            <h5>Location</h5>
+                            <li id = "groupid">
+                            <label>Group Name: </label>
+    
+                            <h4 id = "groupname"></h4>
+                             <label>Group members: </label>
+
+                            <h5 id ="members"></h5>
                             </li>
                         </ul>
                     </div>
