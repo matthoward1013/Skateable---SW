@@ -299,6 +299,7 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <p>` + spot.streetAddress + `</p>
+                    <button id="favBtn">Favorite</button><br>
                     <div id="comment-box"></div>
                     <button id="yayBtn">Yay </button>
                     <button id="nayBtn">Nay </button>

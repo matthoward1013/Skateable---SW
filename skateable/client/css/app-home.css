@@ -119,9 +119,10 @@ a {
 }
 
 #current-location {
-    background-color: aqua;
+    background-color: white;
     color: black;
-    border-radius: 25px;
+    width: 30px;
+    cursor: pointer;
 }
 
 .pac-container {
@@ -226,4 +227,10 @@ a {
     border: none;
     text-decoration: none;
     margin-top: 15px;
+}
+
+#favBtn {
+    margin-bottom: 10px;
+    border: 1px darkgrey solid;
+    background-color: white;
 }
