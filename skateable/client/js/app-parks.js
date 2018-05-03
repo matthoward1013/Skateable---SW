@@ -1,4 +1,4 @@
-/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window*/
+/*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
 let map;
 
@@ -9,9 +9,9 @@ if(curUser === null)
 	location.href = 'login.html';
 
 
-
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
+	
     let geocoder = new google.maps.Geocoder();
     if (navigator.geolocation) {
         let crd;
@@ -23,20 +23,29 @@ function initMap() {
                     mapTypeControl: false, //Sticks to the classic mapType
                     minZoom: 5,
                     streetViewControl: false
+					
+
                 });
             });
     } else {
-        alert("Geolocation is not supported by this browser");
+       // alert("Geolocation is not supported by this browser");
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6062, lng: -122.3321},
             zoom: 12,
             mapTypeControl: false, //Sticks to the classic mapType
             minZoom: 5,
             streetViewControl: false
+
         });
     }
 	
-	  ko.applyBindings(new ViewModel());
+	ko.applyBindings(new ViewModel());
+}
+
+//Error handling for map
+
+function errorHandling() {
+    alert('Google maps has failed to load. Please reload the page and try again!');
 }
 
 
@@ -87,24 +96,7 @@ let ViewModel = function () {
     }), //Init marker
         marker;
     
-    let panelVis = false,
-        sidebar = $('#side-bar'),
-        menuButton = $("#menu-button"),
-        pinModal = $('#createPin');
-    
-    self.closePanel = function() {
-        sidebar.css("width", "0");
-        setTimeout(function() { 
-            $('#side-bar .list').css("visibility", "hidden"); 
-        }, 200);
-        panelVis = false;
-    };
-    
-    self.openPanel = function() {
-        sidebar.css("width", "15%");
-        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
-        panelVis = true;
-    };
+
 	
 	
 	var filter = "{\"where\":{\"or\":[";
@@ -176,4 +168,31 @@ let ViewModel = function () {
 
 		});
 	}
+	
+	    let panelVis = false,
+        sidebar = $('#side-bar'),
+        menuButton = $("#menu-button"),
+        pinModal = $('#createPin');
+    
+    self.closePanel = function() {
+        sidebar.css("width", "0");
+        setTimeout(function() { 
+            $('#side-bar .list').css("visibility", "hidden"); 
+        }, 200);
+        panelVis = false;
+    };
+    
+    self.openPanel = function() {
+        sidebar.css("width", "15%");
+        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
+        panelVis = true;
+    };
+	
+	   self.openModal = function() {
+        pinModal.modal('show');  
+    };
 };
+
+
+
+
