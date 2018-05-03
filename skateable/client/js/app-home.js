@@ -275,7 +275,7 @@ let ViewModel = function () {
     
     //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
+        maxWidth: 300
     }), //Init marker
         marker;
     
@@ -299,6 +299,9 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <p>` + spot.streetAddress + `</p>
+                    <div id="comment-box"></div>
+                    <button id="yayBtn">Yay </button>
+                    <button id="nayBtn">Nay </button>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),
@@ -315,7 +318,7 @@ let ViewModel = function () {
 					console.log(curSkateSpot);
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
-                    spot.marker.setAnimation(google.maps.Animation.BOUNCE);
+                    map.panTo(this.getPosition());
                     setTimeout(function() {
                         spot.marker.setAnimation(null);
                     }, 500);

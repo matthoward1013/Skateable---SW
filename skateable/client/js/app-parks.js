@@ -164,8 +164,6 @@ let ViewModel = function () {
                 markers.push(marker);
             });		
         }
-			
-
 		});
 	}
 	
