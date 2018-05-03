@@ -13,6 +13,8 @@ let map;
 //Initiliazes  the map, using the center of WA state as the center
 function initMap() {
     let geocoder = new google.maps.Geocoder();
+
+	
     if (navigator.geolocation) {
         let crd;
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -25,15 +27,17 @@ function initMap() {
                     streetViewControl: false
                 });
             });
-    } else {
-        alert("Geolocation is not supported by this browser");
+	
+    } 
+	 }else {
+      / alert("Geolocation is not supported by this browser");
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6062, lng: -122.3321},
             zoom: 12,
             mapTypeControl: false, //Sticks to the classic mapType
             minZoom: 5,
             streetViewControl: false
-        });
+       });
     }
     
     
@@ -98,25 +102,26 @@ function AjaxPatch(url,data, callback)
 	});
 }
 
-
-
-//needs skateSpot id to patch 
-function UpdateSkateSpot()
+function yayRating()
 {
-	var newComment = "from ui text";
-	var newRating = 1;//from skateSpot window
-
-	var patchData = {};
-	if(newComment !== "")
-	{
-		curSkateSpot.comments.push(newComment);
-		patchData["comments"] = curSkateSpot.comments;
-	}
-	if(newRating !== curSkateSpot.rating)
-	{
-		curSkateSpot.rating = curSkateSpot.rating + newRating;
+	patchData = {};
+		curSkateSpot.rating = curSkateSpot.rating + 1;
 		patchData["rating"] = curSkateSpot.rating;
-	}
+
+		//patches the skatespot data to include the new rating and or comment
+	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+		console.log(data);
+			
+		//input into ui here
+	});
+}
+
+function nayRating()
+{
+	var patchData = {};
+		curSkateSpot.rating = curSkateSpot.rating - 1;
+		patchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
@@ -126,6 +131,28 @@ function UpdateSkateSpot()
 		//input into ui here
 	});
 	
+	
+}
+
+//needs skateSpot id to patch 
+function UpdateComment()
+{
+	var newComment = "from ui text";
+
+	var patchData = {};
+	if(newComment !== "" && curSkateSpot.comments.length < 10)
+	{
+		curSkateSpot.comments.push(newComment);
+		patchData["comments"] = curSkateSpot.comments;
+	}
+
+		//patches the skatespot data to include the new rating and or comment
+	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+		console.log(data);
+			
+		//input into ui here
+	});
 }
 
 function UpdateFavoriteSkateSpot()
@@ -299,10 +326,13 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <p>` + spot.streetAddress + `</p>
-                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot()">Favorite</button>
+
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+
                     <div id="comment-box"></div>
-                    <button id="yayBtn">Yay </button>
-                    <button id="nayBtn">Nay </button>
+                    <button id="yayBtn" onclick ="yayRating();">Yay </button>
+					<p>` + spot.rating + `</p>
+                    <button id="nayBtn" onclick ="nayRating();">Nay </button>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),
@@ -316,6 +346,7 @@ let ViewModel = function () {
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
+
 					console.log(curSkateSpot.name);
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
@@ -336,83 +367,7 @@ let ViewModel = function () {
         }
     });
     
-	//listen for the bounds to be created and fetch the current skateSpots
-    /*google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-		  
-		var bounds = map.getBounds(),
-            northC  =   bounds.getNorthEast().lat(),   
-            eastC   =   bounds.getNorthEast().lng(),
-            southC  =   bounds.getSouthWest().lat(),   
-            westC   =   bounds.getSouthWest().lng(); 
-	
-		var filter = {"where":{"and":[{"lat":{"between": [(southC),northC]}},{"long": {"between": [westC, eastC]}}]}};
-		
-		//below gets every skatespot in db
-		//AjaxGet("http://localhost:3000/api/skatespots?access_token=" + curUser.key, function(data){});
-		AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
-			
-			if(data.length === 0)
-				alert("there are no skateSpots in your area. Be the first to create one by hitting the create pin button!");
-			else {
-                //Sets all skatespot data to Skatespots array	
-		      console.log(data[0].spotName);
-                data.forEach(function (spot) {
-                    let temp = new SkateSpot();
-                    temp.name = spot.spotName;
-					temp.id = spot.id;
-                    temp.lat = spot.lat;
-                    temp.lng = spot.long;
-                    temp.streetAddress = spot.address;
-                    temp.comments = spot.comments;
-                    temp.rating = spot.rating;
-					temp.currentMeetups = spot.currentMeetups;
-                    skateSpots.push(temp);
-                });
-                
-                //sets the InfoWindow and Marker for each skatespot
-                skateSpots.forEach(function(spot) {
-                    let contentString = 
-                        `<div id="content-info-window">
-								<h2>` + spot.name + `</h2>
-								<p>` + spot.streetAddress + `</p>
-				        </div>`;
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(spot.lat, spot.lng),
-                        map: map,
-                        title: spot.name,
-                        animation: google.maps.Animation.DROP,
-                        width: 20
-                    });
-                    
-                    spot.marker = marker;
-                    //On click event listener for the markers
-                    google.maps.event.addListener(spot.marker, 'click', function() {
-                        infoWindow.open(map, this);
-                        spot.marker.setAnimation(google.maps.Animation.BOUNCE);
-                        setTimeout(function() {
-                            spot.marker.setAnimation(null);
-                        }, 500);
-                    
-                        infoWindow.setContent(contentString);
-                    });
-                    markers.push(marker);
-                });
-		//use markers here since Ajax uses async so if markers are used outside of this callback function it could be undefined.
-		//This is due to async continuing through the rest of the code instead of waiting for the server to finish fetching data.
-                markers().forEach(function(marker) {
-                    marker.setMap(map);
-                    bounds.extend(marker.position);
-                });
-                //map.fitBounds(bounds);
-                
-				console.log(skateSpots);
-			}
-					
-		});	  
-	});*/   
 
-	  
-    
     //Create each marker on map
    
     self.favorite = function () {
@@ -464,8 +419,9 @@ let ViewModel = function () {
 					if(data.length === 0)
 					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(){
-							
-							UpdateFavoriteSkateSpot(data);
+							curSkateSpot = data;
+							console.log(curSkateSpot);
+							//UpdateFavoriteSkateSpot(data);
 						
 							document.getElementById("yesButton").disabled = false;
 							//if this runs then the pin was successfully created in db
@@ -476,11 +432,16 @@ let ViewModel = function () {
 								position: results[0].geometry.location,
 								title: pinName
 							});
-							let contentString = 
-								`<div id="content-info-window">
-									<h2>` + pinName + `</h2>
-									<p>` + pinAddress + `</p>
-								</div>`;
+                let contentString = 
+                    `<div id="content-info-window">
+				    <h2>` + data.name + `</h2>
+				    <p>` + data.streetAddress + `</p>
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+                    <div id="comment-box"></div>
+                    <button id="yayBtn" onclick ="yayRating();">Yay </button>
+					<p>` + data.rating + `</p>
+                    <button id="nayBtn" onclick ="nayRating();">Nay </button>
+                    </div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
