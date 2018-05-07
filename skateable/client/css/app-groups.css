@@ -106,18 +106,6 @@ a {
     border: none;
 }
 
-#pinButton {
-    height: 100%;
-    width: 5%;
-    max-width: 5%;
-    text-align: center;
-    display: block;
-    vertical-align: middle;
-    background-color: darkgray;
-    border: none;
-    
-}
-
 
 #menu-button:focus {
     outline: 0;
@@ -256,4 +244,60 @@ a {
 @keyframes blink {
 	from { opacity: 1; }
 	to { opacity: 0; }
+}
+#makegroupButton {
+
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    top: 5%;
+    left: 30%;
+    width: 8%;
+    background-color:  #0066cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#addButton {
+
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    top: 5%;
+    left: 39%;
+    width: 8%;
+    background-color:  #0066cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#delete
+{
+  background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;}
+.modal {
+    z-index: 20;
+}
+
+.modal-backdrop {
+    z-index: 10;
+}
+
+.modal-header {
+    text-align: center;
+    align-content: center;
+}
+
+.modal-body {
+    text-align: center;
+    align-content: center;
+}
+
+#places-search {
+    width: 60%;
 }

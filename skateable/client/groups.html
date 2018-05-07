@@ -27,11 +27,54 @@
             </header>
             <div id="main-content">
                 <div id="group-list">
+                    
                     <div id="groupContainer">
                         <h1 align="center">Groups</h1>
-                        <button type="button" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
+        <button  id="makegroupButton" data-toggle="modal" data-target="#groupModal">Create a Group</button>
+        <button  id="addButton" data-toggle="modal" data-target="#addModal">Add Members</button>
+                        
+                    
+            <div class="modal fade" id="groupModal" role="dialog">
+                <div class="modal-dialog">
+
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title">Create a Group</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Group Name</h4>
+                            <input type="text" id="groupName" placeholder="Ex: Tatooine"><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Make Group</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="modal fade" id="addModal" role="dialog">
+                <div class="modal-dialog">
+
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title">Add a Member</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Link:</h4>
+                            <input type="text" id="groupName" placeholder="Ex: discord link example"><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Add Member</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
                         <ul>
                             <li id = "groupid">
                             <label>Group Name: </label>
@@ -40,8 +83,12 @@
                              <label>Group members: </label>
 
                             <h5 id ="members"></h5>
+                                
                             </li>
+                    <button  id="delete">Delete Group</button>
+
                         </ul>
+
                     </div>
                 </div>
                 <div id="messageContainer">
@@ -57,10 +104,12 @@
 
         </div>
         
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/lib/knockout-3.4.2.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
         <script src="js/app-groups.js"></script>
+           
     </body>
 </html>
