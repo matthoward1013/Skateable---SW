@@ -35,6 +35,11 @@
       "type": [
         "string"
       ]
+    }, 
+     "likeSpot": {
+      "type": [
+        "string"
+      ]
     }
   },
   "validations": [],
