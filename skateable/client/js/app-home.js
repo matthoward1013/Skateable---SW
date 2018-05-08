@@ -354,9 +354,6 @@ let ViewModel = function () {
     
     let geocoder = new google.maps.Geocoder();
 	
-	var today = new Date("Mon May 07 2018 19:34:28 GMT-0700 (Pacific Daylight Time)");
-	console.log(today.getDate());
-	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
     
