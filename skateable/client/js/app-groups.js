@@ -64,7 +64,7 @@ function createGroup()
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
-	var data = {"groupName":"","groupID":123,"members": [curUser.name]};
+	var data = {"groupName":"","groupID":"","members": [curUser.name]};
 	
 	AjaxPost("http://localhost:3000/api/groups?access_token=" + String(curUser.key), data, function(data){
 		
