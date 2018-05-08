@@ -216,6 +216,25 @@ button {
     border-radius: 4px;
 
 }
+.modal {
+    width: 100%;
+    z-index: 20;
+    position: absolut
+}
+
+.modal-backdrop {
+    z-index: 10;
+}
+
+.modal-header {
+    text-align: center;
+    align-content: center;
+}
+
+.modal-body {
+    text-align: center;
+    align-content: center;
+}
 
 #map {
     height: 90%;

@@ -57,9 +57,15 @@
     
     <div class="settingsButton">
     <button type="button" id = "editProfBtn" data-bind="click: updateUser">Save Profile Edits</button>
-    <button class="pwbutton">Change Password</button>
-        <div class="panel">
-        <label>
+    <button  id="pwButton" data-toggle="modal" data-target="#pwModal">Change Password</button>
+
+        <div class="modal fade" id="pwModal" role="dialog">  
+        <div class="modal-content">
+            <div class="modal-header">
+            <h3 class="modal-title">Change Password</h3>
+            </div>
+            <div class="modal-body">
+              <label>
               Enter Old Password<span class="req">*</span>
               </label>
               <br>
@@ -77,8 +83,15 @@
               <br>
             <input type="text" id="newPass2" required autocomplete="off"/>
               <br>  <br>
+            </div>
+   <div class="modal-footer">
         <button type="button" id="savebttn" data-bind="click: changePassword"> Save</button> 
+       <button type="button"  data-dismiss="modal">Cancel</button>
         </div>
+    </div>
+</div>
+
+        
         <script>
 var acc = document.getElementsByClassName("pwbutton");
 var i;
