@@ -2,7 +2,7 @@
 /*jshint esversion: 6 */
 
 let map;
-
+var link = "http://localhost:3000/api/";
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 console.log(curUser);
 	
@@ -82,7 +82,7 @@ let ViewModel = function () {
 				var passwords = {"oldPassword": $("#oldPass").val(), "newPassword": $("#newPass").val()};
 	
 				//Post the password change to db if successful the alert will display
-				AjaxPost("http://localhost:3000/api/users/change-password?access_token=" + curUser.key,  passwords, function(data){
+				AjaxPost(link+"users/change-password?access_token=" + curUser.key,  passwords, function(data){
 						alert("password was successfully changed");
 						document.getElementById("savebttn").disabled = false;
 						location.href = 'profile.html';
@@ -126,7 +126,7 @@ let ViewModel = function () {
 		
 		if(changedData["name"] !== undefined || changedData["email"] !== undefined || changedData["bio"] !== undefined){
 			
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), changedData ,function(data){
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), changedData ,function(data){
 				//store the changes to the curUser in sessionStorage
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			

@@ -2,6 +2,7 @@
 /*jshint esversion: 6 */
 var map;
 
+var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 var meetUpList = [];
@@ -150,10 +151,10 @@ function yayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link +"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 
@@ -186,10 +187,10 @@ function nayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link + "api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 
@@ -217,7 +218,7 @@ function UpdateComment()
 	}
 
 		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+	AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 
 			
@@ -244,7 +245,7 @@ function UpdateFavoriteSkateSpot()
 	patchData = {"favoriteSpot":curUser.favoriteSpot};
 	
 	//patches the user with new fav skatespots
-	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+	AjaxPatch(link +"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
 	
@@ -279,19 +280,19 @@ function GetMeetups()
 	{
 		var meetUpsExpired = [];
 		//for each group the user has, fetch the group information from the db
-		AjaxGet("http://localhost:3000/api/meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 
 			meetupDay = new Date(value.dayOfMeetup);
 			
 			$.each(data, function(i, value){
-				if(today.getMonth() >==  meetupDay.getMonth())
+				if(today.getMonth() >=  meetupDay.getMonth())
 				{
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
-						if(today.getDate() >== meetupDay.getDate())
+						if(today.getDate() >= meetupDay.getDate())
 							meetupList.push(value);
 						else
-							AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
@@ -300,8 +301,9 @@ function GetMeetups()
 				}
 				else
 				{
-					AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 				}
+			});
 			//test to create a group status: working
 		});
 	}
@@ -313,7 +315,7 @@ function CreateMeetup()
 	//insert data from form into here
 	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
 	
-	AjaxPost("http://localhost:3000/api/meetups?access_token=" + String(curUser.key), data, function(data){
+	AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
 		meetupList.push(data);
 		curSkateSpot.meetups.push(data.id);
@@ -321,7 +323,7 @@ function CreateMeetup()
 		var patchData = {"meetups": curSkateSpot.meetups};
 		
 		//patches the user data to include the new group
-		AjaxPatch("http://localhost:3000/api/skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 			//return data;
 			
@@ -340,7 +342,7 @@ function UpdateMeetup()
 	patchData["members"] = curSkateSpot.members;
 
 		//patches the user data to include the new group
-	AjaxPatch("http://localhost:3000/api/meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+	AjaxPatch(link + "meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 			
 		//input into ui here
@@ -393,7 +395,7 @@ let ViewModel = function () {
     }), //Init marker
         marker;
     
-    AjaxGet("http://localhost:3000/api/skatespots?access_token=" + curUser.key, function(data){
+    AjaxGet(link + "skatespots?access_token=" + curUser.key, function(data){
         if (data !== null) {
             data.forEach(function (spot) {
                 let temp = new SkateSpot();
@@ -493,11 +495,11 @@ let ViewModel = function () {
 					
 					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
-					AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
+					AjaxGet(link + "skatespots?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
 
 					if(data.length === 0)
 					{
-						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
+						AjaxPost(link+"skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
 							curSkateSpot = data;
 
 							UpdateFavoriteSkateSpot(curSkateSpot);

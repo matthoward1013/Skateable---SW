@@ -1,7 +1,7 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
 let map;
-
+var link = "http://localhost:3000/api/";
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 var curSkateSpot = {};
 let self;
@@ -143,10 +143,10 @@ function yayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 				console.log(data);
@@ -179,10 +179,10 @@ function nayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link+"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 				console.log(data);
@@ -210,7 +210,7 @@ function UpdateComment()
 	}
 
 		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+	AjaxPatch(link+"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 		console.log(data);
 			
@@ -238,7 +238,7 @@ function UpdateFavoriteSkateSpot()
 	patchData = {"favoriteSpot":curUser.favoriteSpot};
 	
 	//patches the user with new fav skatespots
-	AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+	AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
 		location.href = 'parks.html';
@@ -283,7 +283,7 @@ let ViewModel = function () {
 	if (curUser.favoriteSpot.length >= 1)
 	{
 		//for each group the user has, fetch the group information from the db
-		AjaxGet("http://localhost:3000/api/skateSpots?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet(link+"skateSpots?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 			//console.log(data);
 			
 		if (data !== null) {
