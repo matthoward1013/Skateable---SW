@@ -31,7 +31,7 @@
                     <div id="groupContainer">
                         <h1 align="center">Groups</h1>
         <button  id="makegroupButton" data-toggle="modal" data-target="#groupModal">Create a Group</button>
-        <button  id="addButton" data-toggle="modal" data-target="#addModal">Add Members</button>
+        <button  id="addButton" data-toggle="modal" data-target="#addModal">Add Group</button>
                         
                     
             <div class="modal fade" id="groupModal" role="dialog">
@@ -46,6 +46,8 @@
                         <div class="modal-body">
                             <h4>Group Name</h4>
                             <input type="text" id="groupName" placeholder="Ex: Tatooine"><br>
+                            <h4>Group ID</h4>
+                            <input type="text" id="groupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Make Group</button>
@@ -68,7 +70,7 @@
                             <input type="text" id="groupName" placeholder="Ex: discord link example"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Add Member</button>
+                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Add Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -76,10 +78,10 @@
             </div>
                         
                         <ul>
-                            <li id = "groupid">
+                            <li id = "groupID">
                             <label>Group Name: </label>
     
-                            <h4 id = "groupname"></h4>
+                            <h4></h4>
                              <label>Group members: </label>
 
                             <h5 id ="members"></h5>
