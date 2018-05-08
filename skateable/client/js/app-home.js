@@ -515,8 +515,8 @@ let ViewModel = function () {
 							});
 							let contentString = 
 								`<div id="content-info-window">
-								<h2>` + data.name + `</h2>
-								<p>` + data.streetAddress + `</p>
+								<h2>` + data.spotName + `</h2>
+								<p>` + data.address + `</p>
 								<button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 								<div id="comment-box"></div>
 								<button id="yayBtn" onclick ="yayRating();">Yay </button>
