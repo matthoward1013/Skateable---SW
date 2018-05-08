@@ -87,7 +87,6 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
-		console.log(data);
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
@@ -142,7 +141,7 @@ function yayRating()
 			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				console.log(data);
+
 			});
 		});
 	
@@ -178,7 +177,7 @@ function nayRating()
 			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				console.log(data);
+
 			});
 		});
 }
@@ -205,7 +204,7 @@ function UpdateComment()
 		//patches the skatespot data to include the new rating and or comment
 	AjaxPatch("http://localhost:3000/api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-		console.log(data);
+
 			
 		//input into ui here
 	});
@@ -234,7 +233,7 @@ function UpdateFavoriteSkateSpot()
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
 	
-		console.log(data);
+
 			
 		//input into ui here
 	});
@@ -245,7 +244,9 @@ function GetMeetups()
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
     var count = 0;
-    var meetupList = [];
+	var today = new Date();
+	var meetupDay;
+
 	$.each(curSkateSpot.meetups, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
@@ -263,10 +264,12 @@ function GetMeetups()
 	{
 		//for each group the user has, fetch the group information from the db
 		AjaxGet("http://localhost:3000/api/meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-			//console.log(data);
+
+			meetupDay = new Date(value.dayOfMeetup);
 			
 			$.each(data, function(i, value){
-				meetupList.push(value);
+				if(today.getDate() >= meetupDay.getDate())
+					meetupList.push(value);
 			});	
 			
 			//test to create a group status: working
@@ -276,7 +279,7 @@ function GetMeetups()
 
 function CreateMeetup()
 {
-	var meetupList = curSkateSpot.meetups;
+
 	//insert data from form into here
 	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
 	
@@ -309,7 +312,6 @@ function UpdateMeetup()
 		//patches the user data to include the new group
 	AjaxPatch("http://localhost:3000/api/meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-		console.log(data);
 			
 		//input into ui here
 	});
@@ -352,6 +354,8 @@ let ViewModel = function () {
     
     let geocoder = new google.maps.Geocoder();
 	
+	var today = new Date("Mon May 07 2018 19:34:28 GMT-0700 (Pacific Daylight Time)");
+	console.log(today.getDate());
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
@@ -403,7 +407,6 @@ let ViewModel = function () {
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
 
-					console.log(curSkateSpot.name);
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
@@ -464,12 +467,12 @@ let ViewModel = function () {
 					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
 					AjaxGet("http://localhost:3000/api/skatespots" +"?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
-						console.log(data);
+
 					if(data.length === 0)
 					{
 						AjaxPost("http://localhost:3000/api/skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
 							curSkateSpot = data;
-							//console.log(curSkateSpot);
+
 							UpdateFavoriteSkateSpot(curSkateSpot);
 						
 							document.getElementById("yesButton").disabled = false;
