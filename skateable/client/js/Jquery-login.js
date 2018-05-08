@@ -2,7 +2,7 @@
 /*jshint esversion: 6 */
 //Jquery Login to loopback
 
-
+var link = "http://localhost:3000/api/";
 
 function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 {
@@ -56,7 +56,7 @@ var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 //if not null then the user wnats to log out
 if(curUser !== null){
 			//Post the password change to db if successful the alert will display
-	AjaxPost("http://localhost:3000/api/users/logout?access_token=" + curUser.key, function(data){
+	AjaxPost(link+"users/logout?access_token=" + curUser.key, function(data){
 				sessionStorage.removeItem("curUser");
 	});
 }
@@ -71,14 +71,14 @@ function Login(){
 	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "favoriteSpot": []};
 
 		//Login POST request to loopback. returns a access key and the userID. 
-		AjaxLogin("http://localhost:3000/api/users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
+		AjaxLogin(link+"users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
 			
 			var temp = data;
 								
 			curUser.id = temp.userId;
 			curUser.key = temp.id;
 				
-			var url = "http://localhost:3000/api/users/" + String(curUser.id) + "?access_token=" + String(curUser.key);
+			var url = link+"users/" + String(curUser.id) + "?access_token=" + String(curUser.key);
 			//GET request to loopback based on the userId from the login
 			AjaxGet(url, "GET",   "json", function(newData){
 				var tempUser = newData;

@@ -1,7 +1,7 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
 
-
+var link = "http://localhost:3000/api/";
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 var groupList = [];
 	
@@ -64,9 +64,9 @@ function createGroup()
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
-	var data = {"groupName":"","groupID":123,"members": [curUser.name]};
+	var data = {"groupName":"","groupID":"","members": [curUser.name]};
 	
-	AjaxPost("http://localhost:3000/api/groups?access_token=" + String(curUser.key), data, function(data){
+	AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
 		
 		groupList.push(data);
 		curUser.groups.push(data.id);
@@ -74,7 +74,7 @@ function createGroup()
 		var patchData = {"groups": curUser.groups};
 		
 		//patches the user data to include the new group
-		AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+		AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
 			sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			//console.log(data);
@@ -91,7 +91,7 @@ function AddGroup()
 	//user enters in groupId and from that it will query the db
 	var groupId = {"where": {"groupID":""}};
 	
-	AjaxGet("http://localhost:3000/api/groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
+	AjaxGet(link+"groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
 		//console.log(data);
 		
 		groupList.push(data);
@@ -99,13 +99,13 @@ function AddGroup()
 		var groupPatchData = groupList[groupList.length - 1].members;
 		groupPatchData.push(curUser.name);
 
-		AjaxPatch("http://localhost:3000/api/groups/"+ String(groupList[groupList.length - 1].id) + "?access_token=" + String(curUser.key), groupPatchData, function(data){
+		AjaxPatch(link+"groups/"+ String(groupList[groupList.length - 1].id) + "?access_token=" + String(curUser.key), groupPatchData, function(data){
 		
 			curUser.groups.push(data.id);
 			
 			//patches the user data to include the new group
 			var userPatchData = {"groups": curUser.groups};
-			AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 
 				//console.log(data);
@@ -125,14 +125,14 @@ function leaveGroup(group)
 		if(groupList[i].id !== group.id)
 			groupPatchData.slice(i,1);
 	}
-	AjaxPatch("http://localhost:3000/api/groups?access_token=" + String(curUser.key), groupPatchData, function(data){
+	AjaxPatch(link+"groups?access_token=" + String(curUser.key), groupPatchData, function(data){
 		//console.log("test");
 		
 		curUser.groups.push(data.id);
 		
 		//patches the user data to include the new group
 		var userPatchData = {"groups": curUser.groups};
-		AjaxPatch("http://localhost:3000/api/users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
+		AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
 			
 			sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			//console.log(data);
@@ -185,7 +185,7 @@ let ViewModel = function () {
 	if (count >= 1)
 	{
 		//for each group the user has, fetch the group information from the db
-		AjaxGet("http://localhost:3000/api/groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+		AjaxGet(link+"groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 			console.log(data);
 			
 			$.each(data, function(i, value){
