@@ -284,11 +284,11 @@ function GetMeetups()
 			meetupDay = new Date(value.dayOfMeetup);
 			
 			$.each(data, function(i, value){
-				if(today.getMonth() >==  meetupDay.getMonth())
+				if(today.getMonth() >=  meetupDay.getMonth())
 				{
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
-						if(today.getDate() >== meetupDay.getDate())
+						if(today.getDate() >= meetupDay.getDate())
 							meetupList.push(value);
 						else
 							AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
@@ -302,6 +302,7 @@ function GetMeetups()
 				{
 					AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 				}
+			});
 			//test to create a group status: working
 		});
 	}
