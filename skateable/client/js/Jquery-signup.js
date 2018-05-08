@@ -1,6 +1,7 @@
 /*global $, location, alert, document*/
 /*jshint esversion: 6*/
 
+var link = "http://localhost:3000/api/";
 //JQuery ajax POST 
 function AjaxPost(url, method, accept, contentType, datatype, data)
 {
@@ -50,5 +51,5 @@ function signUp(){
 	//Example use
 	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "", "groups": [], "favoriteSpot":[], "likeSpot":[],"username" : tempEmail};
 
-	AjaxPost("http://localhost:3000/api/users", "POST",  "application/json",  "application/json",  "json", userData);
+	AjaxPost(link+"users", "POST",  "application/json",  "application/json",  "json", userData);
 }
