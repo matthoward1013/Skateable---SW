@@ -140,7 +140,16 @@ a {
     position: absolute;
 }
 
+#parksTitle {
+	max-height: 80%;
+    max-width: 100%;
+    width: 400px;
+    margin: 0 auto;
+    margin-bottom: 5%;
+	
+}
 #parkList {
+	overflow-y: scroll;
     max-height: 80%;
     max-width: 100%;
     width: 400px;
@@ -171,4 +180,44 @@ a {
     right: 0;
     float: right;
     position: relative;
+}
+
+#content-info-window {
+    text-align: center;
+}
+
+#comment-box {
+    margin: 0 auto;
+    width: 100%;
+    max-height: 50%;
+    height: 150px;
+    border: 2px black solid;
+}
+
+#yayBtn {
+    width: 50px;
+    height: 30px;
+    color: white;
+    background-color: green;
+    float: left;
+    border: none;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+#nayBtn {
+    width: 50px;
+    height: 30px;
+    color: white;
+    background-color: red;
+    float: right;
+    border: none;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+#favBtn {
+    margin-bottom: 10px;
+    border: 1px darkgrey solid;
+    background-color: white;
 }
