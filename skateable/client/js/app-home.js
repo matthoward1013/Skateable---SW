@@ -513,22 +513,21 @@ let ViewModel = function () {
 								position: results[0].geometry.location,
 								title: pinName
 							});
-                let contentString = 
-                    `<div id="content-info-window">
-				    <h2>` + data.name + `</h2>
-				    <p>` + data.streetAddress + `</p>
-                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
-                    <div id="comment-box"></div>
-                    <button id="yayBtn" onclick ="yayRating();">Yay </button>
-					<p>` + data.rating + `</p>
-                    <button id="nayBtn" onclick ="nayRating();">Nay </button>
-                    </div>`;
+							let contentString = 
+								`<div id="content-info-window">
+								<h2>` + data.name + `</h2>
+								<p>` + data.streetAddress + `</p>
+								<button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+								<div id="comment-box"></div>
+								<button id="yayBtn" onclick ="yayRating();">Yay </button>
+								<p>` + data.rating + `</p>
+								<button id="nayBtn" onclick ="nayRating();">Nay </button>
+								</div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
 								curSkateSpot = data;
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
 								
-						
 							});
 						
 							$('#createPin').modal('hide');
