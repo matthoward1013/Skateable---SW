@@ -50,7 +50,7 @@
                             <input type="text" id="groupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Make Group</button>
+                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: createGroup">Make Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -63,34 +63,34 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h3 class="modal-title">Add a Member</h3>
+                            <h3 class="modal-title">Add an Existing Group</h3>
                         </div>
                         <div class="modal-body">
-                            <h4>Link:</h4>
-                            <input type="text" id="groupName" placeholder="Ex: discord link example"><br>
+                            <h4>Enter Group ID:</h4>
+                            <input type="text" id="groupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: setPin">Add Group</button>
+                            <button type="button" class="btn btn-success" id="addexistingButton" data-bind="click: setPin">Add Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>       
                         
+            <div id="groupsList">
                         <ul>
-                            <li id = "groupID">
-                            <label>Group Name: </label>
-    
-                            <h4></h4>
-                             <label>Group members: </label>
+                            <li id = "list-li">
+                                <h4><strong>Group Name: </strong><span data-bind= "text: groupName"></span></h4> 
+                           <h5><strong>Group ID: </strong><span data-bind= "text: groupID"></span></h5> 
 
-                            <h5 id ="members"></h5>
+                            <h6><strong>Members: </strong><span data-bind= "text: members"></span></h6> 
                                 
                             </li>
                     <button  id="delete">Delete Group</button>
 
                         </ul>
-
+            </div>
+                 
                     </div>
                 </div>
                 <div id="messageContainer">
