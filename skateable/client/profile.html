@@ -56,12 +56,13 @@
 </div>
     
     <div class="settingsButton">
-    <button type="button" id = "editProfBtn" data-bind="click: updateUser">Save Profile Edits</button>
-    <button  id="pwButton" data-toggle="modal" data-target="#pwModal">Change Password</button>
+    <button type="button" id = "profBttn" data-bind="click: updateUser">Save Profile Edits</button>
+    <button  id="profBttn" data-toggle="modal" data-target="#pwModal">Change Password</button>
 
         <div class="modal fade" id="pwModal" role="dialog">  
         <div class="modal-content">
             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3 class="modal-title">Change Password</h3>
             </div>
             <div class="modal-body">
@@ -85,8 +86,8 @@
               <br>  <br>
             </div>
    <div class="modal-footer">
-        <button type="button" id="savebttn" data-bind="click: changePassword"> Save</button> 
-       <button type="button"  data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="savebttn" data-bind="click: changePassword"> Save</button> 
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
 </div>
@@ -121,6 +122,7 @@ for (i = 0; i < acc.length; i++) {
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
         </script>
+        
         <script src="js/app-profile.js"></script> 
     </body>
 </html>
