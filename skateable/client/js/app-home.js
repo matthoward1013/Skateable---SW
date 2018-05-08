@@ -108,6 +108,21 @@ function AjaxPatch(url,data, callback)
 				alert("Could not connect to the server! please reload browser");
 	});
 }
+//function that posts json data to server
+function AjaxDelete(url, callback)
+{
+	$.ajax({
+			url:url,
+			method: "DELETE",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+	}).done(function (data) {
+				callback(data);
+	}).fail(function(object, textStatus, errorThrown){
+				alert("Could not connect to the server! please reload browser");
+	});
+}
 
 function yayRating()
 {
@@ -262,16 +277,31 @@ function GetMeetups()
 	
 	if (count >= 1)
 	{
+		var meetUpsExpired = [];
 		//for each group the user has, fetch the group information from the db
 		AjaxGet("http://localhost:3000/api/meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 
 			meetupDay = new Date(value.dayOfMeetup);
 			
 			$.each(data, function(i, value){
-				if(today.getDate() >= meetupDay.getDate())
-					meetupList.push(value);
-			});	
-			
+				if(today.getMonth() >==  meetupDay.getMonth())
+				{
+					if(today.getMonth() ===  meetupDay.getMonth())
+					{
+						if(today.getDate() >== meetupDay.getDate())
+							meetupList.push(value);
+						else
+							AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					}
+					else
+					{
+						meetupList.push(value);
+					}
+				}
+				else
+				{
+					AjaxDelete("http://localhost:3000/api/meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+				}
 			//test to create a group status: working
 		});
 	}
