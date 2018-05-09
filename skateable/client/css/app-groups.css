@@ -71,7 +71,7 @@ a {
 }
 
 #side-bar .login {
-    margin-top: 80%;
+    margin-top: 40%;
     text-align: center;
     font-size: 25px;
     visibility: hidden;
@@ -92,7 +92,8 @@ a {
     border-color: black;
     display: flex;
     flex-wrap: wrap;
-    
+    border-bottom: 2px solid black;
+
 }
 
 #menu-button {
