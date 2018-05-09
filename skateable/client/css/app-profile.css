@@ -54,7 +54,7 @@ a {
 }
 
 #side-bar .login {
-    margin-top: 80%;
+    margin-top: 40%;
     text-align: center;
     font-size: 25px;
     visibility: hidden;
@@ -85,6 +85,8 @@ a {
     background-color: darkgray;
     display: flex;
     flex-wrap: wrap;
+	border-bottom: 2px solid black;
+
 }
 
 #menu-button {
@@ -159,9 +161,7 @@ img.profilepic {
     right: 0;
     background-color: darkgray;
     position: absolute;
-    border-style: solid;
-    border-bottom-color: black;
-    border-width: 1px;
+    border-right: 2px solid black;
     overflow:scroll;
 }
 
@@ -205,7 +205,7 @@ overflow: hidden;
 .settingsButton {
 padding-left: 6%;
 }
-button {
+#profBttn {
     background-color:  #0066cc;
     color: white;
     margin: 8px 0;
@@ -219,7 +219,10 @@ button {
 .modal {
     width: 100%;
     z-index: 20;
-    position: absolut
+    padding-left: 30%;
+    padding-right: 30%;
+    padding-top: 2%;
+
 }
 
 .modal-backdrop {

@@ -29,7 +29,7 @@
                 <div id="group-list">
                     
                     <div id="groupContainer">
-                        <h1 align="center">Groups</h1>
+                        <h1>Groups</h1>
         <button  id="makegroupButton" data-toggle="modal" data-target="#groupModal">Create a Group</button>
         <button  id="addButton" data-toggle="modal" data-target="#addModal">Add Group</button>
                         
@@ -70,7 +70,7 @@
                             <input type="text" id="groupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="addexistingButton" data-bind="click: setPin">Add Group</button>
+                            <button type="button" class="btn btn-success" id="addexistingButton" data-bind="click: addGroup">Add Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -84,10 +84,11 @@
                            <h5><strong>Group ID: </strong><span data-bind= "text: groupID"></span></h5> 
 
                             <h6><strong>Members: </strong><span data-bind= "text: members"></span></h6> 
-                                
+							<div class="list-footer">
+                            <button  id="leave" data-bind="click: leaveGroup">Leave Group</button>
+							</div>
+ 
                             </li>
-                    <button  id="delete">Delete Group</button>
-
                         </ul>
             </div>
                  
@@ -109,7 +110,6 @@
       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/lib/knockout-3.4.2.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
         <script src="js/app-groups.js"></script>
            

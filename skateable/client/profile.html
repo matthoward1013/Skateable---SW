@@ -56,12 +56,13 @@
 </div>
     
     <div class="settingsButton">
-    <button type="button" id = "editProfBtn" data-bind="click: updateUser">Save Profile Edits</button>
-    <button  id="pwButton" data-toggle="modal" data-target="#pwModal">Change Password</button>
+    <button  id="profBttn" data-toggle="modal" data-target="#accModal">Edit Account</button>
+    <button  id="profBttn" data-toggle="modal" data-target="#pwModal">Change Password</button>
 
         <div class="modal fade" id="pwModal" role="dialog">  
         <div class="modal-content">
             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3 class="modal-title">Change Password</h3>
             </div>
             <div class="modal-body">
@@ -85,29 +86,45 @@
               <br>  <br>
             </div>
    <div class="modal-footer">
-        <button type="button" id="savebttn" data-bind="click: changePassword"> Save</button> 
-       <button type="button"  data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="savebttn" data-bind="click: changePassword"> Save</button> 
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
 </div>
 
+        <div class="modal fade" id="accModal" role="dialog">  
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="modal-title">Edit Account</h3>
+            </div>
+            <div class="modal-body">
+              <label>
+              Change Name
+              </label>
+              <br>
+            <input type="text" id="inputname" required autocomplete="off"/>
+              <br>  
+               <label>
+              Change Email
+            </label>
+              <br>
+            <input type="text" id="inputmail" required autocomplete="off"/>
+              <br>
+             <div class="entry">
+          <h2>Bio</h2>      
+<textarea id="bio" rows="4" cols="40" >Enter some information about yourself! 
+</textarea>
+        </div>    
+              <br>  <br>
+            </div>
+   <div class="modal-footer">
+        <button type="button" class="btn btn-success" id = "editProfBtn" data-bind="click: updateUser">Save Profile Edits</button>
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+</div>
         
-        <script>
-var acc = document.getElementsByClassName("pwbutton");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
-        }
-    });
-}
-</script>
     </div>
     </div>
    
@@ -121,6 +138,7 @@ for (i = 0; i < acc.length; i++) {
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8D_Pui7ocLcOS5zIiEMhG9iiHIJuI_-E&v=3&callback=initMap" onerror="errorHandling()">
         </script>
+        
         <script src="js/app-profile.js"></script> 
     </body>
 </html>
