@@ -103,7 +103,8 @@ function addGroup()
 		AjaxGet(link+"groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
 			//console.log(data);
 			
-
+		if(data.length > 0)
+		{
 				
 			if(data[0].members.indexOf(curUser.name) == -1)
 			{
@@ -129,6 +130,10 @@ function addGroup()
 			else{
 				alert("You are already in this group");
 			}
+		}
+		else{
+			alert("Group does not exist!");
+		}
 		});
 	}
 	else{
