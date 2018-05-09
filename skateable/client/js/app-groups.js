@@ -109,6 +109,10 @@ function addGroup()
 			if(data[0].members.indexOf(curUser.name) == -1)
 			{
 				tempMembers = data[0].members;
+				if(tempMembers.length == 1 && tempMembers.indexOf("") != -1)
+				{
+					tempMembers.pop();
+				}
 				tempMembers.push(curUser.name);
 				var groupPatchData = {"members": tempMembers};
 		
@@ -215,7 +219,8 @@ let ViewModel = function () {
 				groupTemp.push(group.members[i]);
 		}
 		
-		//groupTemp.members.splice(groupTemp.members.indexOf(curUser.name,1));
+		if(groupTemp.length == 0)
+			groupTemp.push("");
 		
 	
 		groupPatchData= {"members":groupTemp};
