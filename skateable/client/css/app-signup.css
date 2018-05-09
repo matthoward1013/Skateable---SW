@@ -1,5 +1,5 @@
 * {
-    font-family: 'Acme', sans-serif;    
+    font-family: 'Acme', sans-serif;
 }
 
 body {
@@ -26,6 +26,15 @@ button {
 }
     /* inputs */
 input[type=text] {
+    width: 35%;
+    padding: 4px 4px;
+    margin: 2px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 8px;  
+}
+input[type=password] {
     width: 35%;
     padding: 4px 4px;
     margin: 2px 0;
