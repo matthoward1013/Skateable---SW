@@ -205,7 +205,7 @@ overflow: hidden;
 .settingsButton {
 padding-left: 6%;
 }
-#profBttn {
+#profBttn, #editProfBtn {
     background-color:  #0066cc;
     color: white;
     margin: 8px 0;
