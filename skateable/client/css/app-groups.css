@@ -147,6 +147,13 @@ a {
     text-align: center;
 }
 
+h4, h5, h6{
+	text-align: left;
+}
+.list-footer{
+	text-align: right;
+}
+
 #groupContainer h1 {
     color: white;
     display: inline-block;
@@ -251,9 +258,10 @@ a {
     text-align: center;
     vertical-align: middle;
     position: absolute;
-    top: 5%;
+    top: 4%;
     left: 9.5%;
     width: 8%;
+	height: 5.5%;
     background-color:  #0066cc;
     color: white;
     border: none;
@@ -265,16 +273,17 @@ a {
     text-align: center;
     vertical-align: middle;
     position: absolute;
-    top: 5%;
+    top: 4%;
     left: 32.5%;
     width: 8%;
+	height: 5.5%;
     background-color:  #0066cc;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 4px;
 }
-#delete
+#leave
 {
   background-color: red;
     color: white;

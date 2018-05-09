@@ -12,7 +12,7 @@
     <img src="img/Logo.png" class="logo">
   </div> 
         
-        <h1>Sign Up </h1>
+        <h1>Sign-Up for an Account </h1>
         <div class ="container">   
           
           <div class="container2">
@@ -48,18 +48,20 @@
               Set a Password<span class="req">*</span>
               </label>
               <br>
-            <input type="text" id="pass" required autocomplete="off"/>
+            <input type="password" id="pass" required autocomplete="off"/>
               <br>  
               
                <label>
               Re-Enter Password<span class="req">*</span>
             </label>
               <br>
-            <input type="text" id="passTwo" required autocomplete="off"/>
+            <input type="password" id="passTwo" required autocomplete="off"/>
               <br>
             </div>
 
-            <button type="button" id="signupbtn" onclick="signUp();"> Submit</button>         
+            <button type="button" id="signupbtn" onclick="signUp();"> Submit</button>
+			<button type="button" id="cancel" onclick="location.href='login.html';"> Cancel</button>         
+
             
         </div>
         <div class="footer">
