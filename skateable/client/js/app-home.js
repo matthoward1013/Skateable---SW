@@ -371,7 +371,7 @@ let ViewModel = function () {
 				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
-					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
+					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"><span id="comment">` + spot.comments[0] + `</span></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
@@ -486,7 +486,7 @@ let ViewModel = function () {
 
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
-					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
+					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"></div>
                     <div id="comment-box"></div>
                     <div id="buttons">
@@ -564,13 +564,13 @@ let ViewModel = function () {
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
 						if(today.getDate() >= meetupDay.getDate())
-							meetupList.push(value);
+							self.meetupList.push(value);
 						else
 							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
-						meetupList.push(value);
+						self.meetupList.push(value);
 					}
 				}
 				else
