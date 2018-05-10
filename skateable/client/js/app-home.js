@@ -524,8 +524,8 @@ let ViewModel = function () {
 							});
 							let contentString = 
                     `<div id="content-info-window">
-				    <h2>` + spot.name + `</h2>
-				    <h4>` + spot.streetAddress + `</h4>
+				    <h2>` + data.spotName + `</h2>
+				    <h4>` + data.address + `</h4>
 
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 
@@ -534,9 +534,6 @@ let ViewModel = function () {
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + data.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div>
-                        <div class="box-third"><button class="yayBtn" onclick ="yayRating();">Yay </button></div>
-					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
-                        <div class="box-third"><button class="nayBtn" onclick ="nayRating();">Nay </button></div>
                         <div style="clear: both;"></div>
                     </div>
                     </div>`;
