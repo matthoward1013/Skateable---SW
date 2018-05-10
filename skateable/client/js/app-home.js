@@ -199,9 +199,9 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment()
+function UpdateComment(comment)
 {
-	var newComment = "from ui text";
+	var newComment = comment;
 
 	var patchData = {};
 	if(newComment !== "" && curSkateSpot.comments.length < 10)
@@ -394,6 +394,8 @@ let ViewModel = function () {
         maxWidth: 400
     }), //Init marker
         marker;
+    let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
+    searchBox.setBounds(map.getBounds());
     
     AjaxGet(link + "skatespots?access_token=" + curUser.key, function(data){
         if (data !== null) {
@@ -415,14 +417,13 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <h4>` + spot.streetAddress + `</h4>
-
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 
                     <div id="comment-box"></div>
                     <div id="buttons">
-                        <div class="box-third"><button class="yayBtn" onclick ="yayRating();">Yay </button></div>
+                        <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
-                        <div class="box-third"><button class="nayBtn" onclick ="nayRating();">Nay </button></div>
+                        <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div>
                         <div style="clear: both;"></div>
                     </div>
                     </div>`;
@@ -433,12 +434,12 @@ let ViewModel = function () {
                     animation: google.maps.Animation.DROP,
                     width: 20
                 });
-    
+                
                 spot.marker = marker;
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
-
+                    
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
@@ -447,14 +448,19 @@ let ViewModel = function () {
                     }, 500);
                 
                     infoWindow.setContent(contentString);
+                    
+                    //Code to change Favorite button color if already favorite
+                    /*if (jQuery.inArray(curSkateSpot.id, curUser.favoriteSpot !== -1)) {
+                        $('#favBtn').css("background-color", "yellow");
+                    } else {
+                        $('#favBtn').css("background-color", "white");
+                    }
+                    console.log(jQuery.inArray(curSkateSpot.id, curUser.favoriteSpot));*/
+                    
                 });
                 markers.push(marker);
             });
-
-			google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-				let searchBox = new google.maps.places.Autocomplete(document.getElementById("places-search"));
-				searchBox.setBounds(map.getBounds());
-			});			
+		
         }
     });
 	
@@ -494,7 +500,7 @@ let ViewModel = function () {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
 					
-					var dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName":pinName, "address":pinAddress, "rating":0, "comments": [], "currentMeetups": []};
+					var dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName": pinName, "address": pinAddress, "rating":0, "comments": [$('#commentInput').val()], "currentMeetups": []};
 					
 					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
@@ -517,15 +523,19 @@ let ViewModel = function () {
 								title: pinName
 							});
 							let contentString = 
-								`<div id="content-info-window">
-								<h2>` + data.spotName + `</h2>
-								<p>` + data.address + `</p>
-								<button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
-								<div id="comment-box"></div>
-								<button id="yayBtn" onclick ="yayRating();">Yay </button>
-								<p>` + data.rating + `</p>
-								<button id="nayBtn" onclick ="nayRating();">Nay </button>
-								</div>`;
+                    `<div id="content-info-window">
+				    <h2>` + data.spotName + `</h2>
+				    <h4>` + data.address + `</h4>
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+
+                    <div id="comment-box"></div>
+                    <div id="buttons">
+                        <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
+					   <div class="box-third"><h3>` + data.rating + `</h3></div>
+                        <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    </div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
 								curSkateSpot = data;
 								infoWindow.open(map, this);
@@ -546,7 +556,6 @@ let ViewModel = function () {
 					document.getElementById("yesButton").disabled = false;
 					alert('Geocode was not successful for the following reason: ' + status);
 				}						
-
 			});
         } else if (pinName === '' && pinAddress !== '') {
 			document.getElementById("yesButton").disabled = false;
