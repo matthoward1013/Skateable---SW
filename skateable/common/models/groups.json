@@ -20,6 +20,12 @@
         "string"
       ],
       "required": true
+    },
+    "messages": {
+      "type": [
+        "string"
+      ],
+      "required": false
     }
   },
   "validations": [],
