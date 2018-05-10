@@ -268,7 +268,7 @@ let ViewModel = function () {
 	
 	    //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
-        maxWidth: 200
+        maxWidth: 450
     }), //Init marker
         marker;
     
@@ -317,10 +317,12 @@ let ViewModel = function () {
 				    <p>` + spot.streetAddress + `</p>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
                     <div id="comment-box"></div>
+  					<div class='button-wrapper'>
 					<div id = "rating">
                     <button id="yayBtn" onclick ="yayRating();">Yay </button>
-				    <h4>` + spot.rating + `</h4>
+				    <h4></h4>
                     <button id="nayBtn" onclick ="nayRating();">Nay </button></div>
+					</div>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),

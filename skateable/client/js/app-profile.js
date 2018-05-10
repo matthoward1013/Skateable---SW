@@ -143,15 +143,15 @@ let ViewModel = function () {
 			changedData["name"] = $("#name").text();
 			curUser.name = changedData.name;
 		}
-		if($("#mail").text() !== curUser.email && $("#mail").text() !== "")
+		if($("#mail2").text() !== curUser.email && $("#mail2").text() !== "")
 		{
-			changedData["email"] = $("#mail").text();
+			changedData["email"] = $("#mail2").text();
 			curUser.email = changedData.email;
 			changedData["username"] = curUser.email;
 		}
-		if($("#bio").val() !== curUser.bio)
+		if($("#bio2").val() !== curUser.bio)
 		{
-			changedData["bio"] = $("#bio").val();
+			changedData["bio"] = $("#bio2").val();
 			curUser.bio = changedData.bio;
 		}
 		
