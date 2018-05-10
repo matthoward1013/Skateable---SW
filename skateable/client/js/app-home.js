@@ -5,7 +5,6 @@ var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
-var meetupList = [];
 
 
 	
@@ -257,7 +256,6 @@ function UpdateFavoriteSkateSpot()
 
 function createMeetup()
 {
-	//$(".vmeetModal").modal('hide');
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -278,7 +276,7 @@ function createMeetup()
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-
+				$('#meetModal').modal('hide');
 			
 				//input into group ui list here
 			});		
@@ -295,13 +293,14 @@ function createMeetup()
 				alert("Description cannot be more that 30 characters");
 				
 			}
-			else if(today > day)
+			else if(today > date)
 			{
 				alert("The Meetup cannot be in the past!");
 			}
 		
 		
 	}
+	
 }
 
 function getMeetups (callback)
@@ -311,6 +310,8 @@ function getMeetups (callback)
     var count = 0;
 	var today = new Date();
 	var meetupDay;
+	var meetupList = [];
+
 
 
 	$.each(curSkateSpot.currentMeetups, function(i, value){
@@ -344,7 +345,6 @@ function getMeetups (callback)
 						if(today.getDate() <= meetupDay.getDate())
 						{
 							meetupList.push(value);
-							callback(value);
 						}
 						//else
 							//AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
@@ -360,8 +360,13 @@ function getMeetups (callback)
 				}
 			}
 			//test to create a group status: working
-
+			callback(meetupList);
 		});
+	}
+	else{
+		
+		callback(-1);
+		
 	}
 
 }
@@ -655,7 +660,52 @@ let ViewModel = function () {
 	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
 		getMeetups( function(temp){
-			self.uiList.push(temp);
+	
+			var ul = document.getElementById("parentList");
+			while(ul.firstChild) ul.removeChild(ul.firstChild);
+			self.uiList([]);
+			
+			var tempList = temp;
+			var tempDate;
+			var tmpMinString;
+			var TmpHourString;
+			var amOrPm;
+			
+			if(temp != -1)
+			{
+				for(var i = 0;  i < tempList.length; i++)
+				{
+					tempDate = new Date(temp[i].dayOfMeetup);
+					if(tempDate.getMinutes() < 10)
+					{
+						tmpMinString = "0" + String(tempDate.getMinutes());
+					}
+					else
+					{
+						tmpMinString = String(tempDate.getMinutes());
+					}
+					
+					if(tempDate.getHours() > 12)
+					{
+						tmpHourString = String(tempDate.getHours() - 12);
+						amOrPm = "PM";
+					}
+					else
+					{
+						if(tempDate.getHours() == 0)
+						{
+							tmpHourString = "12";
+						}
+						else{
+							tmpHourString = String(tempDate.getHours());
+						}
+						amOrPm = "AM";
+					}
+				
+					tempList[i].dayOfMeetup =  tempDate.toDateString() + " @ " + tmpHourString + ":" + tmpMinString + " " + amOrPm;
+					self.uiList.push(tempList[i]);
+				}
+			}
 		});			
 	});
 		

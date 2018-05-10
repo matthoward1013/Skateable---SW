@@ -121,7 +121,7 @@ function createGroup()
 	var groupNTemp = $("#cGroupName").val();
 	if(groupNTemp != "" && groupIdTemp != "")
 	{
-		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name]};
+		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name],"messages":[]};
 	
 		AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
 		
@@ -294,6 +294,7 @@ let ViewModel = function () {
 	};
 	self.ConnectChat = function (group)
 	{
+		curGroup = group;
 		
 		
 	};
