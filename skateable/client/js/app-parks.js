@@ -280,6 +280,14 @@ function leftArrowScroll() {
         }
 }
 
+function addComment () {
+        console.log("works");
+        let comment = $('#commentText').val();
+        UpdateComment(comment);
+        $('#commentModal').modal('hide');
+        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
+}
+
 let ViewModel = function () {
     //Function for sidebar animation
     self = this;
@@ -386,12 +394,7 @@ let ViewModel = function () {
 		
 		
 	};
-	self.addComment = function () {
-        let comment = $('#commentText').val();
-        UpdateComment(comment);
-        $('#commentModal').modal('hide');
-        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
-    };
+	
 	    let panelVis = false,
         sidebar = $('#side-bar'),
         menuButton = $("#menu-button"),
