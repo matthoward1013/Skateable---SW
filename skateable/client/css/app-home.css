@@ -263,8 +263,19 @@ width: 100%;
 #comment-box {
     width: 100%;
     max-height: 50%;
-    height: 150px;
+    height: 100px;
     border: 2px black solid;
+    display: grid;
+    vertical-align: middle;
+    align-content: center;
+    text-align: center;
+    color: grey;
+}
+
+#comment {
+    font-style: italic;
+    font-size: 18px;
+    margin: 0 auto;
 }
 
 #buttons {
