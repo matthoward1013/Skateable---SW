@@ -200,12 +200,12 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment()
+function UpdateComment(comment)
 {
-	var newComment = $("#commentText").val();
+	var newComment = comment;
 
 	var patchData = {};
-	if(newComment !== "" && newComment.length <=16)
+	if(newComment !== "" && newComment.length <= 16)
 	{
 		if(curSkateSpot.comments.length < 10)
 		{
@@ -406,7 +406,7 @@ function leftArrowScroll() {
             let previousCmt = currentCmt + 1;
             console.log(previousCmt);
             $('#comment').text(curSkateSpot.comments[previousCmt]);
-            if (currentCmt === 0) {
+            if (previousCmt === 1) {
                 $('#comment').text(curSkateSpot.comments[1]);
             }
         }
@@ -453,21 +453,13 @@ let ViewModel = function () {
 				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
-<<<<<<< HEAD
-					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
-=======
-
 					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
-
->>>>>>> d98c1d409eec17c30502f0920f7ccc30f162dd5a
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
-                        <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div>
+                        <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
-                    </div>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),
