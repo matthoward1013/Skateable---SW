@@ -203,7 +203,7 @@ background-color: white;
 overflow: hidden;
 }
 .settingsButton {
-padding-left: 6%;
+padding-left: 35%;
 }
 #profBttn {
     background-color:  #0066cc;
@@ -225,6 +225,7 @@ padding-left: 6%;
     text-align: center;
     border-radius: 4px;
 	font-size: 14px;
+	
 }
 .modal {
     width: 100%;
