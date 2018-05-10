@@ -187,7 +187,7 @@ function nayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "api/skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
@@ -516,16 +516,21 @@ let ViewModel = function () {
 								position: results[0].geometry.location,
 								title: pinName
 							});
-							let contentString = 
-								`<div id="content-info-window">
-								<h2>` + data.spotName + `</h2>
-								<p>` + data.address + `</p>
-								<button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
-								<div id="comment-box"></div>
-								<button id="yayBtn" onclick ="yayRating();">Yay </button>
-								<p>` + data.rating + `</p>
-								<button id="nayBtn" onclick ="nayRating();">Nay </button>
-								</div>`;
+               let contentString = 
+                    `<div id="content-info-window">
+				    <h2>` + spot.name + `</h2>
+				    <h4>` + spot.streetAddress + `</h4>
+
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+
+                    <div id="comment-box"></div>
+                    <div id="buttons">
+                        <div class="box-third"><button class="yayBtn" onclick ="yayRating();">Yay </button></div>
+					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
+                        <div class="box-third"><button class="nayBtn" onclick ="nayRating();">Nay </button></div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    </div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
 								curSkateSpot = data;
 								infoWindow.open(map, this);
