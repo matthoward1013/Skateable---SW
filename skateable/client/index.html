@@ -13,7 +13,7 @@
             <div id="side-bar">
                 <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
                 <a href="index.html" class="login">Home</a>
-                <a href="profile.html" class="list">Profile</a>
+                <a href="profile.html" class="list">Edit Profile</a>
                 <a href="groups.html" class="list">Groups</a>
                 <a href="parks.html" class="list">My Parks</a>
                 <a href="login.html" class="login">Login/Logout</a>
@@ -66,15 +66,33 @@
                         </div>
                         <div class="modal-body2">
                             <h7>Meet-Up Day: <br /></h7>
-                            <input type="date" id="meetupDay" placeholder="Ex: 07/12/2018">
-							<h8>Add a Description </h8>
+                            <input type="date" id="meetupDay">
+							 <h8>Meet-Up Time: <br /></h8>
+                            <input type="time" id="meetupTime">
+							<h9>Add a Description </h9>
                             <textarea id="description" rows="4" cols="40" placeholder="Enter a description here. . ."></textarea>
-							<h9>Will you attend? </h9>
-                             <input type="radio" name="yes" value="yes" id="yesbttn"> Yes<br>
-  							 <input type="radio" name="no" value="no" id="nobttn"> No<br>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" id="makeButton" onclick="createMeetup()">Make Meetup</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="modal fade" id="vmeetModal" role="dialog">
+                <div class="modal-dialog">
+
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h6 class="modal-title">Current Meetups</h6>
+                        </div>
+                        <div class="modal-body2">
+                       <h10><strong>Park Name: </strong><span data-bind= "text: spotname"></span></h10> <br />
+                       <h11><strong>Street Address: </strong><span data-bind= "text: streetAddress"></span></h11>
+                        </div>
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -87,7 +105,6 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/lib/knockout-3.4.2.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
         <script src="js/app-home.js"></script>
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTh2rza-L1ZN7tHtNzOpjGNHor-y7Ld0&v=3&libraries=places,geometry&callback=initMap" onerror="errorHandling()">

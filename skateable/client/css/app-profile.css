@@ -16,7 +16,7 @@ html, body {
 }
 
 a {
-    target-name: new;
+    target-f: new;
     target-new: tab;
     text-decoration: none;
     cursor: pointer;
@@ -211,10 +211,20 @@ padding-left: 6%;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 120;
+    width: 140;
     text-align: center;
     border-radius: 4px;
 
+}
+#accBttn {
+    background-color:  #0066cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 140;
+    text-align: center;
+    border-radius: 4px;
+	font-size: 14px;
 }
 .modal {
     width: 100%;
