@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="icon" href="img/icon.png">
         <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Skateable | Home</title>
     </head>
     <body>
@@ -102,6 +103,25 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondaryGet" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="commentModal" role="dialog">
+                <div class="modal-dialog">
+
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h6 class="modal-title">Add Comment</h6>
+                        </div>
+                        <div class="modal-body2">
+                            <textarea id="commentText" rows="4" cols="40" placeholder="Enter your comment here. . ."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: addComment">Add</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>

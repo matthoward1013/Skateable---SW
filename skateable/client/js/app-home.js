@@ -198,9 +198,9 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment()
+function UpdateComment(comment)
 {
-	var newComment = $("#").val();
+	var newComment = comment;
 
 	var patchData = {};
 	if(newComment !== "" && newComment.length <=16)
@@ -261,7 +261,7 @@ function createMeetup()
 	var date = new Date(day + " " + time);
 	var today = new Date();
 	
-	if(day != "" && time != "" && desc != "" && desc.length <=30 && today < date)
+	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
 	{
 		//insert data from form into here
 		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
@@ -283,13 +283,13 @@ function createMeetup()
 	}
 	else
 	{
-			if(day == "" && time == "" && desc == "")
+			if(day === "" && time === "" && desc === "")
 			{
 				alert("Please enter in all fields");
 			}
 			else if(desc.length >=30)
 			{
-				alert("Description cannot be more that 30 characters")
+				alert("Description cannot be more that 30 characters");
 				
 			}
 			else if(today > day)
@@ -371,8 +371,10 @@ let ViewModel = function () {
 				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
+
 					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"><span id="comment">` + spot.comments[0] + `</span></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
+
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
@@ -488,7 +490,6 @@ let ViewModel = function () {
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"></div>
-                    <div id="comment-box"></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + data.rating + `</h3></div>
@@ -582,6 +583,13 @@ let ViewModel = function () {
 		});
 	}
 };
+    
+    self.addComment = function () {
+        let comment = $('#commentText').val();
+        UpdateComment(comment);
+        $('#commentModal').modal('hide');
+        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
+    };
     
     //Function for sidebar animation
     
