@@ -5,6 +5,8 @@ var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+
+var meetUpList = ko.observableArray([]);
 	
 if(curUser === null)
 	location.href = 'login.html';
@@ -198,9 +200,9 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment(comment)
+function UpdateComment()
 {
-	var newComment = comment;
+	var newComment = $("#commentText").val();
 
 	var patchData = {};
 	if(newComment !== "" && newComment.length <=16)
@@ -393,7 +395,6 @@ let ViewModel = function () {
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
-	self.meetUpList = ko.observableArray([]);
 
 
     
