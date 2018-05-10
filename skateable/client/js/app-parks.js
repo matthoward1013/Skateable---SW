@@ -228,6 +228,125 @@ function UpdateComment(comment)
 	});
 }
 
+
+function createMeetup()
+{
+	var day = $("#meetupDay").val();
+	var time = $("#meetupTime").val();
+	var desc = $("#description").val();
+	var date = new Date(day + " " + time);
+	var today = new Date();
+	
+	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
+	{
+		//insert data from form into here
+		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
+	
+		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
+		
+			curSkateSpot.currentMeetups.push(data.id);
+				
+			var patchData = {"currentMeetups": curSkateSpot.currentMeetups};
+			
+			//patches the user data to include the new group
+			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+				$('#meetModal').modal('hide');
+			
+				//input into group ui list here
+			});		
+		});
+	}
+	else
+	{
+			if(day === "" && time === "" && desc === "")
+			{
+				alert("Please enter in all fields");
+			}
+			else if(desc.length >=30)
+			{
+				alert("Description cannot be more that 30 characters");
+				
+			}
+			else if(today > date)
+			{
+				alert("The Meetup cannot be in the past!");
+			}
+		
+		
+	}
+	
+}
+
+function getMeetups (callback)
+{
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+    var count = 0;
+	var today = new Date();
+	var meetupDay;
+	var meetupList = [];
+	
+
+
+
+	$.each(curSkateSpot.currentMeetups, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.currentMeetups[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		var meetUpsExpired = [];
+		var value;
+		//for each group the user has, fetch the group information from the db
+		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+			
+			for(var i = 0; i < data.length; i++)
+			{
+				value = data[i];
+				meetupDay = new Date(value.dayOfMeetup);
+				if(today.getMonth() <=  meetupDay.getMonth())
+				{
+					if(today.getMonth() ===  meetupDay.getMonth())
+					{
+						if(today.getDate() <= meetupDay.getDate())
+						{
+							meetupList.push(value);
+						}
+						//else
+							//AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					}
+					else
+					{
+						meetupList.push(value);
+					}
+				}
+				else
+				{
+					//AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+				}
+			}
+			//test to create a group status: working
+			callback(meetupList);
+		});
+	}
+	else{
+		
+		callback(-1);
+		
+	}
+
+}
+
 function UpdateFavoriteSkateSpot()
 {
 	var patchData = {};
@@ -297,6 +416,7 @@ let ViewModel = function () {
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
 	self.uiList = ko.observableArray([]);
+	self.uiMeetupList = ko.observableArray([]);
 	
 	    //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
@@ -379,6 +499,11 @@ let ViewModel = function () {
                     }, 500);
                 
                     infoWindow.setContent(contentString);
+					$('#meetUpSpotName').text(curSkateSpot.name);
+                    $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
+                    if (spot.comments.length === 0) {
+                        $('#comment').text("No comments yet available!");
+                    } 
                 });
                 markers.push(marker);		  
 
@@ -417,6 +542,57 @@ let ViewModel = function () {
 	   self.openModal = function() {
         pinModal.modal('show');  
     };
+	
+		$( "#vmeetModal" ).on('shown.bs.modal', function(){
+		getMeetups( function(temp){
+	
+			var ul = document.getElementById("parentListMeetup");
+			while(ul.firstChild) ul.removeChild(ul.firstChild);
+			self.uiMeetupList([]);
+			
+			var tempList = temp;
+			var tempDate;
+			var tmpMinString;
+			var TmpHourString;
+			var amOrPm;
+			
+			if(temp != -1)
+			{
+				for(var i = 0;  i < tempList.length; i++)
+				{
+					tempDate = new Date(temp[i].dayOfMeetup);
+					if(tempDate.getMinutes() < 10)
+					{
+						tmpMinString = "0" + String(tempDate.getMinutes());
+					}
+					else
+					{
+						tmpMinString = String(tempDate.getMinutes());
+					}
+					
+					if(tempDate.getHours() > 12)
+					{
+						tmpHourString = String(tempDate.getHours() - 12);
+						amOrPm = "PM";
+					}
+					else
+					{
+						if(tempDate.getHours() == 0)
+						{
+							tmpHourString = "12";
+						}
+						else{
+							tmpHourString = String(tempDate.getHours());
+						}
+						amOrPm = "AM";
+					}
+				
+					tempList[i].dayOfMeetup =  tempDate.toDateString() + " @ " + tmpHourString + ":" + tmpMinString + " " + amOrPm;
+					self.uiMeetupList.push(tempList[i]);
+				}
+			}
+		});			
+	});
 };
 
 

@@ -554,8 +554,8 @@ let ViewModel = function () {
     self.setPin = function() {
 		document.getElementById("yesButton").disabled = true;
 		
-        let pinAddress = $('#places-search').val();
-        let pinName = $('#pinName').val();
+        var pinAddress = $('#places-search').val();
+        var pinName = $('#pinName').val();
         if (pinAddress !== '' && pinName !== '') {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
@@ -568,8 +568,8 @@ let ViewModel = function () {
 
 					if(data.length === 0)
 					{
-						AjaxPost(link+"skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
-							curSkateSpot = data;
+						AjaxPost(link+"skatespots?access_token=" + String(curUser.key), dataToPost, function(newSpot){
+							curSkateSpot = newSpot;
 
 							UpdateFavoriteSkateSpot(curSkateSpot);
 						
@@ -584,15 +584,15 @@ let ViewModel = function () {
 							});
 							let contentString = 
                     `<div id="content-info-window">
-				    <h2>` + data.name + `</h2>
-				    <h4>` + data.streetAddress + `</h4>
+				    <h2>` + curSkateSpot.spotName + `</h2>
+				    <h4>` + pinAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + data.comments[data.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + curSkateSpot.comments[curSkateSpot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
-					   <div class="box-third"><h3>` + data.rating + `</h3></div>
+					   <div class="box-third"><h3>` + curSkateSpot.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
                     </div>`;
