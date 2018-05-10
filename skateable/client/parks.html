@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="icon" href="img/icon.png">
         <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Skateable | My Parks</title>
     </head>
     <body>
@@ -39,8 +40,77 @@
                     </ul>
                 </div>
             </div>
-            <div id="map"></div>
+            <div class="modal fade" id="meetModal" role="dialog">
+                <div class="modal-dialog">
 
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h6 class="modal-title">Mark a Meet-Up Here</h6>
+                        </div>
+                        <div class="modal-body2">
+                            <h7>Meet-Up Day: <br /></h7>
+                            <input type="date" id="meetupDay">
+							 <h8>Meet-Up Time: <br /></h8>
+                            <input type="time" id="meetupTime">
+							<h9>Add a Description </h9>
+                            <textarea id="description" rows="4" cols="40" placeholder="Enter a description here. . ."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="makeButton" onclick="createMeetup();">Make Meetup</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="modal fade" id="vmeetModal" role="dialog">
+                <div class="modal-dialog">
+
+                <!-- Group Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h6 class="modal-title">Current Meetups</h6>
+                        </div>
+                        <div class="modal-body3">
+                       <h10><strong>Park Name: </strong><span id="meetUpSpotName"></span></h10> <br>
+                       <h11><strong>Street Address: </strong><span id="meetUpSpotAddress"></span></h11>
+					   <div>
+					   <ul id= "parentList" data-bind="foreach: meetupList">
+                        <li class="list-li">
+                            <h4><strong>Meetup Date: </strong><span data-bind= "text: dayOfMeetup"></span></h4> 
+                            <h5><strong>Description: </strong><span data-bind= "text: description"></span></h5>
+                        </li>
+                    </ul>
+					</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondaryGet" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="commentModal" role="dialog">
+                <div class="modal-dialog">
+
+            <!-- Comment Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h6 class="modal-title">Add Comment</h6>
+                        </div>
+                        <div class="modal-body2">
+                            <textarea id="commentText" rows="4" cols="40" placeholder="Enter your comment here. . ."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="makeComment" onclick="addComment()">Add</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="map"></div>
         </div>
         
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

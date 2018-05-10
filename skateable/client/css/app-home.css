@@ -165,6 +165,15 @@ a {
     margin: 0 auto;
     width: 90%;
 }
+.modal-body3 {
+	text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 90%;
+}
+ul {
+  list-style-type: none;
+}
 #pinName {
     margin-left: 10px;
     height: auto;
@@ -287,6 +296,43 @@ width: 100%;
 .fa:active {
     color: black;
 }
+#commentButton:focus {
+    outline: 0;
+}
+
+#arrowDiv {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    vertical-align: middle;
+    display: inline;
+    float: none;
+    bottom: 0;
+}
+
+.arrowBtn {
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+#leftArrowCmt {
+    font-size: 15px;
+    
+}
+#rightArrowCmt {
+    font-size: 15px;
+}
+
+#leftArrowCmt:focus {
+    outline: 0;
+}
+#rightArrowCmt:focus {
+    outline: 0;
+}
+
 
 #commentButton {
     font-size: 30px;
@@ -331,7 +377,6 @@ width: 100%;
     margin-left: 5px;
     margin-right: 5px;
 	border-radius: 4px;
-
 }
 
 .box-third {

@@ -58,6 +58,59 @@ function AjaxPatch(url,data, callback)
 	});
 }
 
+// post message to group model and monogo db
+var messages = [];
+function postMessage()
+{
+	//insert data from form into here
+	//user enters in groupId and from that it will query the db
+	var message = document.getElementById('message').value; 
+	// messages.push(message); 
+	// //var allMessage; 
+	// for(var i = 0; i < message.length; i++)
+	// {
+	// 	allMessage += messages[i] + '<br>'; 
+	// }
+	var prevMes = document.getElementById("chatBox").innerHTML; 
+	document.getElementById("chatBox").innerHTML = prevMes + message + '<br>';
+
+	// var tempMessage = [];
+	// if(message != "")
+	// {
+	// 	var groupId = {"where": {"groupID":groupTemp}};
+	
+	// 	AjaxGet(link+"groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
+	// 		//console.log(data);
+			
+	// 	if(data.length > 0)
+	// 	{
+				
+	// 			tempMessage.push(message);
+	// 			var groupPatchData = {"message": tempMessage};
+		
+
+	// 			AjaxPatch(link+"groups/"+ String(data[0].id) + "?access_token=" + String(curUser.key), groupPatchData, function(groupData){
+		
+	// 				curUser.groups.push(groupData.id);
+			
+	// 				// //patches the user data to include the new group
+	// 				// var userPatchData = {"groups": curUser.groups};
+	// 				// AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(UserData){
+	// 				// 	sessionStorage.setItem("curUser", JSON.stringify(curUser));
+	// 				// 	location.href = 'groups.html';
+	
+	// 				});		
+		
+	// 			//});	
+	// 	}
+	// 	});
+	// }
+	// else{
+	// 	alert("Please enter a valid message");
+	// }
+	return false;
+}
+
 //creates a new group
 function createGroup()
 {
