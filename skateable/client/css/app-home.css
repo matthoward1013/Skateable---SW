@@ -263,7 +263,9 @@ width: 100%;
 #comment-box {
     width: 100%;
     max-height: 50%;
-    height: 100px;
+    min-height: 100px;
+    overflow-y: scroll;
+    height: auto;
     border: 2px black solid;
     display: grid;
     vertical-align: middle;
@@ -276,6 +278,24 @@ width: 100%;
     font-style: italic;
     font-size: 18px;
     margin: 0 auto;
+}
+
+.fa {
+    color: grey;
+}
+
+.fa:active {
+    color: black;
+}
+
+#commentButton {
+    font-size: 30px;
+    border-radius: 4px;
+    border: none;
+    position: absolute;
+    text-decoration: none;
+    background-color: transparent;
+    color: white;
 }
 
 #buttons {

@@ -201,9 +201,9 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment()
+function UpdateComment(comment)
 {
-	var newComment = "from ui text";
+	var newComment = comment;
 
 	var patchData = {};
 	if(newComment !== "" && curSkateSpot.comments.length < 10)
