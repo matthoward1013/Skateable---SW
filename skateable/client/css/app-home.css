@@ -150,9 +150,30 @@ a {
 .modal-body {
     text-align: center;
     align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 70%;
+}
+
+#pinName {
+    margin-left: 10px;
+    height: auto;
 }
 
 #places-search {
+    width: 100%;
+}
+
+#commentInput {
+    width: 100%;
+    min-height: 50px;
+    height: 10%;
+    overflow: hidden;
+}
+
+#ratingButtons {
     width: 60%;
 }
 
@@ -197,6 +218,7 @@ a {
 
 #content-info-window {
     text-align: center;
+    width: 400px;
 }
 
 #comment-box {
@@ -207,7 +229,13 @@ a {
     border: 2px black solid;
 }
 
-#yayBtn {
+#buttons {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.yayBtn {
     width: 50px;
     height: 30px;
     color: white;
@@ -216,9 +244,11 @@ a {
     border: none;
     text-decoration: none;
     margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
-#nayBtn {
+.nayBtn {
     width: 50px;
     height: 30px;
     color: white;
@@ -227,6 +257,14 @@ a {
     border: none;
     text-decoration: none;
     margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.box-third {
+    width: 33.3%;
+    text-align: center;
+    align-content: center;
 }
 
 #favBtn {
