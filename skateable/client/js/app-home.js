@@ -257,7 +257,6 @@ function UpdateFavoriteSkateSpot()
 
 function createMeetup()
 {
-	//$(".vmeetModal").modal('hide');
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -278,7 +277,7 @@ function createMeetup()
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-
+			
 			
 				//input into group ui list here
 			});		
@@ -302,6 +301,8 @@ function createMeetup()
 		
 		
 	}
+	
+	$('#meetModal').modal('hide');
 }
 
 function getMeetups (callback)
@@ -344,7 +345,6 @@ function getMeetups (callback)
 						if(today.getDate() <= meetupDay.getDate())
 						{
 							meetupList.push(value);
-							callback(value);
 						}
 						//else
 							//AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
@@ -360,7 +360,7 @@ function getMeetups (callback)
 				}
 			}
 			//test to create a group status: working
-
+			callback(meetupList);
 		});
 	}
 
@@ -655,7 +655,15 @@ let ViewModel = function () {
 	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
 		getMeetups( function(temp){
-			self.uiList.push(temp);
+				self.uiList.removeAll();
+				var tempList = temp;
+				var tempDate;
+			for(var i = 0;  i < tempList.length; i++)
+			{
+				tempDate = new Date(temp[i].dayOfMeetup);
+				tempList[i].dayOfMeetup =  tempDate.toDateString();
+				self.uiList.push(tempList[i]);
+			}
 		});			
 	});
 		
