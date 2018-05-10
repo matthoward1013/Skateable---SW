@@ -372,7 +372,7 @@ let ViewModel = function () {
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"></div>
+                    <div id="comment-box"><span id="comment">` + spot.comments[0] + `</span></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
@@ -401,7 +401,11 @@ let ViewModel = function () {
                     }, 500);
                 
                     infoWindow.setContent(contentString);
-                    
+                    $('#meetUpSpotName').text(curSkateSpot.name);
+                    $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
+                    if (spot.comments.length === 0) {
+                        $('#comment').text("No comments yet available!");
+                    } 
                     //Code to change Favorite button color if already favorite
                     /*if (jQuery.inArray(curSkateSpot.id, curUser.favoriteSpot !== -1)) {
                         $('#favBtn').css("background-color", "yellow");
