@@ -37,13 +37,17 @@
                             <h3 class="modal-title">Create Pin</h3>
                         </div>
                         <div class="modal-body">
-                            <h4>Pin Name</h4>
+                            <h4>Pin Name*: </h4>
                             <input type="text" id="pinName"><br>
-                            <h4>Search the address of the park <img src="img/myLocationIcon.png" id="current-location" data-bind="click: getLocation"></h4>
+                            <h4>Search the address of the park* <img src="img/myLocationIcon.png" id="current-location" data-bind="click: getLocation"></h4>
                             <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
+                            <h5>Add Comment </h5>
+                            <textarea name="comment" form="usrform" id="commentInput" placeholder="Enter comment here. . ."></textarea>
+                            <button class="yayBtn" onclick="yayRating();">Yay </button>
+                            <button class="nayBtn" onclick="nayRating();">Nay </button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="yesButton" data-bind="click: setPin">Add Pin</button>
+                            <button type="button" class="btn btn-success" id="yesButton" data-bind="click: setPin"  >Add Pin</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
