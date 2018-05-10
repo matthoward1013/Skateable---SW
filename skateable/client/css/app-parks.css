@@ -191,28 +191,103 @@ a {
 	border-radius: 4px;
 	
 }
-
 #comment-box {
-    margin: 0 auto;
     width: 100%;
     max-height: 50%;
-    height: 150px;
+    min-height: 100px;
+    overflow-y: scroll;
+    height: auto;
     border: 2px black solid;
+    display: grid;
+    vertical-align: middle;
+    align-content: center;
+    text-align: center;
+    color: grey;
 }
 
-#yayBtn {
-  	width: 50px;
+#comment {
+    font-style: italic;
+    font-size: 18px;
+    margin: 0 auto;
+}
+
+.fa {
+    color: grey;
+}
+
+.fa:active {
+    color: black;
+}
+#commentButton:focus {
+    outline: 0;
+}
+
+#arrowDiv {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    vertical-align: middle;
+    display: inline;
+    float: none;
+    bottom: 0;
+}
+
+.arrowBtn {
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+#leftArrowCmt {
+    font-size: 15px;
+    
+}
+#rightArrowCmt {
+    font-size: 15px;
+}
+
+#leftArrowCmt:focus {
+    outline: 0;
+}
+#rightArrowCmt:focus {
+    outline: 0;
+}
+
+
+#commentButton {
+    font-size: 30px;
+    border-radius: 4px;
+    border: none;
+    position: absolute;
+    text-decoration: none;
+    background-color: transparent;
+    color: white;
+}
+
+#buttons {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.yayBtn {
+    width: 50px;
     height: 30px;
     color: white;
     background-color: green;
     float: left;
     border: none;
     text-decoration: none;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
 	border-radius: 4px;
-	
+
 }
 
-#nayBtn {
+.nayBtn {
     width: 50px;
     height: 30px;
     color: white;
@@ -220,8 +295,16 @@ a {
     float: right;
     border: none;
     text-decoration: none;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
 	border-radius: 4px;
-	
+}
+
+.box-third {
+    width: 33.3%;
+    text-align: center;
+    align-content: center;
 }
 
 #favBtn {
@@ -235,6 +318,54 @@ a {
     text-align: center;
     border-radius: 4px;
 }
-#rating{
-    width: 100%;
+#meetupBtn
+{
+	background-color:  #0066cc;
+    color: white;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
+}
+#viewmeetupBtn
+{
+	background-color: navy;
+    color: white;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
+}
+.modal-header {
+    text-align: center;
+    align-content: center;
+}
+
+.modal-body {
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 70%;
+}
+.modal-body2 {
+	text-align: left;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 90%;
+}
+.modal-body3 {
+	text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 90%;
 }
