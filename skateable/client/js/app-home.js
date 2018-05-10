@@ -488,7 +488,6 @@ let ViewModel = function () {
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"></div>
-                    <div id="comment-box"></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + data.rating + `</h3></div>
