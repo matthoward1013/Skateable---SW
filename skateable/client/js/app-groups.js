@@ -64,87 +64,93 @@ function createGroup()
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
-	var data = {"groupName":"","groupID":"","members": [curUser.name]};
+	var groupIdTemp = $("#cGroupID").val();
+	var groupNTemp = $("#cGroupName").val();
+	if(groupNTemp != "" && groupIdTemp != "")
+	{
+		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name]};
 	
-	AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
+		AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
 		
-		groupList.push(data);
-		curUser.groups.push(data.id);
-				
-		var patchData = {"groups": curUser.groups};
+			groupList.push(data);
+			curUser.groups.push(data.id);
+					
+			var patchData = {"groups": curUser.groups};
 		
-		//patches the user data to include the new group
-		AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			//patches the user data to include the new group
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-			sessionStorage.setItem("curUser", JSON.stringify(curUser));
-			//console.log(data);
+				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				location.href = 'groups.html';
 			
-			//input into group ui list here
-		});		
-	});
+				//input into group ui list here
+			});		
+		});
+	}
 }
 
 //adds a preexisting group
-function AddGroup()
+function addGroup()
 {
 	//insert data from form into here
 	//user enters in groupId and from that it will query the db
-	var groupId = {"where": {"groupID":""}};
-	
-	AjaxGet(link+"groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
-		//console.log(data);
-		
-		groupList.push(data);
-		
-		var groupPatchData = groupList[groupList.length - 1].members;
-		groupPatchData.push(curUser.name);
-
-		AjaxPatch(link+"groups/"+ String(groupList[groupList.length - 1].id) + "?access_token=" + String(curUser.key), groupPatchData, function(data){
-		
-			curUser.groups.push(data.id);
-			
-			//patches the user data to include the new group
-			var userPatchData = {"groups": curUser.groups};
-			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
-				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-
-				//console.log(data);
-				//input into group ui here
-			});		
-		
-		});	
-	});
-}
-
-//group is the currently selected group when the user hits the leave group button
-function leaveGroup(group)
-{
-	var groupPatchData;
-	for (var i = 0; i < groupList.length; i++)
+	var groupTemp = $("#aGroupID").val();
+	var tempMembers = [];
+	if(groupTemp != "Ex:123" && groupTemp != "")
 	{
-		if(groupList[i].id !== group.id)
-			groupPatchData.slice(i,1);
-	}
-	AjaxPatch(link+"groups?access_token=" + String(curUser.key), groupPatchData, function(data){
-		//console.log("test");
-		
-		curUser.groups.push(data.id);
-		
-		//patches the user data to include the new group
-		var userPatchData = {"groups": curUser.groups};
-		AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
-			
-			sessionStorage.setItem("curUser", JSON.stringify(curUser));
+		var groupId = {"where": {"groupID":groupTemp}};
+	
+		AjaxGet(link+"groups?filter="+ JSON.stringify(groupId) + "&access_token=" + String(curUser.key), function(data){
 			//console.log(data);
-			//input into group ui here
-		});		
-	});		
+			
+		if(data.length > 0)
+		{
+				
+			if(data[0].members.indexOf(curUser.name) == -1)
+			{
+				tempMembers = data[0].members;
+				if(tempMembers.length == 1 && tempMembers.indexOf("") != -1)
+				{
+					tempMembers.pop();
+				}
+				tempMembers.push(curUser.name);
+				var groupPatchData = {"members": tempMembers};
+		
+
+				AjaxPatch(link+"groups/"+ String(data[0].id) + "?access_token=" + String(curUser.key), groupPatchData, function(groupData){
+		
+					curUser.groups.push(groupData.id);
+			
+					//patches the user data to include the new group
+					var userPatchData = {"groups": curUser.groups};
+					AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(UserData){
+						sessionStorage.setItem("curUser", JSON.stringify(curUser));
+						location.href = 'groups.html';
+	
+					});		
+		
+				});	
+			}
+			else{
+				alert("You are already in this group");
+			}
+		}
+		else{
+			alert("Group does not exist!");
+		}
+		});
+	}
+	else{
+		alert("Please enter a valid GroupID");
+	}
 }
 
 
 let ViewModel = function () {
     let self = this;
 	var count = 0;
+	
+	self.uiList = ko.observableArray([]);
     
     //Function for sidebar animation
     
@@ -188,21 +194,56 @@ let ViewModel = function () {
 		AjaxGet(link+"groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 			console.log(data);
 			
+			groupList = data;
+			
 			$.each(data, function(i, value){
-				groupList.push(value);
+				
+				self.uiList.push(value);
 			});	
 			
 			//input into group ui list here
-			
-            groupList.forEach(function(group) {
-                let name = group.name,
-                    id = group.id;
-            });
             
-			//test to create a group status: working
-			//createGroup(curUser,groupList);
 		});
 	}
+	
+	//group is the currently selected group when the user hits the leave group button
+	self.leaveGroup = function (group)
+	{
+		var groupPatchData;
+	
+		var groupTemp = [];
+		
+		for(var i = 0; i < group.members.length; i++){
+			
+			if(group.members[i] != curUser.name)
+				groupTemp.push(group.members[i]);
+		}
+		
+		if(groupTemp.length == 0)
+			groupTemp.push("");
+		
+	
+		groupPatchData= {"members":groupTemp};
+
+		AjaxPatch(link+"groups/" + String(group.id)+ "?access_token=" + String(curUser.key), groupPatchData, function(data){
+		
+			curUser.groups.splice(curUser.groups.indexOf(data.id),1);
+		
+			//patches the user data to include the new group
+			var userPatchData = {"groups": curUser.groups};
+			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
+			
+				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				location.href = 'groups.html';
+
+			});		
+		});		
+	};
+	self.ConnectChat = function (group)
+	{
+		
+		
+	};
 	
 };
 

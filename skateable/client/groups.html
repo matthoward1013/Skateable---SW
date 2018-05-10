@@ -45,12 +45,12 @@
                         </div>
                         <div class="modal-body">
                             <h4>Group Name</h4>
-                            <input type="text" id="groupName" placeholder="Ex: Tatooine"><br>
+                            <input type="text" id="cGroupName" placeholder="Ex: Tatooine"><br>
                             <h4>Group ID</h4>
-                            <input type="text" id="groupID" placeholder="Ex: 123"><br>
+                            <input type="text" id="cGroupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="makeButton" data-bind="click: createGroup">Make Group</button>
+                            <button type="button" class="btn btn-success" id="makeButton" onclick="createGroup()">Make Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -67,10 +67,10 @@
                         </div>
                         <div class="modal-body">
                             <h4>Enter Group ID:</h4>
-                            <input type="text" id="groupID" placeholder="Ex: 123"><br>
+                            <input type="text" id="aGroupID" placeholder="Ex: 123"><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="addexistingButton" data-bind="click: addGroup">Add Group</button>
+                            <button type="button" class="btn btn-success" id="addexistingButton" onclick="addGroup()">Add Group</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -78,14 +78,15 @@
             </div>       
                         
             <div id="groupsList">
-                        <ul>
+                        <ul id= "parentList" data-bind="foreach: uiList">
                             <li id = "list-li">
                                 <h4><strong>Group Name: </strong><span data-bind= "text: groupName"></span></h4> 
                            <h5><strong>Group ID: </strong><span data-bind= "text: groupID"></span></h5> 
 
                             <h6><strong>Members: </strong><span data-bind= "text: members"></span></h6> 
 							<div class="list-footer">
-                            <button  id="leave" data-bind="click: leaveGroup">Leave Group</button>
+                            <button  type="button" id="leave" data-bind = "click:  $parent.leaveGroup">Leave Group</button>
+                            <button  type="button" id="connect" data-bind = "click: $parent.connectChat">Connect to Chat</button>
 							</div>
  
                             </li>
