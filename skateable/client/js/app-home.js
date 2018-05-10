@@ -5,7 +5,8 @@ var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
-var meetUpList = [];
+
+var meetUpList = ko.observableArray([]);
 	
 if(curUser === null)
 	location.href = 'login.html';
@@ -199,31 +200,29 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment(comment)
+function UpdateComment()
 {
-	var newComment = comment;
+	var newComment = $("#commentText").val();
 
 	var patchData = {};
-	if(newComment !== "" && curSkateSpot.comments.length < 10)
+	if(newComment !== "" && newComment.length <=16)
 	{
-		curSkateSpot.comments.push(newComment);
-		patchData["comments"] = curSkateSpot.comments;
-	}else if (curSkateSpot.comments.length >= 10)
-	{
-		curSkateSpot.comments.reverse();
-		curSkateSpot.comments.pop();
-		curSkateSpot.comments.reverse();
-		curSkateSpotcomments.push(newComment);
-		
+		if(curSkateSpot.comments.length < 10)
+		{
+			curSkateSpot.comments.push(newComment);
+			patchData["comments"] = curSkateSpot.comments;
+		}
+		else if (curSkateSpot.comments.length >= 10)
+		{
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.pop();
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.push(newComment);
+			
+		}
+			//patches the skatespot data to include the new rating and or comment
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){});
 	}
-
-		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-
-			
-		//input into ui here
-	});
 }
 
 function UpdateFavoriteSkateSpot()
@@ -255,7 +254,56 @@ function UpdateFavoriteSkateSpot()
 	});
 }
 
-function GetMeetups()
+function createMeetup()
+{
+	//$(".vmeetModal").modal('hide');
+	var day = $("#meetupDay").val();
+	var time = $("#meetupTime").val();
+	var desc = $("#description").val();
+	var date = new Date(day + " " + time);
+	var today = new Date();
+	
+	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
+	{
+		//insert data from form into here
+		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
+	
+		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
+		
+			curSkateSpot.meetups.push(data.id);
+				
+			var patchData = {"meetups": curSkateSpot.meetups};
+			
+			//patches the user data to include the new group
+			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+
+			
+				//input into group ui list here
+			});		
+		});
+	}
+	else
+	{
+			if(day === "" && time === "" && desc === "")
+			{
+				alert("Please enter in all fields");
+			}
+			else if(desc.length >=30)
+			{
+				alert("Description cannot be more that 30 characters");
+				
+			}
+			else if(today > day)
+			{
+				alert("The Meetup cannot be in the past!");
+			}
+		
+		
+	}
+}
+
+function getMeetups ()
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
@@ -282,21 +330,21 @@ function GetMeetups()
 		//for each group the user has, fetch the group information from the db
 		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
 
-			meetupDay = new Date(value.dayOfMeetup);
 			
 			$.each(data, function(i, value){
+				meetupDay = new Date(value.dayOfMeetup);
 				if(today.getMonth() >=  meetupDay.getMonth())
 				{
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
 						if(today.getDate() >= meetupDay.getDate())
-							meetupList.push(value);
+							self.meetupList.push(value);
 						else
 							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
-						meetupList.push(value);
+						self.meetupList.push(value);
 					}
 				}
 				else
@@ -307,47 +355,6 @@ function GetMeetups()
 			//test to create a group status: working
 		});
 	}
-}
-
-function CreateMeetup()
-{
-
-	//insert data from form into here
-	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
-	
-	AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
-		
-		meetupList.push(data);
-		curSkateSpot.meetups.push(data.id);
-				
-		var patchData = {"meetups": curSkateSpot.meetups};
-		
-		//patches the user data to include the new group
-		AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-			//return data;
-			
-			//input into group ui list here
-		});		
-	});
-}
-
-//needs skateSpot id to patch 
-function UpdateMeetup()
-{
-	var patchData = {};
-	var newMember = curUser.name;
-
-	curMeetup.members.append(newMember);
-	patchData["members"] = curSkateSpot.members;
-
-		//patches the user data to include the new group
-	AjaxPatch(link + "meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-			
-		//input into ui here
-	});
-	
 }
 
 
@@ -361,9 +368,9 @@ let SkateSpot = function (skateSpot) {
     this.streetAddress = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(false);
-	this.comments = ko.observableArray();
-	this.meetups = ko.observableArray();
-	this.rating = ko.observable();
+	this.comments = [];
+	this.meetups = [];
+	this.rating = 0;
 };
 
 //class to store each meetup at a skatespot
@@ -380,6 +387,31 @@ let group = function(group){
 	this.members= ko.observableArray();
 };
 
+function rightArrowScroll () {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === 0) {
+            return;
+        } else {
+            let nextCmt = currentCmt - 1;
+            $('#comment').text(curSkateSpot.comments[nextCmt]);
+        }
+}
+    
+function leftArrowScroll() {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === curSkateSpot.comments.length - 1) {
+            console.log("No more");
+            return;
+        } else {
+            let previousCmt = currentCmt + 1;
+            console.log(previousCmt);
+            $('#comment').text(curSkateSpot.comments[previousCmt]);
+            if (currentCmt === 0) {
+                $('#comment').text(curSkateSpot.comments[1]);
+            }
+        }
+}
+
 
 let ViewModel = function () {
     let self = this;
@@ -388,6 +420,8 @@ let ViewModel = function () {
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
+
+
     
     //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
@@ -419,8 +453,15 @@ let ViewModel = function () {
 				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
+<<<<<<< HEAD
 					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
+=======
+
+					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
+
+>>>>>>> d98c1d409eec17c30502f0920f7ccc30f162dd5a
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
@@ -449,7 +490,11 @@ let ViewModel = function () {
                     }, 500);
                 
                     infoWindow.setContent(contentString);
-                    
+                    $('#meetUpSpotName').text(curSkateSpot.name);
+                    $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
+                    if (spot.comments.length === 0) {
+                        $('#comment').text("No comments yet available!");
+                    } 
                     //Code to change Favorite button color if already favorite
                     /*if (jQuery.inArray(curSkateSpot.id, curUser.favoriteSpot !== -1)) {
                         $('#favBtn').css("background-color", "yellow");
@@ -530,8 +575,7 @@ let ViewModel = function () {
 
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
-					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"></div>
+					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
@@ -572,6 +616,14 @@ let ViewModel = function () {
             alert('Please enter a name and address!');
         }
     };
+	
+    
+    self.addComment = function () {
+        let comment = $('#commentText').val();
+        UpdateComment(comment);
+        $('#commentModal').modal('hide');
+        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
+    };
     
     //Function for sidebar animation
     
@@ -599,4 +651,8 @@ let ViewModel = function () {
     self.openModal = function() {
         pinModal.modal('show');  
     };
+	
+	$( "#vmeetModal" ).on('shown.bs.modal', function(){
+		getMeetups();});
+
 };
