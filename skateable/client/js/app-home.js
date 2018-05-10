@@ -331,6 +331,31 @@ let group = function(group){
 	this.members= ko.observableArray();
 };
 
+function rightArrowScroll () {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === 0) {
+            return;
+        } else {
+            let nextCmt = currentCmt - 1;
+            $('#comment').text(curSkateSpot.comments[nextCmt]);
+        }
+}
+    
+function leftArrowScroll() {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === curSkateSpot.comments.length - 1) {
+            console.log("No more");
+            return;
+        } else {
+            let previousCmt = currentCmt + 1;
+            console.log(previousCmt);
+            $('#comment').text(curSkateSpot.comments[previousCmt]);
+            if (currentCmt === 0) {
+                $('#comment').text(curSkateSpot.comments[1]);
+            }
+        }
+}
+
 
 let ViewModel = function () {
     let self = this;
@@ -372,7 +397,7 @@ let ViewModel = function () {
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>

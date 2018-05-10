@@ -287,6 +287,43 @@ width: 100%;
 .fa:active {
     color: black;
 }
+#commentButton:focus {
+    outline: 0;
+}
+
+#arrowDiv {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    vertical-align: middle;
+    display: inline;
+    float: none;
+    bottom: 0;
+}
+
+.arrowBtn {
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+#leftArrowCmt {
+    font-size: 15px;
+    
+}
+#rightArrowCmt {
+    font-size: 15px;
+}
+
+#leftArrowCmt:focus {
+    outline: 0;
+}
+#rightArrowCmt:focus {
+    outline: 0;
+}
+
 
 #commentButton {
     font-size: 30px;
