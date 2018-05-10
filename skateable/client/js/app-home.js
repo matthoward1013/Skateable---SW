@@ -5,8 +5,9 @@ var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
+var meetupList = [];
 
-var meetUpList = ko.observableArray([]);
+
 	
 if(curUser === null)
 	location.href = 'login.html';
@@ -266,13 +267,13 @@ function createMeetup()
 	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
 	{
 		//insert data from form into here
-		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
+		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
 	
 		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
-			curSkateSpot.meetups.push(data.id);
+			curSkateSpot.currentMeetups.push(data.id);
 				
-			var patchData = {"meetups": curSkateSpot.meetups};
+			var patchData = {"currentMeetups": curSkateSpot.currentMeetups};
 			
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
@@ -303,7 +304,7 @@ function createMeetup()
 	}
 }
 
-function getMeetups ()
+function getMeetups (callback)
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
@@ -311,7 +312,8 @@ function getMeetups ()
 	var today = new Date();
 	var meetupDay;
 
-	$.each(curSkateSpot.meetups, function(i, value){
+
+	$.each(curSkateSpot.currentMeetups, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
 		count++;
@@ -321,40 +323,47 @@ function getMeetups ()
 	filter += filterEnd;
 	
 	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.currentMeetups[0] + "\"}}";
 	}
 	
 	if (count >= 1)
 	{
 		var meetUpsExpired = [];
+		var value;
 		//for each group the user has, fetch the group information from the db
 		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-
 			
-			$.each(data, function(i, value){
+			for(var i = 0; i < data.length; i++)
+			{
+				value = data[i];
 				meetupDay = new Date(value.dayOfMeetup);
-				if(today.getMonth() >=  meetupDay.getMonth())
+				if(today.getMonth() <=  meetupDay.getMonth())
 				{
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
-						if(today.getDate() >= meetupDay.getDate())
-							self.meetupList.push(value);
-						else
-							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+						if(today.getDate() <= meetupDay.getDate())
+						{
+							meetupList.push(value);
+							callback(value);
+						}
+						//else
+							//AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
-						self.meetupList.push(value);
+						meetupList.push(value);
 					}
 				}
 				else
 				{
-					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					//AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 				}
-			});
+			}
 			//test to create a group status: working
+
 		});
 	}
+
 }
 
 
@@ -369,7 +378,7 @@ let SkateSpot = function (skateSpot) {
     this.marker = ko.observable();
     this.visible = ko.observable(false);
 	this.comments = [];
-	this.meetups = [];
+	this.currentMeetups = [];
 	this.rating = 0;
 };
 
@@ -427,6 +436,7 @@ let ViewModel = function () {
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
+	self.uiList = ko.observableArray([]);
 
 
     
@@ -644,6 +654,11 @@ let ViewModel = function () {
     };
 	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
-		getMeetups();});
+		getMeetups( function(temp){
+			self.uiList.push(temp);
+		});			
+	});
+		
+
 
 };
