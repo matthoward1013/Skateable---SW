@@ -165,6 +165,15 @@ a {
     margin: 0 auto;
     width: 90%;
 }
+.modal-body3 {
+	text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 90%;
+}
+ul {
+  list-style-type: none;
+}
 #pinName {
     margin-left: 10px;
     height: auto;
@@ -256,14 +265,16 @@ width: 100%;
 
 #content-info-window {
     text-align: center;
-    width: 400px;
+    width: 300px;
 	border-radius: 4px;
 }
 
 #comment-box {
     width: 100%;
     max-height: 50%;
-    height: 100px;
+    min-height: 100px;
+    overflow-y: scroll;
+    height: auto;
     border: 2px black solid;
     display: grid;
     vertical-align: middle;
@@ -276,6 +287,61 @@ width: 100%;
     font-style: italic;
     font-size: 18px;
     margin: 0 auto;
+}
+
+.fa {
+    color: grey;
+}
+
+.fa:active {
+    color: black;
+}
+#commentButton:focus {
+    outline: 0;
+}
+
+#arrowDiv {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    vertical-align: middle;
+    display: inline;
+    float: none;
+    bottom: 0;
+}
+
+.arrowBtn {
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+#leftArrowCmt {
+    font-size: 15px;
+    
+}
+#rightArrowCmt {
+    font-size: 15px;
+}
+
+#leftArrowCmt:focus {
+    outline: 0;
+}
+#rightArrowCmt:focus {
+    outline: 0;
+}
+
+
+#commentButton {
+    font-size: 30px;
+    border-radius: 4px;
+    border: none;
+    position: absolute;
+    text-decoration: none;
+    background-color: transparent;
+    color: white;
 }
 
 #buttons {
@@ -311,7 +377,6 @@ width: 100%;
     margin-left: 5px;
     margin-right: 5px;
 	border-radius: 4px;
-
 }
 
 .box-third {
