@@ -5,7 +5,6 @@ var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
-var meetUpList = [];
 	
 if(curUser === null)
 	location.href = 'login.html';
@@ -199,31 +198,29 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment(comment)
+function UpdateComment()
 {
-	var newComment = comment;
+	var newComment = $("#").val();
 
 	var patchData = {};
-	if(newComment !== "" && curSkateSpot.comments.length < 10)
+	if(newComment !== "" && newComment.length <=16)
 	{
-		curSkateSpot.comments.push(newComment);
-		patchData["comments"] = curSkateSpot.comments;
-	}else if (curSkateSpot.comments.length >= 10)
-	{
-		curSkateSpot.comments.reverse();
-		curSkateSpot.comments.pop();
-		curSkateSpot.comments.reverse();
-		curSkateSpotcomments.push(newComment);
-		
+		if(curSkateSpot.comments.length < 10)
+		{
+			curSkateSpot.comments.push(newComment);
+			patchData["comments"] = curSkateSpot.comments;
+		}
+		else if (curSkateSpot.comments.length >= 10)
+		{
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.pop();
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.push(newComment);
+			
+		}
+			//patches the skatespot data to include the new rating and or comment
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){});
 	}
-
-		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-
-			
-		//input into ui here
-	});
 }
 
 function UpdateFavoriteSkateSpot()
@@ -255,99 +252,53 @@ function UpdateFavoriteSkateSpot()
 	});
 }
 
-function GetMeetups()
+function createMeetup()
 {
-	var filter = "{\"where\":{\"or\":[";
-	var filterEnd = "]}}";
-    var count = 0;
+	//$(".vmeetModal").modal('hide');
+	var day = $("#meetupDay").val();
+	var time = $("#meetupTime").val();
+	var desc = $("#description").val();
+	var date = new Date(day + " " + time);
 	var today = new Date();
-	var meetupDay;
-
-	$.each(curSkateSpot.meetups, function(i, value){
-		
-		filter += "{\"id\":\"" + value + "\"},";
-		count++;
-	});
 	
-	filter = filter.replace(/,\s*$/, "");
-	filter += filterEnd;
-	
-	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
-	}
-	
-	if (count >= 1)
+	if(day != "" && time != "" && desc != "" && desc.length <=30 && today < date)
 	{
-		var meetUpsExpired = [];
-		//for each group the user has, fetch the group information from the db
-		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-
-			meetupDay = new Date(value.dayOfMeetup);
+		//insert data from form into here
+		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
+	
+		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
+		
+			curSkateSpot.meetups.push(data.id);
+				
+			var patchData = {"meetups": curSkateSpot.meetups};
 			
-			$.each(data, function(i, value){
-				if(today.getMonth() >=  meetupDay.getMonth())
-				{
-					if(today.getMonth() ===  meetupDay.getMonth())
-					{
-						if(today.getDate() >= meetupDay.getDate())
-							meetupList.push(value);
-						else
-							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
-					}
-					else
-					{
-						meetupList.push(value);
-					}
-				}
-				else
-				{
-					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
-				}
-			});
-			//test to create a group status: working
+			//patches the user data to include the new group
+			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+
+			
+				//input into group ui list here
+			});		
 		});
 	}
-}
-
-function CreateMeetup()
-{
-
-	//insert data from form into here
-	var data = {"dayOfMeetup":"","description":"","listOfMembers": [curUser.name]};
-	
-	AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
-		
-		meetupList.push(data);
-		curSkateSpot.meetups.push(data.id);
+	else
+	{
+			if(day == "" && time == "" && desc == "")
+			{
+				alert("Please enter in all fields");
+			}
+			else if(desc.length >=30)
+			{
+				alert("Description cannot be more that 30 characters")
 				
-		var patchData = {"meetups": curSkateSpot.meetups};
+			}
+			else if(today > day)
+			{
+				alert("The Meetup cannot be in the past!");
+			}
 		
-		//patches the user data to include the new group
-		AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-			//return data;
-			
-			//input into group ui list here
-		});		
-	});
-}
-
-//needs skateSpot id to patch 
-function UpdateMeetup()
-{
-	var patchData = {};
-	var newMember = curUser.name;
-
-	curMeetup.members.append(newMember);
-	patchData["members"] = curSkateSpot.members;
-
-		//patches the user data to include the new group
-	AjaxPatch(link + "meetups/"+ String(curMeetup.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-			
-		//input into ui here
-	});
-	
+		
+	}
 }
 
 
@@ -388,6 +339,7 @@ let ViewModel = function () {
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
+	self.meetUpList = ko.observableArray([]);
     
     //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
@@ -576,6 +528,60 @@ let ViewModel = function () {
             alert('Please enter a name and address!');
         }
     };
+	
+	self.getMeetups = function ()
+{
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+    var count = 0;
+	var today = new Date();
+	var meetupDay;
+
+	$.each(curSkateSpot.meetups, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		var meetUpsExpired = [];
+		//for each group the user has, fetch the group information from the db
+		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+
+			meetupDay = new Date(value.dayOfMeetup);
+			
+			$.each(data, function(i, value){
+				if(today.getMonth() >=  meetupDay.getMonth())
+				{
+					if(today.getMonth() ===  meetupDay.getMonth())
+					{
+						if(today.getDate() >= meetupDay.getDate())
+							meetupList.push(value);
+						else
+							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					}
+					else
+					{
+						meetupList.push(value);
+					}
+				}
+				else
+				{
+					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+				}
+			});
+			//test to create a group status: working
+		});
+	}
+};
     
     //Function for sidebar animation
     
