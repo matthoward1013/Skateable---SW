@@ -261,7 +261,7 @@ function createMeetup()
 	var date = new Date(day + " " + time);
 	var today = new Date();
 	
-	if(day != "" && time != "" && desc != "" && desc.length <=30 && today < date)
+	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
 	{
 		//insert data from form into here
 		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
@@ -283,13 +283,13 @@ function createMeetup()
 	}
 	else
 	{
-			if(day == "" && time == "" && desc == "")
+			if(day === "" && time === "" && desc === "")
 			{
 				alert("Please enter in all fields");
 			}
 			else if(desc.length >=30)
 			{
-				alert("Description cannot be more that 30 characters")
+				alert("Description cannot be more that 30 characters");
 				
 			}
 			else if(today > day)
