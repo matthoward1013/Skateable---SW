@@ -406,7 +406,7 @@ function leftArrowScroll() {
             let previousCmt = currentCmt + 1;
             console.log(previousCmt);
             $('#comment').text(curSkateSpot.comments[previousCmt]);
-            if (currentCmt === 0) {
+            if (previousCmt === 1) {
                 $('#comment').text(curSkateSpot.comments[1]);
             }
         }
