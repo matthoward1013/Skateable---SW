@@ -156,7 +156,15 @@ a {
     margin: 0 auto;
     width: 70%;
 }
-
+.modal-body2 {
+	text-align: left;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 90%;
+}
 #pinName {
     margin-left: 10px;
     height: auto;
@@ -174,9 +182,35 @@ a {
 }
 
 #ratingButtons {
-    width: 60%;
+    width: 0%;
+}
+.modal-title{
+	font-size: 25px;
+}
+h7, h8, h9{
+width: 100%;
+	text-align: center;
+}
+#meetupDay{
+	margin-left: 10px;
+	margin-bottom: 10px;
+    height: auto;
 }
 
+#description{
+	width: 100%;
+    min-height: 50px;
+    height: 10%;
+    overflow: hidden;
+	margin-bottom: 10px;
+}
+#yesbttn{
+	margin-left: 5px;
+}
+#nobttn{
+	margin-left: 5px;
+
+}
 #menu-button:focus {
     outline: 0;
 }
@@ -219,10 +253,10 @@ a {
 #content-info-window {
     text-align: center;
     width: 400px;
+	border-radius: 4px;
 }
 
 #comment-box {
-    margin: 0 auto;
     width: 100%;
     max-height: 50%;
     height: 150px;
@@ -246,6 +280,8 @@ a {
     margin-top: 15px;
     margin-left: 5px;
     margin-right: 5px;
+	border-radius: 4px;
+
 }
 
 .nayBtn {
@@ -259,6 +295,8 @@ a {
     margin-top: 15px;
     margin-left: 5px;
     margin-right: 5px;
+	border-radius: 4px;
+
 }
 
 .box-third {
@@ -269,6 +307,23 @@ a {
 
 #favBtn {
     margin-bottom: 10px;
-    border: 1px darkgrey solid;
-    background-color: white;
+    background-color: yellow;
+    color: black;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
+}
+#meetupBtn
+{
+	background-color:  #0066cc;
+    color: white;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
 }
