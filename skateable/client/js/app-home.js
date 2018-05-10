@@ -419,7 +419,7 @@ let ViewModel = function () {
 				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
-			
+					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
                     <div id="comment-box"></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
@@ -530,6 +530,8 @@ let ViewModel = function () {
 
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
+					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
+                    <div id="comment-box"></div>
                     <div id="comment-box"></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>

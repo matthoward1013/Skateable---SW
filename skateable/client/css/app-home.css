@@ -331,3 +331,14 @@ width: 100%;
     text-align: center;
     border-radius: 4px;
 }
+#viewmeetupBtn
+{
+	background-color: navy;
+    color: white;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
+}
