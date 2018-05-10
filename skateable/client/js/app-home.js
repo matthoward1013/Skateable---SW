@@ -301,6 +301,60 @@ function createMeetup()
 	}
 }
 
+function getMeetups ()
+{
+	var filter = "{\"where\":{\"or\":[";
+	var filterEnd = "]}}";
+    var count = 0;
+	var today = new Date();
+	var meetupDay;
+
+	$.each(curSkateSpot.meetups, function(i, value){
+		
+		filter += "{\"id\":\"" + value + "\"},";
+		count++;
+	});
+	
+	filter = filter.replace(/,\s*$/, "");
+	filter += filterEnd;
+	
+	if(count == 1){
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
+	}
+	
+	if (count >= 1)
+	{
+		var meetUpsExpired = [];
+		//for each group the user has, fetch the group information from the db
+		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
+
+			
+			$.each(data, function(i, value){
+				meetupDay = new Date(value.dayOfMeetup);
+				if(today.getMonth() >=  meetupDay.getMonth())
+				{
+					if(today.getMonth() ===  meetupDay.getMonth())
+					{
+						if(today.getDate() >= meetupDay.getDate())
+							self.meetupList.push(value);
+						else
+							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					}
+					else
+					{
+						self.meetupList.push(value);
+					}
+				}
+				else
+				{
+					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+				}
+			});
+			//test to create a group status: working
+		});
+	}
+}
+
 
 //Class to store each SkateSpot information
 let SkateSpot = function (skateSpot) {
@@ -312,9 +366,9 @@ let SkateSpot = function (skateSpot) {
     this.streetAddress = ko.observable('');
     this.marker = ko.observable();
     this.visible = ko.observable(false);
-	this.comments = ko.observableArray();
-	this.meetups = ko.observableArray();
-	this.rating = ko.observable();
+	this.comments = [];
+	this.meetups = [];
+	this.rating = 0;
 };
 
 //class to store each meetup at a skatespot
@@ -340,6 +394,8 @@ let ViewModel = function () {
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
 	self.meetUpList = ko.observableArray([]);
+
+
     
     //Init infowindow
     let infoWindow = new google.maps.InfoWindow({
@@ -372,7 +428,7 @@ let ViewModel = function () {
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 
-					<button id="viewmeetupBtn" data-bind = "click: getMeetups" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
+					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
                     <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
 
                     <div id="buttons">
@@ -530,59 +586,6 @@ let ViewModel = function () {
         }
     };
 	
-	self.getMeetups = function ()
-{
-	var filter = "{\"where\":{\"or\":[";
-	var filterEnd = "]}}";
-    var count = 0;
-	var today = new Date();
-	var meetupDay;
-
-	$.each(curSkateSpot.meetups, function(i, value){
-		
-		filter += "{\"id\":\"" + value + "\"},";
-		count++;
-	});
-	
-	filter = filter.replace(/,\s*$/, "");
-	filter += filterEnd;
-	
-	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
-	}
-	
-	if (count >= 1)
-	{
-		var meetUpsExpired = [];
-		//for each group the user has, fetch the group information from the db
-		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-
-			meetupDay = new Date(value.dayOfMeetup);
-			
-			$.each(data, function(i, value){
-				if(today.getMonth() >=  meetupDay.getMonth())
-				{
-					if(today.getMonth() ===  meetupDay.getMonth())
-					{
-						if(today.getDate() >= meetupDay.getDate())
-							self.meetupList.push(value);
-						else
-							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
-					}
-					else
-					{
-						self.meetupList.push(value);
-					}
-				}
-				else
-				{
-					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
-				}
-			});
-			//test to create a group status: working
-		});
-	}
-};
     
     self.addComment = function () {
         let comment = $('#commentText').val();
@@ -617,4 +620,8 @@ let ViewModel = function () {
     self.openModal = function() {
         pinModal.modal('show');  
     };
+	
+	$( "#vmeetModal" ).on('shown.bs.modal', function(){
+		getMeetups();});
+
 };
