@@ -198,9 +198,9 @@ function nayRating()
 }
 
 //needs skateSpot id to patch 
-function UpdateComment()
+function UpdateComment(comment)
 {
-	var newComment = $("#").val();
+	var newComment = comment;
 
 	var patchData = {};
 	if(newComment !== "" && newComment.length <=16)
@@ -372,7 +372,7 @@ let ViewModel = function () {
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn" data-toggle="modal" data-target="#vmeetModal">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[0] + `</span></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
 					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
@@ -587,6 +587,7 @@ let ViewModel = function () {
         let comment = $('#commentText').val();
         UpdateComment(comment);
         $('#commentModal').modal('hide');
+        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
     };
     
     //Function for sidebar animation
