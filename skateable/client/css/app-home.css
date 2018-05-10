@@ -182,7 +182,7 @@ a {
 }
 
 #ratingButtons {
-    width: 60%;
+    width: 0%;
 }
 .modal-title{
 	font-size: 25px;
@@ -253,10 +253,10 @@ width: 100%;
 #content-info-window {
     text-align: center;
     width: 400px;
+	border-radius: 4px;
 }
 
 #comment-box {
-    margin: 0 auto;
     width: 100%;
     max-height: 50%;
     height: 150px;
@@ -280,6 +280,8 @@ width: 100%;
     margin-top: 15px;
     margin-left: 5px;
     margin-right: 5px;
+	border-radius: 4px;
+
 }
 
 .nayBtn {
@@ -293,6 +295,8 @@ width: 100%;
     margin-top: 15px;
     margin-left: 5px;
     margin-right: 5px;
+	border-radius: 4px;
+
 }
 
 .box-third {
@@ -303,6 +307,23 @@ width: 100%;
 
 #favBtn {
     margin-bottom: 10px;
-    border: 1px darkgrey solid;
-    background-color: white;
+    background-color: yellow;
+    color: black;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
+}
+#meetupBtn
+{
+	background-color:  #0066cc;
+    color: white;
+    margin: 4px 0;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    text-align: center;
+    border-radius: 4px;
 }
