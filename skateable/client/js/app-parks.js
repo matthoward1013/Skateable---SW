@@ -255,6 +255,30 @@ function UpdateFavoriteSkateSpot()
 	});
 }
 
+function rightArrowScroll () {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === 0) {
+            return;
+        } else {
+            let nextCmt = currentCmt - 1;
+            $('#comment').text(curSkateSpot.comments[nextCmt]);
+        }
+}
+    
+function leftArrowScroll() {
+        let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
+        if (currentCmt === curSkateSpot.comments.length - 1) {
+            console.log("No more");
+            return;
+        } else {
+            let previousCmt = currentCmt + 1;
+            console.log(previousCmt);
+            $('#comment').text(curSkateSpot.comments[previousCmt]);
+            if (previousCmt === 1) {
+                $('#comment').text(curSkateSpot.comments[1]);
+            }
+        }
+}
 
 let ViewModel = function () {
     //Function for sidebar animation
@@ -314,15 +338,16 @@ let ViewModel = function () {
                  let contentString = 
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
-				    <p>` + spot.streetAddress + `</p>
+				    <h4>` + spot.streetAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
-                    <div id="comment-box"></div>
-  					<div class='button-wrapper'>
-					<div id = "rating">
-                    <button id="yayBtn" onclick ="yayRating();">Yay </button>
-				    <h4></h4>
-                    <button id="nayBtn" onclick ="nayRating();">Nay </button></div>
-					</div>
+					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
+					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
+                    <div id="buttons">
+                        <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
+					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
+                        <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
+                        <div style="clear: both;"></div>
                     </div>`;
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(spot.lat, spot.lng),
@@ -361,7 +386,12 @@ let ViewModel = function () {
 		
 		
 	};
-	
+	self.addComment = function () {
+        let comment = $('#commentText').val();
+        UpdateComment(comment);
+        $('#commentModal').modal('hide');
+        $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length - 1]);
+    };
 	    let panelVis = false,
         sidebar = $('#side-bar'),
         menuButton = $("#menu-button"),
