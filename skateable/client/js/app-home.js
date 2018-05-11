@@ -284,11 +284,11 @@ function createMeetup()
 	}
 	else
 	{
-			if(day === "" && time === "" && desc === "")
+			if(day === "" || time === "" || desc === "")
 			{
 				alert("Please enter in all fields");
 			}
-			else if(desc.length >=30)
+			else if(desc.length >=160)
 			{
 				alert("Description cannot be more that 30 characters");
 				
