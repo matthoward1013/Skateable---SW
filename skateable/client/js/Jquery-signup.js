@@ -17,6 +17,7 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 	}).fail(function(object, textStatus, errorThrown){
 				if(errorThrown === "Unprocessable Entity"){
 					alert("Please Enter Valid Fields");
+							document.getElementById("signupbtn").disabled = false;
                 }
                 
 				else
@@ -27,7 +28,8 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 }
 
 function signUp(){
-	signupbtn
+	
+		document.getElementById("signupbtn").disabled = true;
 
 	var tempName = document.all[16].value +" "+ document.all[21].value;
 	

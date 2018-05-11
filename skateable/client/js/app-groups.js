@@ -21,7 +21,8 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload Browser");
+				alert("Could not connect to the server! Reloading Browser");
+				location.href = 'groups.html';
 			}
 	});
 }
@@ -39,7 +40,8 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not connect to the server! Reloading Browser");
+				location.href = 'groups.html';
 	});
 }
 
@@ -56,6 +58,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
+<<<<<<< HEAD
 				//alert("Could not connect to the server! please reload browser");
 	});
 }
@@ -73,6 +76,10 @@ function AjaxPUT(url,data, callback)
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! please reload browser");
+=======
+				alert("Could not connect to the server! Reloading Browser");
+				location.href = 'groups.html';
+>>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
 	});
 }
 
@@ -118,11 +125,16 @@ function createGroup()
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
+	document.getElementById("makeButton").disabled = true;
 	var groupIdTemp = $("#cGroupID").val();
 	var groupNTemp = $("#cGroupName").val();
 	if(groupNTemp != "" && groupIdTemp != "")
 	{
+<<<<<<< HEAD
 		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name], "messages":[]};
+=======
+		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name],"messages":[]};
+>>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
 	
 		AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
 		
@@ -148,6 +160,7 @@ function addGroup()
 {
 	//insert data from form into here
 	//user enters in groupId and from that it will query the db
+	document.getElementById("addexistingButton").disabled = true;
 	var groupTemp = $("#aGroupID").val();
 	var tempMembers = [];
 	if(groupTemp != "Ex:123" && groupTemp != "")
@@ -263,6 +276,10 @@ let ViewModel = function () {
 	//group is the currently selected group when the user hits the leave group button
 	self.leaveGroup = function (group)
 	{
+		for (var i = 0; i < document.getElementsByClassName("leave").length; i++)
+		{
+			document.getElementsByClassName("leave")[i].disabled = true;
+		}
 		var groupPatchData;
 	
 		var groupTemp = [];
@@ -294,6 +311,7 @@ let ViewModel = function () {
 		});		
 	};
 	self.ConnectChat = function (group)
+<<<<<<< HEAD
 	{		
 		document.getElementById("chatBox").innerHTML = ""; 
 		curGroup = group;
@@ -316,6 +334,12 @@ let ViewModel = function () {
 				}
 			});	
 		});
+=======
+	{
+		curGroup = group;
+		
+		
+>>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
 	};
 	
 };

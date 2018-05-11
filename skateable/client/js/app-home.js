@@ -6,7 +6,7 @@ var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 
-var meetUpList = ko.observableArray([]);
+
 	
 if(curUser === null)
 	location.href = 'login.html';
@@ -73,7 +73,8 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){			
-				alert("Could not get SkateSpots! please reload Browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 			}
 	});
 }
@@ -91,7 +92,8 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 //function that posts json data to server
@@ -107,7 +109,8 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 //function that posts json data to server
@@ -122,13 +125,14 @@ function AjaxDelete(url, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 
 function yayRating()
 {
-	
+	document.getElementsByClassName("yayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -158,6 +162,7 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
 
 			});
 		});
@@ -166,6 +171,7 @@ function yayRating()
 
 function nayRating()
 {
+	document.getElementsByClassName("nayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -194,6 +200,7 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
 
 			});
 		});
@@ -202,6 +209,7 @@ function nayRating()
 //needs skateSpot id to patch 
 function UpdateComment(comment)
 {
+	document.getElementById("makeComment").disabled = true;
 	var newComment = comment;
 
 	var patchData = {};
@@ -221,12 +229,16 @@ function UpdateComment(comment)
 			
 		}
 			//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){});
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+			document.getElementById("makeComment").disabled = false;
+		});
 	}
 }
 
 function UpdateFavoriteSkateSpot()
 {
+	document.getElementById("favBtn").disabled = true;
 	var patchData = {};
 	
 	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
@@ -247,7 +259,7 @@ function UpdateFavoriteSkateSpot()
 	AjaxPatch(link +"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-	
+		document.getElementById("favBtn").disabled = false;
 
 			
 		//input into ui here
@@ -256,7 +268,6 @@ function UpdateFavoriteSkateSpot()
 
 function createMeetup()
 {
-	//$(".vmeetModal").modal('hide');
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -266,18 +277,20 @@ function createMeetup()
 	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
 	{
 		//insert data from form into here
-		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":[""]};
-	
+		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
+		
+		document.getElementById("makeButton").disabled = true;
 		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
-			curSkateSpot.meetups.push(data.id);
+			curSkateSpot.currentMeetups.push(data.id);
 				
-			var patchData = {"meetups": curSkateSpot.meetups};
+			var patchData = {"currentMeetups": curSkateSpot.currentMeetups};
 			
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-
+				document.getElementById("makeButton").disabled = false;
+				$('#meetModal').modal('hide');
 			
 				//input into group ui list here
 			});		
@@ -285,33 +298,37 @@ function createMeetup()
 	}
 	else
 	{
-			if(day === "" && time === "" && desc === "")
+			if(day === "" || time === "" || desc === "")
 			{
 				alert("Please enter in all fields");
 			}
-			else if(desc.length >=30)
+			else if(desc.length >=160)
 			{
 				alert("Description cannot be more that 30 characters");
 				
 			}
-			else if(today > day)
+			else if(today > date)
 			{
 				alert("The Meetup cannot be in the past!");
 			}
 		
 		
 	}
+	
 }
 
-function getMeetups ()
+function getMeetups (callback)
 {
 	var filter = "{\"where\":{\"or\":[";
 	var filterEnd = "]}}";
     var count = 0;
 	var today = new Date();
 	var meetupDay;
+	var meetupList = [];
 
-	$.each(curSkateSpot.meetups, function(i, value){
+
+
+	$.each(curSkateSpot.currentMeetups, function(i, value){
 		
 		filter += "{\"id\":\"" + value + "\"},";
 		count++;
@@ -321,40 +338,51 @@ function getMeetups ()
 	filter += filterEnd;
 	
 	if(count == 1){
-		filter = "{\"where\":{\"id\":\"" + curSkateSpot.meetups[0] + "\"}}";
+		filter = "{\"where\":{\"id\":\"" + curSkateSpot.currentMeetups[0] + "\"}}";
 	}
 	
 	if (count >= 1)
 	{
 		var meetUpsExpired = [];
+		var value;
 		//for each group the user has, fetch the group information from the db
 		AjaxGet(link+ "meetups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-
 			
-			$.each(data, function(i, value){
+			for(var i = 0; i < data.length; i++)
+			{
+				value = data[i];
 				meetupDay = new Date(value.dayOfMeetup);
-				if(today.getMonth() >=  meetupDay.getMonth())
+				if(today.getMonth() <=  meetupDay.getMonth())
 				{
 					if(today.getMonth() ===  meetupDay.getMonth())
 					{
-						if(today.getDate() >= meetupDay.getDate())
-							self.meetupList.push(value);
+						if(today.getDate() <= meetupDay.getDate())
+						{
+							meetupList.push(value);
+						}
 						else
 							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
-						self.meetupList.push(value);
+						meetupList.push(value);
 					}
 				}
 				else
 				{
 					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 				}
-			});
+			}
 			//test to create a group status: working
+			callback(meetupList);
 		});
 	}
+	else{
+		
+		callback(-1);
+		
+	}
+
 }
 
 
@@ -369,7 +397,7 @@ let SkateSpot = function (skateSpot) {
     this.marker = ko.observable();
     this.visible = ko.observable(false);
 	this.comments = [];
-	this.meetups = [];
+	this.currentMeetups = [];
 	this.rating = 0;
 };
 
@@ -427,6 +455,7 @@ let ViewModel = function () {
 	
 	var skateSpots = [];
 	let markers = ko.observableArray([]);
+	self.uiList = ko.observableArray([]);
 
 
     
@@ -539,8 +568,8 @@ let ViewModel = function () {
     self.setPin = function() {
 		document.getElementById("yesButton").disabled = true;
 		
-        let pinAddress = $('#places-search').val();
-        let pinName = $('#pinName').val();
+        var pinAddress = $('#places-search').val();
+        var pinName = $('#pinName').val();
         if (pinAddress !== '' && pinName !== '') {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
@@ -553,8 +582,8 @@ let ViewModel = function () {
 
 					if(data.length === 0)
 					{
-						AjaxPost(link+"skatespots?access_token=" + String(curUser.key), dataToPost, function(data){
-							curSkateSpot = data;
+						AjaxPost(link+"skatespots?access_token=" + String(curUser.key), dataToPost, function(newSpot){
+							curSkateSpot = newSpot;
 
 							UpdateFavoriteSkateSpot(curSkateSpot);
 						
@@ -569,15 +598,15 @@ let ViewModel = function () {
 							});
 							let contentString = 
                     `<div id="content-info-window">
-				    <h2>` + data.name + `</h2>
-				    <h4>` + data.streetAddress + `</h4>
+				    <h2>` + curSkateSpot.spotName + `</h2>
+				    <h4>` + pinAddress + `</h4>
                     <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
-                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + data.comments[data.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
+                    <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + curSkateSpot.comments[curSkateSpot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
-					   <div class="box-third"><h3>` + data.rating + `</h3></div>
+					   <div class="box-third"><h3>` + curSkateSpot.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
                     </div>`;
@@ -644,6 +673,56 @@ let ViewModel = function () {
     };
 	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
-		getMeetups();});
+		getMeetups( function(temp){
+	
+			var ul = document.getElementById("parentList");
+			while(ul.firstChild) ul.removeChild(ul.firstChild);
+			self.uiList([]);
+			
+			var tempList = temp;
+			var tempDate;
+			var tmpMinString;
+			var TmpHourString;
+			var amOrPm;
+			
+			if(temp != -1)
+			{
+				for(var i = 0;  i < tempList.length; i++)
+				{
+					tempDate = new Date(temp[i].dayOfMeetup);
+					if(tempDate.getMinutes() < 10)
+					{
+						tmpMinString = "0" + String(tempDate.getMinutes());
+					}
+					else
+					{
+						tmpMinString = String(tempDate.getMinutes());
+					}
+					
+					if(tempDate.getHours() > 12)
+					{
+						tmpHourString = String(tempDate.getHours() - 12);
+						amOrPm = "PM";
+					}
+					else
+					{
+						if(tempDate.getHours() == 0)
+						{
+							tmpHourString = "12";
+						}
+						else{
+							tmpHourString = String(tempDate.getHours());
+						}
+						amOrPm = "AM";
+					}
+				
+					tempList[i].dayOfMeetup =  tempDate.toDateString() + " @ " + tmpHourString + ":" + tmpMinString + " " + amOrPm;
+					self.uiList.push(tempList[i]);
+				}
+			}
+		});			
+	});
+		
+
 
 };
