@@ -129,7 +129,7 @@ function AjaxPatch(url,data, callback)
 
 function yayRating()
 {
-	
+	document.getElementsByClassName("yayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -153,13 +153,14 @@ function yayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link +"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				console.log(data);
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
+
 			});
 		});
 	
@@ -167,6 +168,7 @@ function yayRating()
 
 function nayRating()
 {
+	document.getElementsByClassName("nayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -189,13 +191,14 @@ function nayRating()
 		spotPatchData["rating"] = curSkateSpot.rating;
 
 		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link+"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				console.log(data);
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
+
 			});
 		});
 }
@@ -203,29 +206,31 @@ function nayRating()
 //needs skateSpot id to patch 
 function UpdateComment(comment)
 {
+	document.getElementById("makeComment").disabled = true;
 	var newComment = comment;
 
 	var patchData = {};
-	if(newComment !== "" && curSkateSpot.comments.length < 10)
+	if(newComment !== "")
 	{
-		curSkateSpot.comments.push(newComment);
-		patchData["comments"] = curSkateSpot.comments;
-	}else if (curSkateSpot.comments.length >= 10)
-	{
-		curSkateSpot.comments.reverse();
-		curSkateSpot.comments.pop();
-		curSkateSpot.comments.reverse();
-		curSkateSpotcomments.push(newComment);
-		
+		if(curSkateSpot.comments.length < 10)
+		{
+			curSkateSpot.comments.push(newComment);
+			patchData["comments"] = curSkateSpot.comments;
+		}
+		else if (curSkateSpot.comments.length >= 10)
+		{
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.pop();
+			curSkateSpot.comments.reverse();
+			curSkateSpot.comments.push(newComment);
+			
+		}
+			//patches the skatespot data to include the new rating and or comment
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+			document.getElementById("makeComment").disabled = false;
+		});
 	}
-
-		//patches the skatespot data to include the new rating and or comment
-	AjaxPatch(link+"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-		console.log(data);
-			
-		//input into ui here
-	});
 }
 
 
@@ -349,6 +354,7 @@ function getMeetups (callback)
 
 function UpdateFavoriteSkateSpot()
 {
+	document.getElementById("favBtn").disabled = true;
 	var patchData = {};
 	
 	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
