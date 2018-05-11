@@ -283,7 +283,7 @@ h4, h5, h6{
     cursor: pointer;
     border-radius: 4px;
 }
-#leave
+.leave
 {
   background-color: red;
     color: white;

@@ -73,7 +73,8 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){			
-				alert("Could not get SkateSpots! please reload Browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 			}
 	});
 }
@@ -91,7 +92,8 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 //function that posts json data to server
@@ -107,7 +109,8 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 //function that posts json data to server
@@ -122,13 +125,14 @@ function AjaxDelete(url, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not get SkateSpots! reloading Browser");
+				location.href = 'index.html';
 	});
 }
 
 function yayRating()
 {
-	
+	document.getElementsByClassName("yayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -158,6 +162,7 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
 
 			});
 		});
@@ -166,6 +171,7 @@ function yayRating()
 
 function nayRating()
 {
+	document.getElementsByClassName("nayBtn")[0].disabled = true;
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -194,6 +200,7 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
 
 			});
 		});
@@ -202,6 +209,7 @@ function nayRating()
 //needs skateSpot id to patch 
 function UpdateComment(comment)
 {
+	document.getElementById("makeComment").disabled = true;
 	var newComment = comment;
 
 	var patchData = {};
@@ -221,12 +229,16 @@ function UpdateComment(comment)
 			
 		}
 			//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){});
+		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+			
+			document.getElementById("makeComment").disabled = false;
+		});
 	}
 }
 
 function UpdateFavoriteSkateSpot()
 {
+	document.getElementById("favBtn").disabled = true;
 	var patchData = {};
 	
 	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
@@ -247,7 +259,7 @@ function UpdateFavoriteSkateSpot()
 	AjaxPatch(link +"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-	
+		document.getElementById("favBtn").disabled = false;
 
 			
 		//input into ui here
@@ -266,7 +278,8 @@ function createMeetup()
 	{
 		//insert data from form into here
 		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
-	
+		
+		document.getElementById("makeButton").disabled = true;
 		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
 			curSkateSpot.currentMeetups.push(data.id);
@@ -276,6 +289,7 @@ function createMeetup()
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
+				document.getElementById("makeButton").disabled = false;
 				$('#meetModal').modal('hide');
 			
 				//input into group ui list here
@@ -346,8 +360,8 @@ function getMeetups (callback)
 						{
 							meetupList.push(value);
 						}
-						//else
-							//AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+						else
+							AjaxDelete(link +"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 					}
 					else
 					{
@@ -356,7 +370,7 @@ function getMeetups (callback)
 				}
 				else
 				{
-					//AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
+					AjaxDelete(link+"meetups/"+ String(value.id) + "?access_token=" + String(curUser.key),function(data){});	
 				}
 			}
 			//test to create a group status: working
