@@ -284,7 +284,7 @@ function createMeetup()
 	}
 	else
 	{
-			if(day === "" && time === "" && desc === "")
+			if(day === "" || time === "" || desc === "")
 			{
 				alert("Please enter in all fields");
 			}
