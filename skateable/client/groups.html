@@ -86,7 +86,7 @@
                             <h6><strong>Members: </strong><span data-bind= "text: members"></span></h6> 
 							<div class="list-footer">
                             <button  type="button" id="leave" data-bind = "click:  $parent.leaveGroup">Leave Group</button>
-                            <button  type="button" id="connect" data-bind = "click: $parent.connectChat">Connect to Chat</button>
+                            <button  type="button" id="connect" data-bind = "click: $parent.ConnectChat">Connect to Chat</button>
 							</div>
  
                             </li>
@@ -101,7 +101,7 @@
                     <form class="cursor">
                         <input type="text" id="message" placeholder="Your message here...">
                         <i></i>
-                        <input type="submit" id="msgButton" onclick="return postMessage()">
+                        <input type="submit" id="msgButton" disabled="true" onclick="postMessage()">
                     </form>
                 </div>
             </div>
