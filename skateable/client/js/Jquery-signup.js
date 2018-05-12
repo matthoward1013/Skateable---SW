@@ -30,7 +30,7 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 function signUp(){
 	
 		document.getElementById("signupbtn").disabled = true;
-
+			setTimeout(function (){document.getElementById("signupbtn").disabled = false;}, 3000);	
 	var tempName = document.all[16].value +" "+ document.all[21].value;
 	
 	if(document.all[26].value === document.all[31].value)

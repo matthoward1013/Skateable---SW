@@ -73,8 +73,7 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){			
-				alert("Could not get SkateSpots! reloading Browser");
-				location.href = 'index.html';
+				alert("Could not get data! reload Browser");
 			}
 	});
 }
@@ -92,8 +91,7 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get SkateSpots! reloading Browser");
-				location.href = 'index.html';
+				alert("Could not get data! reload Browser");
 	});
 }
 //function that posts json data to server
@@ -109,8 +107,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get SkateSpots! reloading Browser");
-				location.href = 'index.html';
+				alert("Could not get data! reload Browser");
 	});
 }
 //function that posts json data to server
@@ -125,14 +122,14 @@ function AjaxDelete(url, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get SkateSpots! reloading Browser");
-				location.href = 'index.html';
+				alert("Could not delete! reload Browser");
 	});
 }
 
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 2000);	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -172,6 +169,7 @@ function yayRating()
 function nayRating()
 {
 	document.getElementsByClassName("nayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -210,6 +208,7 @@ function nayRating()
 function UpdateComment(comment)
 {
 	document.getElementById("makeComment").disabled = true;
+	setTimeout(function (){document.getElementById("makeComment").disabled = false;}, 2000);
 	var newComment = comment;
 
 	var patchData = {};
@@ -238,7 +237,11 @@ function UpdateComment(comment)
 
 function UpdateFavoriteSkateSpot()
 {
-	document.getElementById("favBtn").disabled = true;
+	if(document.getElementById("favBtn") != null)
+	{
+		document.getElementById("favBtn").disabled = true;
+		setTimeout(function (){document.getElementById("favBtn").disabled = false;}, 2000);
+	}
 	var patchData = {};
 	
 	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
@@ -260,14 +263,15 @@ function UpdateFavoriteSkateSpot()
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
 		document.getElementById("favBtn").disabled = false;
-
-			
+	
 		//input into ui here
 	});
 }
 
 function createMeetup()
 {
+	document.getElementById("makeButton").disabled = true;
+	setTimeout(function (){document.getElementById("makeButton").disabled = false;}, 2000);
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -279,7 +283,6 @@ function createMeetup()
 		//insert data from form into here
 		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
 		
-		document.getElementById("makeButton").disabled = true;
 		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
 			curSkateSpot.currentMeetups.push(data.id);
@@ -541,6 +544,7 @@ let ViewModel = function () {
     self.getLocation = function() {
 		
 		document.getElementById("current-location").disabled = true;
+		setTimeout(function (){document.getElementById("current-location").disabled = false;}, 3000);
 		
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -567,6 +571,7 @@ let ViewModel = function () {
     
     self.setPin = function() {
 		document.getElementById("yesButton").disabled = true;
+		setTimeout(function (){document.getElementById("yesButton").disabled = false;}, 3000);
 		
         var pinAddress = $('#places-search').val();
         var pinName = $('#pinName').val();

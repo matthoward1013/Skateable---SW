@@ -130,6 +130,8 @@ function AjaxPatch(url,data, callback)
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 2000);	
+	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -159,8 +161,6 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("yayBtn")[0].disabled = false;
-
 			});
 		});
 	
@@ -169,6 +169,8 @@ function yayRating()
 function nayRating()
 {
 	document.getElementsByClassName("nayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);
+	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -197,8 +199,6 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("nayBtn")[0].disabled = false;
-
 			});
 		});
 }
@@ -207,6 +207,8 @@ function nayRating()
 function UpdateComment(comment)
 {
 	document.getElementById("makeComment").disabled = true;
+	setTimeout(function (){document.getElementById("makeComment").disabled = false;}, 2000);
+	
 	var newComment = comment;
 
 	var patchData = {};
