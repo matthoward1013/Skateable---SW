@@ -58,7 +58,6 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-<<<<<<< HEAD
 				//alert("Could not connect to the server! please reload browser");
 	});
 }
@@ -75,11 +74,8 @@ function AjaxPUT(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
-=======
 				alert("Could not connect to the server! Reloading Browser");
 				location.href = 'groups.html';
->>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
 	});
 }
 
@@ -130,11 +126,7 @@ function createGroup()
 	var groupNTemp = $("#cGroupName").val();
 	if(groupNTemp != "" && groupIdTemp != "")
 	{
-<<<<<<< HEAD
 		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name], "messages":[]};
-=======
-		var data = {"groupName":groupNTemp,"groupID":groupIdTemp,"members": [curUser.name],"messages":[]};
->>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
 	
 		AjaxPost(link+"groups?access_token=" + String(curUser.key), data, function(data){
 		
@@ -311,7 +303,6 @@ let ViewModel = function () {
 		});		
 	};
 	self.ConnectChat = function (group)
-<<<<<<< HEAD
 	{		
 		document.getElementById("chatBox").innerHTML = ""; 
 		curGroup = group;
@@ -334,14 +325,7 @@ let ViewModel = function () {
 				}
 			});	
 		});
-=======
-	{
-		curGroup = group;
-		
-		
->>>>>>> 3f427cd586a850d885fbf355ba3695101dc12e58
-	};
-	
+	}
 };
 
 ko.applyBindings(new ViewModel());
