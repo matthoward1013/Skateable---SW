@@ -328,6 +328,7 @@ let ViewModel = function () {
 		{
 			document.getElementById("chatBox").innerHTML += curGroup.messages[j] + '<br>';
 		}
+		document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 
 	}
 
