@@ -85,8 +85,10 @@
 
                             <h6><strong>Members: </strong><span data-bind= "text: members"></span></h6> 
 							<div class="list-footer">
-                            <button  type="button" class="leave" data-bind = "click:  $parent.leaveGroup">Leave Group</button>
-                            <button  type="button" class="connect" data-bind = "click: $parent.connectChat">Connect to Chat</button>
+                            <button  type="button" class="leave" id="leave" data-bind = "click:  $parent.leaveGroup">Leave Group</button>
+                            <button  type="button" id="connect" data-bind = "click: $parent.ConnectChat">Connect to Chat</button>
+                            <!-- <button  type="button" class="leave" data-bind = "click:  $parent.leaveGroup">Leave Group</button>
+                            <button  type="button" class="connect" data-bind = "click: $parent.connectChat">Connect to Chat</button> -->
 							</div>
  
                             </li>
@@ -96,12 +98,12 @@
                     </div>
                 </div>
                 <div id="messageContainer">
-                    <h1>Chat Messages</h1>
+                    <h1 id ="chatHeader">Chat</h1>
                     <div id="chatBox"></div>
                     <form class="cursor">
                         <input type="text" id="message" placeholder="Your message here...">
                         <i></i>
-                        <input type="submit" id="msgButton" onclick="return postMessage()">
+                        <button type="button" id="msgButton" disabled="true" onclick="postMessage()">Submit</button>
                     </form>
                 </div>
             </div>
