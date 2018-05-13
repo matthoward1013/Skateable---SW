@@ -22,7 +22,6 @@ function AjaxGet(url, callback)
 			},
 			error: function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! Reloading Browser");
-				location.href = 'groups.html';
 			}
 	});
 }
@@ -41,7 +40,6 @@ function AjaxPost(url,data, callback)
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! Reloading Browser");
-				location.href = 'groups.html';
 	});
 }
 
@@ -51,6 +49,22 @@ function AjaxPatch(url,data, callback)
 	$.ajax({
 			url:url,
 			method: "PATCH",
+			accept: "application/json",
+            contentType: "application/json",
+			datatype: "json",
+			data: JSON.stringify(data)
+	}).done(function (data) {
+				callback(data);
+	})
+}
+
+
+
+function AjaxPUT(url,data, callback)
+{
+	$.ajax({
+			url:url,
+			method: "PUT",
 			accept: "application/json",
             contentType: "application/json",
 			datatype: "json",
@@ -75,45 +89,39 @@ function AjaxPUT(url,data, callback)
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
 				alert("Could not connect to the server! Reloading Browser");
-				location.href = 'groups.html';
 	});
 }
 
-// post message to group model and monogo db
-//var messages = [];
+
 function postMessage()
 {
 	//insert data from form into here
 	//user enters in messages and from that it will query the db
 	var message = $("#message").val();
-	var txtmessage = document.getElementById('message').value; 
-	// messages.push(message); 
-	// //var allMessage; 
-	// for(var i = 0; i < message.length; i++)
-	// {
-	// 	allMessage += messages[i] + '<br>'; 
-	// }
-	var prevMes = document.getElementById("chatBox").innerHTML; 
-	document.getElementById("chatBox").innerHTML = prevMes + txtmessage + '<br>';
 
+
+	
 	if(message != "")
 	{
-			//console.log(data);
+			curGroup.messages.push(curUser.name + ": " + message);
+			var prevMes = document.getElementById("chatBox").innerHTML; 
+			document.getElementById("chatBox").innerHTML = prevMes + curGroup.messages[curGroup.messages.length - 1] + '<br>';
 			
-			curGroup.messages.push(message);
 	
 			var groupPatchData = {"messages": curGroup.messages};
 
 			// http://localhost:3000/api/groups/5af4b92f4365dcb3c4f53360?access_token=Ouz0cE8CfEpTlBbPFBeTFROIHGCkOROuM4Ln4OH7poApl44zctz9obJZ7t2B6ZLZ
 
 			AjaxPatch(link+"groups/"+ String(curGroup.id) + "?access_token=" + String(curUser.key), groupPatchData, function(groupData){
-				});			
+				  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+			});			
+
 	}
 	else{
 		alert("Please enter a message");
 	}
-	return false;
 }
+
 
 //creates a new group
 function createGroup()
@@ -122,6 +130,8 @@ function createGroup()
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
 	document.getElementById("makeButton").disabled = true;
+	setTimeout(function (){document.getElementById("makeButton").disabled = false;}, 2000);	
+	
 	var groupIdTemp = $("#cGroupID").val();
 	var groupNTemp = $("#cGroupName").val();
 	if(groupNTemp != "" && groupIdTemp != "")
@@ -153,6 +163,8 @@ function addGroup()
 	//insert data from form into here
 	//user enters in groupId and from that it will query the db
 	document.getElementById("addexistingButton").disabled = true;
+	setTimeout(function (){document.getElementById("addexistingButton").disabled = false;}, 2000);	
+	
 	var groupTemp = $("#aGroupID").val();
 	var tempMembers = [];
 	if(groupTemp != "Ex:123" && groupTemp != "")
@@ -271,6 +283,7 @@ let ViewModel = function () {
 		for (var i = 0; i < document.getElementsByClassName("leave").length; i++)
 		{
 			document.getElementsByClassName("leave")[i].disabled = true;
+			
 		}
 		var groupPatchData;
 	
@@ -303,29 +316,21 @@ let ViewModel = function () {
 		});		
 	};
 	self.ConnectChat = function (group)
-	{		
+	{
 		document.getElementById("chatBox").innerHTML = ""; 
 		curGroup = group;
 		document.getElementById("msgButton").disabled = false;
-		alert("Connected to " + curGroup.groupName);
+		
+		document.getElementById("chatHeader").innerHTML = curGroup.groupName + " Chat";
 
+		// populate chatbox with the messages
+		for(var j = 0; j < curGroup.messages.length; j++)
+		{
+			document.getElementById("chatBox").innerHTML += curGroup.messages[j] + '<br>';
+		}
 
-		// get request from mongodb of messages of chat
-		AjaxGet(link+"groups?filter="+ filter + "&access_token=" + String(curUser.key), function(data){
-			console.log(data);
-			
-			$.each(data, function(i, value){
-				if(data[i].groupName == curGroup.groupName)
-				{
-						// populate chatbox with the messages
-						for(var j = 0; j < data[i].messages.length; j++)
-						{
-							document.getElementById("chatBox").innerHTML += data[i].messages[j] + '<br>';
-						}
-				}
-			});	
-		});
 	}
+
 };
 
 ko.applyBindings(new ViewModel());
