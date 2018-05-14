@@ -67,7 +67,7 @@ function Login(){
 	document.getElementById("loginbtn").disabled = true;
 	setTimeout(function (){document.getElementById("loginbtn").disabled = false;}, 3000);	
 	
-	var login = {"email": document.all[12].value,"password": document.all[15].value};
+	var login = {"email":$("#uname").val() .toLowerCase(),"password":$("#psw").val()};
 	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "favoriteSpot": []};
 
 		//Login POST request to loopback. returns a access key and the userID. 
