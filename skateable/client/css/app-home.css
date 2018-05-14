@@ -384,7 +384,14 @@ width: 100%;
     text-align: center;
     align-content: center;
 }
-
+.list-li {
+    width: 100%;
+    padding: 15px 15px 15px 15px;
+    background-color: lightgray;
+    border: 2px solid;
+    border-radius: 25px;
+    border-color: black;
+}
 #favBtn {
     margin-bottom: 10px;
     background-color: yellow;
