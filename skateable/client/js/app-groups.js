@@ -322,7 +322,7 @@ let ViewModel = function () {
 		curGroup = group;
 		document.getElementById("msgButton").disabled = false;
 		
-		document.getElementById("chatHeader").innerHTML = curGroup.groupName + " Chat";
+		document.getElementById("chatHeader").innerHTML = curGroup.groupName + " Board";
 
 		// populate chatbox with the messages
 		for(var j = 0; j < curGroup.messages.length; j++)
