@@ -93,8 +93,7 @@ a {
 
 #menu-button {
     height: 100%;
-    width: 5%;
-    max-width: 5%;
+    min-width: 5%;
     text-align: center;
     display: block;
     vertical-align: middle;
@@ -162,7 +161,7 @@ ul {
 }
 
 #logo {
-    width: 90%;
+    margin: 0 auto;
     height: 100%;
     text-align: center;
 }
@@ -410,4 +409,16 @@ ul {
 h7, h8, h9{
 width: 100%;
 	text-align: center;
+}
+
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    #side-bar .list {
+        margin-top: 15%;
+        font-size: 40px;
+    }
+    #side-bar .login {
+        margin-top: 25%;
+        font-size: 40px;
+    }
 }

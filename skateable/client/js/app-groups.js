@@ -240,8 +240,13 @@ let ViewModel = function () {
     };
     
     self.openPanel = function() {
-        sidebar.css("width", "15%");
-        setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);       
+        if ($(window).width() <= 1000) {
+            sidebar.css("width", "100%");
+            setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);
+        } else {
+            sidebar.css("width", "15%");
+            setTimeout(function() { $('#side-bar a').css("visibility", "visible"); }, 200);
+        }
         panelVis = true;
     };
 	
