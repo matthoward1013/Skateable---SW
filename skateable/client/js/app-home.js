@@ -135,19 +135,21 @@ function yayRating()
 	{
 		curSkateSpot.rating = curSkateSpot.rating - 1;
 		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
-			
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
 	{
 		curSkateSpot.rating = curSkateSpot.rating + 2;
 		
 		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);	
-		curUser.likeSpot.push(curSkateSpot.id + "yay");			
+		curUser.likeSpot.push(curSkateSpot.id + "yay");
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
 	{
 		curSkateSpot.rating = curSkateSpot.rating + 1;
 		curUser.likeSpot.push(curSkateSpot.id + "yay");
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	
 		spotPatchData["rating"] = curSkateSpot.rating;
@@ -176,17 +178,19 @@ function nayRating()
 			curSkateSpot.rating = curSkateSpot.rating - 2;
 			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
 			curUser.likeSpot.push(curSkateSpot.id + "nay");
-			
+			$('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
 	{
-			curSkateSpot.rating = curSkateSpot.rating + 1;
-			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);		
+        curSkateSpot.rating = curSkateSpot.rating + 1;
+        curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
 	{
 		curSkateSpot.rating = curSkateSpot.rating - 1;
 		curUser.likeSpot.push(curSkateSpot.id + "nay");
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	
 		spotPatchData["rating"] = curSkateSpot.rating;
@@ -237,7 +241,7 @@ function UpdateComment(comment)
 
 function UpdateFavoriteSkateSpot()
 {
-	if(document.getElementById("favBtn") != null)
+	if(document.getElementById("favBtn") !== null)
 	{
 		document.getElementById("favBtn").disabled = true;
 		setTimeout(function (){document.getElementById("favBtn").disabled = false;}, 2000);
@@ -401,7 +405,7 @@ let SkateSpot = function (skateSpot) {
     this.visible = ko.observable(false);
 	this.comments = [];
 	this.currentMeetups = [];
-	this.rating = 0;
+	this.rating = ko.observable(0);
 };
 
 //class to store each meetup at a skatespot
@@ -496,7 +500,7 @@ let ViewModel = function () {
                     <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
-					   <div class="box-third"><h3>` + spot.rating + `</h3></div>
+					   <div class="box-third"><h3 id="ratingNumber">` + spot.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
                     </div>`;
@@ -687,7 +691,7 @@ let ViewModel = function () {
 			var tempList = temp;
 			var tempDate;
 			var tmpMinString;
-			var TmpHourString;
+			var tmpHourString;
 			var amOrPm;
 			
 			if(temp != -1)
@@ -711,7 +715,7 @@ let ViewModel = function () {
 					}
 					else
 					{
-						if(tempDate.getHours() == 0)
+						if(tempDate.getHours() === 0)
 						{
 							tmpHourString = "12";
 						}
