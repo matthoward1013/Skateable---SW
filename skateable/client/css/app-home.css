@@ -93,8 +93,7 @@ a {
 
 #menu-button {
     height: 100%;
-    width: 5%;
-    max-width: 5%;
+    min-width: 5%;
     text-align: center;
     display: block;
     vertical-align: middle;
@@ -104,14 +103,15 @@ a {
 
 #pinButton {
     height: 100%;
-    width: 5%;
-    max-width: 5%;
+    position: relative;
+    max-width: 15%;
+    min-width: 5%;
     text-align: center;
     display: block;
     vertical-align: middle;
     background-color: darkgray;
     border: none;
-    
+    float: right;
 }
 
 #yesButton {
@@ -238,7 +238,7 @@ width: 100%;
 }
 
 #logo {
- 	width: 90%;
+    margin: 0 auto;
     height: 100%;
     text-align: center;
 }
