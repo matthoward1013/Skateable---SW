@@ -114,6 +114,7 @@ function postMessage()
 
 			AjaxPatch(link+"groups/"+ String(curGroup.id) + "?access_token=" + String(curUser.key), groupPatchData, function(groupData){
 				  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+				$("#message").val("");
 			});			
 
 	}
