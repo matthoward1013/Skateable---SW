@@ -198,6 +198,7 @@ h4, h5, h6{
 
 #chatBox {
 	 overflow-y: auto;
+	 word-wrap: break-word;
     background-color: white;
     height: 70%;
     max-width: 500px;
