@@ -162,6 +162,7 @@ h4, h5, h6{
     margin-bottom: 15px;
     margin-top: 15px;
     position: relative;
+	left: -9.5%;
 }
 
 .btn {
@@ -262,11 +263,11 @@ h4, h5, h6{
 
     text-align: center;
     vertical-align: middle;
-    position: absolute;
+    position: relative;
     top: 4%;
-    left: 9.5%;
-    width: 8%;
-	height: 5.5%;
+    left: 5%;
+	min-width: 8%;
+	min-height: 5.5%;
     background-color:  #0066cc;
     color: white;
     border: none;
@@ -277,11 +278,11 @@ h4, h5, h6{
 
     text-align: center;
     vertical-align: middle;
-    position: absolute;
+    position: relative;
     top: 4%;
-    left: 32.5%;
-    width: 8%;
-	height: 5.5%;
+    left: 9%; 
+    min-width: 8%;
+	min-height: 5.5%;
     background-color:  #0066cc;
     color: white;
     border: none;
