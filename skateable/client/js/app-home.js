@@ -274,8 +274,10 @@ function UpdateFavoriteSkateSpot()
 	AjaxPatch(link +"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 		
 		sessionStorage.setItem("curUser", JSON.stringify(curUser));
-		document.getElementById("favBtn").disabled = false;
-	
+		if(document.getElementById("favBtn") !== null)
+		{
+			document.getElementById("favBtn").disabled = false;
+		}
 		//input into ui here
 	});
 }
