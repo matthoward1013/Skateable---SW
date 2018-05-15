@@ -129,7 +129,10 @@ function AjaxDelete(url, callback)
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	document.getElementsByClassName("nayBtn").disabled = true;
+	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -162,6 +165,7 @@ function yayRating()
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 				document.getElementsByClassName("yayBtn")[0].disabled = false;
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
 
 			});
 		});
@@ -170,8 +174,11 @@ function yayRating()
 
 function nayRating()
 {
-	document.getElementsByClassName("nayBtn")[0].disabled = true;
+	document.getElementsByClassName("yayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	document.getElementsByClassName("nayBtn").disabled = true;
 	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
@@ -202,6 +209,7 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
 				document.getElementsByClassName("nayBtn")[0].disabled = false;
 
 			});
@@ -620,7 +628,7 @@ let ViewModel = function () {
                         <div style="clear: both;"></div>
                     </div>`;
 							google.maps.event.addListener(markerPark, 'click', function() {
-								curSkateSpot = data;
+								curSkateSpot = newSpot;
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
 								

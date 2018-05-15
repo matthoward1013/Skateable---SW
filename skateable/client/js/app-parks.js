@@ -130,14 +130,16 @@ function AjaxPatch(url,data, callback)
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	document.getElementsByClassName("nayBtn").disabled = true;
+	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
 	{
 		curSkateSpot.rating = curSkateSpot.rating - 1;
 		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
-		$('#ratingNumber').text(curSkateSpot.rating);	
+        $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
 	{
@@ -163,6 +165,9 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
+
 			});
 		});
 	
@@ -170,8 +175,10 @@ function yayRating()
 
 function nayRating()
 {
-	document.getElementsByClassName("nayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);
+	document.getElementsByClassName("yayBtn")[0].disabled = true;
+	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	document.getElementsByClassName("nayBtn").disabled = true;
+	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
@@ -183,8 +190,8 @@ function nayRating()
 	}
 	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
 	{
-			curSkateSpot.rating = curSkateSpot.rating + 1;
-			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);	
+        curSkateSpot.rating = curSkateSpot.rating + 1;
+        curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);
         $('#ratingNumber').text(curSkateSpot.rating);
 	}
 	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
@@ -203,6 +210,9 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
+				document.getElementsByClassName("yayBtn")[0].disabled = false;
+				document.getElementsByClassName("nayBtn")[0].disabled = false;
+
 			});
 		});
 }
