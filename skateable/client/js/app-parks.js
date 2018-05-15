@@ -281,7 +281,7 @@ function createMeetup()
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
-	var date = new Date(day + " " + time);
+	var date = new Date(day + "T" + time);
 	var today = new Date();
 	
 	if(day !== "" && time !== "" && desc !== "" && desc.length <=30 && today < date)
