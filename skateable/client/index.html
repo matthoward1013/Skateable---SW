@@ -13,7 +13,7 @@
         <div id="container">
             <div id="side-bar">
                 <a href="javascript:void(0)" class="clsbtn" data-bind="click: closePanel">&times;</a>
-                <a href="index.html" class="login">Home</a>
+                <a href="index.html" class="list">Home</a>
                 <a href="profile.html" class="list">Edit Profile</a>
                 <a href="groups.html" class="list">Groups</a>
                 <a href="parks.html" class="list">My Parks</a>
@@ -44,8 +44,6 @@
                             <input id="places-search" type="text" placeholder="Ex: 3307 3rd Ave W . . .">
                             <h5>Add Comment </h5>
                             <textarea name="comment" form="usrform" id="commentInput" placeholder="Enter comment here. . ."></textarea>
-                            <button class="yayBtn" onclick="yayRating()">Yay </button>
-                            <button class="nayBtn" onclick="nayRating()">Nay </button>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" id="yesButton" data-bind="click: setPin"  >Add Pin</button>
@@ -93,7 +91,7 @@
                        <h10><strong>Park Name: </strong><span id="meetUpSpotName"></span></h10> <br>
                        <h11><strong>Street Address: </strong><span id="meetUpSpotAddress"></span></h11>
 					   <div>
-					   <ul id= "parentList" data-bind="foreach: meetupList">
+					   <ul id= "parentList" data-bind="foreach: uiList">
                         <li class="list-li">
                             <h4><strong>Meetup Date: </strong><span data-bind= "text: dayOfMeetup"></span></h4> 
                             <h5><strong>Description: </strong><span data-bind= "text: description"></span></h5>

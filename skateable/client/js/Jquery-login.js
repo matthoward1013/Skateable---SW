@@ -16,7 +16,6 @@ function AjaxLogin(url, method, accept, contentType, datatype, data, callback)
 	}).done(function (newData) {
 		callback(newData);
 	}).fail(function(textStatus, errorThrown){
-		document.getElementById("loginbtn").disabled = false;	
 		alert("Login Failed! Please reenter your email and password");
 	});
 }
@@ -66,9 +65,10 @@ if(curUser !== null){
 function Login(){
 	
 	document.getElementById("loginbtn").disabled = true;
-
-	var login = {"email": document.all[12].value,"password": document.all[15].value};
-	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "favoriteSpot": []};
+	setTimeout(function (){document.getElementById("loginbtn").disabled = false;}, 3000);	
+	
+	var login = {"email":$("#uname").val() .toLowerCase(),"password":$("#psw").val()};
+	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "likeSpot": []};
 
 		//Login POST request to loopback. returns a access key and the userID. 
 		AjaxLogin(link+"users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){

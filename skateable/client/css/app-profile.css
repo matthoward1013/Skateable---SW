@@ -269,3 +269,15 @@ padding-left: 35%;
     color: white;
     text-align: center;
 }
+
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    #side-bar .list {
+        margin-top: 15%;
+        font-size: 40px;
+    }
+    #side-bar .login {
+        margin-top: 25%;
+        font-size: 40px;
+    }
+}

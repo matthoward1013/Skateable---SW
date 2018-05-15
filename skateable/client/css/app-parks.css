@@ -93,8 +93,7 @@ a {
 
 #menu-button {
     height: 100%;
-    width: 5%;
-    max-width: 5%;
+    min-width: 5%;
     text-align: center;
     display: block;
     vertical-align: middle;
@@ -111,6 +110,46 @@ a {
 #menu-button:focus {
     outline: 0;
 }
+.modal {
+    z-index: 20;
+}
+
+.modal-backdrop {
+    z-index: 10;
+}
+
+.modal-header {
+    text-align: center;
+    align-content: center;
+}
+
+.modal-body {
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 70%;
+}
+.modal-body2 {
+	text-align: left;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 90%;
+}
+.modal-body3 {
+	text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 90%;
+}
+ul {
+  list-style-type: none;
+}
 
 #menu {
     z-index: 1;
@@ -122,7 +161,7 @@ a {
 }
 
 #logo {
-    width: 90%;
+    margin: 0 auto;
     height: 100%;
     text-align: center;
 }
@@ -329,6 +368,9 @@ a {
     text-align: center;
     border-radius: 4px;
 }
+ul {
+  list-style-type: none;
+}
 #viewmeetupBtn
 {
 	background-color: navy;
@@ -340,32 +382,43 @@ a {
     text-align: center;
     border-radius: 4px;
 }
-.modal-header {
-    text-align: center;
-    align-content: center;
+
+#meetupDay{
+	margin-left: 10px;
+	margin-bottom: 10px;
+    height: auto;
+}
+#meetuptime{
+	margin-left: 10px;
+	margin-bottom: 10px;
+    height: auto;
+}
+#description{
+	width: 100%;
+    min-height: 50px;
+    height: 10%;
+    overflow: hidden;
+	margin-bottom: 10px;
 }
 
-.modal-body {
+.box-third {
+    width: 33.3%;
     text-align: center;
     align-content: center;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    width: 70%;
 }
-.modal-body2 {
-	text-align: left;
-    align-content: center;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    width: 90%;
-}
-.modal-body3 {
+h7, h8, h9{
+width: 100%;
 	text-align: center;
-    align-content: center;
-    justify-content: center;
-    width: 90%;
+}
+
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    #side-bar .list {
+        margin-top: 15%;
+        font-size: 40px;
+    }
+    #side-bar .login {
+        margin-top: 25%;
+        font-size: 40px;
+    }
 }
