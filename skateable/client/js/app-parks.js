@@ -77,7 +77,6 @@ let SkateSpot = function (skateSpot) {
 	this.rating = ko.observable();
 };
 
-//function that gets data from server and sends the data to the callback function for processing 
 function AjaxGet(url, callback)
 {
 	$.ajax({
@@ -87,8 +86,8 @@ function AjaxGet(url, callback)
 			success: function (data) {
 				callback(data);
 			},
-			error: function(object, textStatus, errorThrown){			
-				alert("Could not get SkateSpots! please reload Browser");
+			error: function(object, textStatus, errorThrown){
+				alert("Could not get the data!");
 			}
 	});
 }
@@ -104,12 +103,12 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
-		console.log(data);
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not post the data");
 	});
 }
+
 //function that posts json data to server
 function AjaxPatch(url,data, callback)
 {
@@ -123,16 +122,23 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not patch the data");
 	});
 }
 
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("yayBtn")[0] != undefined)
+			document.getElementsByClassName("yayBtn")[0].disabled = false;
+		}, 1000);
+		
 	document.getElementsByClassName("nayBtn").disabled = true;
-	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("nayBtn")[0] != undefined)
+			document.getElementsByClassName("nayBtn")[0].disabled = false;
+		}, 1000);
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
@@ -165,9 +171,11 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("yayBtn")[0].disabled = false;
-				document.getElementsByClassName("nayBtn")[0].disabled = false;
-
+				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+				{
+					document.getElementsByClassName("yayBtn")[0].disabled = false;
+					document.getElementsByClassName("nayBtn")[0].disabled = false;
+				}
 			});
 		});
 	
@@ -176,9 +184,15 @@ function yayRating()
 function nayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("yayBtn")[0] != undefined)
+			document.getElementsByClassName("yayBtn")[0].disabled = false;
+		}, 1000);
 	document.getElementsByClassName("nayBtn").disabled = true;
-	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("nayBtn")[0] != undefined)
+			document.getElementsByClassName("nayBtn")[0].disabled = false;
+		}, 1000);
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
@@ -210,8 +224,11 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("yayBtn")[0].disabled = false;
-				document.getElementsByClassName("nayBtn")[0].disabled = false;
+				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+				{
+					document.getElementsByClassName("yayBtn")[0].disabled = false;
+					document.getElementsByClassName("nayBtn")[0].disabled = false;
+				}
 
 			});
 		});
@@ -221,8 +238,11 @@ function nayRating()
 function UpdateComment(comment)
 {
 	document.getElementById("makeComment").disabled = true;
-	setTimeout(function (){document.getElementById("makeComment").disabled = false;}, 2000);
-	
+	setTimeout(function (){
+		if(document.getElementById("makeComment") != null)
+			document.getElementById("makeComment").disabled = false;
+		}, 2000);
+		
 	var newComment = comment;
 
 	var patchData = {};
@@ -244,14 +264,20 @@ function UpdateComment(comment)
 			//patches the skatespot data to include the new rating and or comment
 		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-			document.getElementById("makeComment").disabled = false;
+			if(document.getElementById("makeComment") != null)
+				document.getElementById("makeComment").disabled = false;
 		});
 	}
 }
 
-
 function createMeetup()
 {
+	document.getElementById("makeButton").disabled = true;
+	setTimeout(function (){
+		if(document.getElementById("makeButton") != null)
+			document.getElementById("makeButton").disabled = false;
+		}, 2000);
+		
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -262,7 +288,7 @@ function createMeetup()
 	{
 		//insert data from form into here
 		var data = {"dayOfMeetup":date,"description":desc, "listOfMembers":["string"]};
-	
+		
 		AjaxPost(link + "meetups?access_token=" + String(curUser.key), data, function(data){
 		
 			curSkateSpot.currentMeetups.push(data.id);
@@ -271,7 +297,8 @@ function createMeetup()
 			
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
+				if(document.getElementById("makeButton") != null)
+					document.getElementById("makeButton").disabled = false;
 				$('#meetModal').modal('hide');
 			
 				//input into group ui list here
@@ -280,11 +307,11 @@ function createMeetup()
 	}
 	else
 	{
-			if(day === "" && time === "" && desc === "")
+			if(day === "" || time === "" || desc === "")
 			{
 				alert("Please enter in all fields");
 			}
-			else if(desc.length >=30)
+			else if(desc.length >=160)
 			{
 				alert("Description cannot be more that 30 characters");
 				
@@ -370,7 +397,14 @@ function getMeetups (callback)
 
 function UpdateFavoriteSkateSpot()
 {
-	document.getElementById("favBtn").disabled = true;
+	if(document.getElementById("favBtn") !== null)
+	{
+		document.getElementById("favBtn").disabled = true;
+		setTimeout(function (){
+		if(document.getElementById("favBtn") != null)
+			document.getElementById("favBtn").disabled = false;
+		}, 2000);
+	}
 	var patchData = {};
 	
 	var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
@@ -489,7 +523,7 @@ let ViewModel = function () {
                     `<div id="content-info-window">
 				    <h2>` + spot.name + `</h2>
 				    <h4>` + spot.streetAddress + `</h4>
-                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Favorite</button><br>
+                    <button id="favBtn" onclick="UpdateFavoriteSkateSpot();">Unfavorite</button><br>
 					<button id="meetupBtn" data-toggle="modal" data-target="#meetModal">Make Meetup</button><br>
 					<button id="viewmeetupBtn"  data-toggle="modal" data-target="#vmeetModal" data-bind = "click: getMeetups">View Current Meetups</button><br>
                     <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + spot.comments[spot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>

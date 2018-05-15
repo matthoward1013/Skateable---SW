@@ -72,8 +72,8 @@ function AjaxGet(url, callback)
 			success: function (data) {
 				callback(data);
 			},
-			error: function(object, textStatus, errorThrown){			
-				alert("Could not get data! reload Browser");
+			error: function(object, textStatus, errorThrown){
+				alert("Could not get the data!");
 			}
 	});
 }
@@ -91,9 +91,10 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get data! reload Browser");
+				alert("Could not post the data");
 	});
 }
+
 //function that posts json data to server
 function AjaxPatch(url,data, callback)
 {
@@ -107,7 +108,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get data! reload Browser");
+				alert("Could not patch the data");
 	});
 }
 //function that posts json data to server
@@ -122,16 +123,23 @@ function AjaxDelete(url, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not delete! reload Browser");
+				alert("Could not delete!");
 	});
 }
 
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("yayBtn")[0] != undefined)
+			document.getElementsByClassName("yayBtn")[0].disabled = false;
+		}, 1000);
+		
 	document.getElementsByClassName("nayBtn").disabled = true;
-	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("nayBtn")[0] != undefined)
+			document.getElementsByClassName("nayBtn")[0].disabled = false;
+		}, 1000);
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
@@ -164,9 +172,11 @@ function yayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("yayBtn")[0].disabled = false;
-				document.getElementsByClassName("nayBtn")[0].disabled = false;
-
+				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+				{
+					document.getElementsByClassName("yayBtn")[0].disabled = false;
+					document.getElementsByClassName("nayBtn")[0].disabled = false;
+				}
 			});
 		});
 	
@@ -175,9 +185,15 @@ function yayRating()
 function nayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;
-	setTimeout(function (){document.getElementsByClassName("yayBtn")[0].disabled = false;}, 1000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("yayBtn")[0] != undefined)
+			document.getElementsByClassName("yayBtn")[0].disabled = false;
+		}, 1000);
 	document.getElementsByClassName("nayBtn").disabled = true;
-	setTimeout(function (){document.getElementsByClassName("nayBtn")[0].disabled = false;}, 2000);	
+	setTimeout(function (){
+		if(document.getElementsByClassName("nayBtn")[0] != undefined)
+			document.getElementsByClassName("nayBtn")[0].disabled = false;
+		}, 1000);
 	
 	var spotPatchData = {};	
 	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
@@ -209,8 +225,11 @@ function nayRating()
 			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				document.getElementsByClassName("yayBtn")[0].disabled = false;
-				document.getElementsByClassName("nayBtn")[0].disabled = false;
+				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+				{
+					document.getElementsByClassName("yayBtn")[0].disabled = false;
+					document.getElementsByClassName("nayBtn")[0].disabled = false;
+				}
 
 			});
 		});
@@ -220,7 +239,11 @@ function nayRating()
 function UpdateComment(comment)
 {
 	document.getElementById("makeComment").disabled = true;
-	setTimeout(function (){document.getElementById("makeComment").disabled = false;}, 2000);
+	setTimeout(function (){
+		if(document.getElementById("makeComment") != null)
+			document.getElementById("makeComment").disabled = false;
+		}, 2000);
+		
 	var newComment = comment;
 
 	var patchData = {};
@@ -242,7 +265,8 @@ function UpdateComment(comment)
 			//patches the skatespot data to include the new rating and or comment
 		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
 			
-			document.getElementById("makeComment").disabled = false;
+			if(document.getElementById("makeComment") != null)
+				document.getElementById("makeComment").disabled = false;
 		});
 	}
 }
@@ -252,7 +276,10 @@ function UpdateFavoriteSkateSpot()
 	if(document.getElementById("favBtn") !== null)
 	{
 		document.getElementById("favBtn").disabled = true;
-		setTimeout(function (){document.getElementById("favBtn").disabled = false;}, 2000);
+		setTimeout(function (){
+		if(document.getElementById("favBtn") != null)
+			document.getElementById("favBtn").disabled = false;
+		}, 2000);
 	}
 	var patchData = {};
 	
@@ -285,7 +312,11 @@ function UpdateFavoriteSkateSpot()
 function createMeetup()
 {
 	document.getElementById("makeButton").disabled = true;
-	setTimeout(function (){document.getElementById("makeButton").disabled = false;}, 2000);
+	setTimeout(function (){
+		if(document.getElementById("makeButton") != null)
+			document.getElementById("makeButton").disabled = false;
+		}, 2000);
+		
 	var day = $("#meetupDay").val();
 	var time = $("#meetupTime").val();
 	var desc = $("#description").val();
@@ -305,8 +336,8 @@ function createMeetup()
 			
 			//patches the user data to include the new group
 			AjaxPatch(link + "skatespots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-				document.getElementById("makeButton").disabled = false;
+				if(document.getElementById("makeButton") != null)
+					document.getElementById("makeButton").disabled = false;
 				$('#meetModal').modal('hide');
 			
 				//input into group ui list here
@@ -558,7 +589,10 @@ let ViewModel = function () {
     self.getLocation = function() {
 		
 		document.getElementById("current-location").disabled = true;
-		setTimeout(function (){document.getElementById("current-location").disabled = false;}, 3000);
+	setTimeout(function (){
+		if(document.getElementById("current-location") != null)
+			document.getElementById("current-location").disabled = false;
+		}, 2000);
 		
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -575,8 +609,8 @@ let ViewModel = function () {
                 console.log(`Latitude : ${crd.latitude}`);
                 console.log(`Longitude: ${crd.longitude}`);
                 console.log(`More or less ${crd.accuracy} meters.`);
-				
-				document.getElementById("current-location").disabled = false;
+				if(document.getElementById("current-location") != null)
+					document.getElementById("current-location").disabled = false;
             });
         } else {
             alert("Geolocation is not supported by this browser");
@@ -585,7 +619,10 @@ let ViewModel = function () {
     
     self.setPin = function() {
 		document.getElementById("yesButton").disabled = true;
-		setTimeout(function (){document.getElementById("yesButton").disabled = false;}, 3000);
+		setTimeout(function (){
+			if(document.getElementById("yesButton") != null)
+				document.getElementById("yesButton").disabled = false;
+			}, 2000);
 		
         var pinAddress = $('#places-search').val();
         var pinName = $('#pinName').val();
@@ -605,8 +642,7 @@ let ViewModel = function () {
 							curSkateSpot = newSpot;
 
 							UpdateFavoriteSkateSpot(curSkateSpot);
-						
-							document.getElementById("yesButton").disabled = false;
+
 							//if this runs then the pin was successfully created in db
 							map.setCenter(results[0].geometry.location);
 							map.setZoom(15);
@@ -625,7 +661,7 @@ let ViewModel = function () {
                     <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + curSkateSpot.comments[curSkateSpot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
-					   <div class="box-third"><h3>` + curSkateSpot.rating + `</h3></div>
+					   <div class="box-third"><h3 id="ratingNumber">` + curSkateSpot.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
                     </div>`;
@@ -635,29 +671,36 @@ let ViewModel = function () {
 								infoWindow.setContent(contentString);
 								
 							});
+							if(document.getElementById("yesButton") != null)
+								document.getElementById("yesButton").disabled = false;
 						
 							$('#createPin').modal('hide');
 						});
 					}
 					else
 					{
-						document.getElementById("yesButton").disabled = false;
+						if(document.getElementById("yesButton") != null)
+							document.getElementById("yesButton").disabled = false;
 						alert("Skatespot already exists");
 					}
 					});
 				} else {
-					document.getElementById("yesButton").disabled = false;
+					if(document.getElementById("yesButton") != null)
+						document.getElementById("yesButton").disabled = false;
 					alert('Geocode was not successful for the following reason: ' + status);
 				}						
 			});
         } else if (pinName === '' && pinAddress !== '') {
-			document.getElementById("yesButton").disabled = false;
+			if(document.getElementById("yesButton") != null)
+				document.getElementById("yesButton").disabled = false;
             alert('Please enter a name!');
         } else if (pinName !== '' && pinAddress === '') {
-			document.getElementById("yesButton").disabled = false;
+			if(document.getElementById("yesButton") != null)
+				document.getElementById("yesButton").disabled = false;
             alert('Please enter an address!');
         } else {
-			document.getElementById("yesButton").disabled = false;
+			if(document.getElementById("yesButton") != null)
+				document.getElementById("yesButton").disabled = false;
             alert('Please enter a name and address!');
         }
     };

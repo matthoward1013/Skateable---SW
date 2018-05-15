@@ -21,7 +21,7 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! Reloading Browser");
+				alert("Could not get the data!");
 			}
 	});
 }
@@ -39,7 +39,7 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! Reloading Browser");
+				alert("Could not post the data");
 	});
 }
 
@@ -55,40 +55,8 @@ function AjaxPatch(url,data, callback)
 			data: JSON.stringify(data)
 	}).done(function (data) {
 				callback(data);
-	})
-}
-
-
-
-function AjaxPUT(url,data, callback)
-{
-	$.ajax({
-			url:url,
-			method: "PUT",
-			accept: "application/json",
-            contentType: "application/json",
-			datatype: "json",
-			data: JSON.stringify(data)
-	}).done(function (data) {
-				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				//alert("Could not connect to the server! please reload browser");
-	});
-}
-
-function AjaxPUT(url,data, callback)
-{
-	$.ajax({
-			url:url,
-			method: "PUT",
-			accept: "application/json",
-            contentType: "application/json",
-			datatype: "json",
-			data: JSON.stringify(data)
-	}).done(function (data) {
-				callback(data);
-	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! Reloading Browser");
+				alert("Could not patch the data");
 	});
 }
 
