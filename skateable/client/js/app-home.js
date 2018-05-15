@@ -72,8 +72,8 @@ function AjaxGet(url, callback)
 			success: function (data) {
 				callback(data);
 			},
-			error: function(object, textStatus, errorThrown){			
-				alert("Could not get data! reload Browser");
+			error: function(object, textStatus, errorThrown){
+				alert("Could not get the data!");
 			}
 	});
 }
@@ -91,9 +91,10 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get data! reload Browser");
+				alert("Could not post the data");
 	});
 }
+
 //function that posts json data to server
 function AjaxPatch(url,data, callback)
 {
@@ -107,7 +108,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not get data! reload Browser");
+				alert("Could not patch the data");
 	});
 }
 //function that posts json data to server
@@ -122,7 +123,7 @@ function AjaxDelete(url, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not delete! reload Browser");
+				alert("Could not delete!");
 	});
 }
 
@@ -660,7 +661,7 @@ let ViewModel = function () {
                     <div id="comment-box"><button id="commentButton" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus-square"></i></button><span id="comment">` + curSkateSpot.comments[curSkateSpot.comments.length - 1] + `</span><div id="arrowDiv"><button type=button id="leftArrowCmt" class="arrowBtn"><i class="fa fa-arrow-left" onclick="leftArrowScroll()"></button></i><button type=button id="rightArrowCmt" class="arrowBtn"><i class="fa fa-arrow-right" onclick="rightArrowScroll()"></i></button></div></div>
                     <div id="buttons">
                         <div class="box-third"><button class="yayBtn" onclick ="yayRating()">Yay </button></div>
-					   <div class="box-third"><h3>` + curSkateSpot.rating + `</h3></div>
+					   <div class="box-third"><h3 id="ratingNumber">` + curSkateSpot.rating + `</h3></div>
                         <div class="box-third"><button class="nayBtn" onclick ="nayRating()">Nay </button></div></div>
                         <div style="clear: both;"></div>
                     </div>`;

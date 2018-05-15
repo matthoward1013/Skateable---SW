@@ -77,7 +77,6 @@ let SkateSpot = function (skateSpot) {
 	this.rating = ko.observable();
 };
 
-//function that gets data from server and sends the data to the callback function for processing 
 function AjaxGet(url, callback)
 {
 	$.ajax({
@@ -87,8 +86,8 @@ function AjaxGet(url, callback)
 			success: function (data) {
 				callback(data);
 			},
-			error: function(object, textStatus, errorThrown){			
-				alert("Could not get SkateSpots! please reload Browser");
+			error: function(object, textStatus, errorThrown){
+				alert("Could not get the data!");
 			}
 	});
 }
@@ -104,12 +103,12 @@ function AjaxPost(url,data, callback)
 			datatype: "json",
 			data: JSON.stringify(data)
 	}).done(function (data) {
-		console.log(data);
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not post the data");
 	});
 }
+
 //function that posts json data to server
 function AjaxPatch(url,data, callback)
 {
@@ -123,9 +122,10 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not connect to the server! please reload browser");
+				alert("Could not patch the data");
 	});
 }
+
 function yayRating()
 {
 	document.getElementsByClassName("yayBtn")[0].disabled = true;

@@ -100,7 +100,7 @@ let ViewModel = function () {
 			changedData["name"] = $("#name").text();
 			curUser.name = changedData.name;
 		}
-		if($("#mail").text().toLowerCase() !== curUser.email.toLowerCase() && $("#mail").text() !== "")
+		if($("#mail").text().toLowerCase() !== curUser.email.toLowerCase() && $("#mail").text() !== "" && $("#mail").text().includes("@"))
 		{
 			changedData["email"] = $("#mail").text().toLowerCase();
 			curUser.email = changedData.email;
