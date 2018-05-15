@@ -68,7 +68,7 @@ function Login(){
 	setTimeout(function (){document.getElementById("loginbtn").disabled = false;}, 3000);	
 	
 	var login = {"email":$("#uname").val() .toLowerCase(),"password":$("#psw").val()};
-	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "favoriteSpot": []};
+	var curUser = {"email": "","id": "","key": "","name": "","bio": "", "groups": [], "favoriteSpot": [], "likeSpot": []};
 
 		//Login POST request to loopback. returns a access key and the userID. 
 		AjaxLogin(link+"users/login", "POST",  "application/json",  "application/json",  "json", login, function(data){
