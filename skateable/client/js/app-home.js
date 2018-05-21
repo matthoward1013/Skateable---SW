@@ -568,7 +568,7 @@ let ViewModel = function () {
                     infoWindow.setContent(contentString);
                     $('#meetUpSpotName').text(curSkateSpot.name);
                     $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
-                    if (spot.comments.length === 0 || spot.comments[0] === "") {
+                    if (spot.comments.length === 0 || (spot.comments.length === 1 && spot.comments[0] === "")) {
                         $('#comment').text("No comments yet available!");
                     } 
                     //Code to change Favorite button color if already favorite
@@ -672,7 +672,7 @@ let ViewModel = function () {
 								curSkateSpot = newSpot;
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
-								if (curSkateSpot.comments.length === 0 || spot.comments[0] === "") {
+								if (curSkateSpot.comments.length === 0 || (spot.comments.length === 1 && spot.comments[0] === "")) {
 										$('#comment').text("No comments yet available!");
                     } 
 								

@@ -557,7 +557,7 @@ let ViewModel = function () {
                     infoWindow.setContent(contentString);
 					$('#meetUpSpotName').text(curSkateSpot.name);
                     $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
-                    if (spot.comments.length === 0 || spot.comments[0] === "") {
+                    if (spot.comments.length === 0 || (spot.comments.length === 1 && spot.comments[0] === "")) {
                         $('#comment').text("No comments yet available!");
                     } 
                 });
