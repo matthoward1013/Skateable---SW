@@ -101,7 +101,7 @@
                     <h1 id ="chatHeader">Board</h1>
                     <div id="chatBox"></div>
                     <form class="cursor">
-                        <input type="text" id="message" placeholder="Your message here...">
+                        <input type="text" id="message" placeholder="Your message here..."   onkeypress = "if (event.keyCode == 13) document.getElementById('msgButton').click()">
                         <i></i>
                         <button type="button" id="msgButton" disabled="true" onclick="postMessage()">Submit</button>
 
