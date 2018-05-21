@@ -568,7 +568,7 @@ let ViewModel = function () {
                     infoWindow.setContent(contentString);
                     $('#meetUpSpotName').text(curSkateSpot.name);
                     $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
-                    if (spot.comments.length === 0) {
+                    if (spot.comments.length === 0 || spot.comments[0] === "") {
                         $('#comment').text("No comments yet available!");
                     } 
                     //Code to change Favorite button color if already favorite
@@ -629,9 +629,12 @@ let ViewModel = function () {
         if (pinAddress !== '' && pinName !== '') {
             geocoder.geocode({'address': pinAddress}, function(results, status) {
                 if (status === 'OK') {
+					var dataToPost;
 					
-					var dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName": pinName, "address": pinAddress, "rating":0, "comments": [$('#commentInput').val()], "currentMeetups": []};
-					
+					if($('#commentInput').val() != "")
+						dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName": pinName, "address": pinAddress, "rating":0, "comments": [$('#commentInput').val()], "currentMeetups": []};
+					else
+						dataToPost = {"lat":results[0].geometry.location.lat(), "long":results[0].geometry.location.lng(), "spotName": pinName, "address": pinAddress, "rating":0, "comments": [], "currentMeetups": []};
 					var filter = {"where":{"and":[{"lat":dataToPost.lat},{"long":dataToPost.long }]}};
 	
 					AjaxGet(link + "skatespots?filter="+ JSON.stringify(filter) +"&access_token=" + curUser.key, function(data){
@@ -669,6 +672,9 @@ let ViewModel = function () {
 								curSkateSpot = newSpot;
 								infoWindow.open(map, this);
 								infoWindow.setContent(contentString);
+								if (curSkateSpot.comments.length === 0 || spot.comments[0] === "") {
+										$('#comment').text("No comments yet available!");
+                    } 
 								
 							});
 							if(document.getElementById("yesButton") != null)
