@@ -106,6 +106,10 @@ let ViewModel = function () {
 			curUser.email = changedData.email;
 			changedData["username"] = curUser.email;
 		}
+		else 
+		{
+			alert("Please enter a valid email");
+		}
 		
 		if(changedData["name"] !== undefined || changedData["email"] !== undefined){
 			
@@ -115,7 +119,6 @@ let ViewModel = function () {
 			
 				console.log(data);
 				location.href = 'profile.html';
-						
 			});		
 		}			
 	};

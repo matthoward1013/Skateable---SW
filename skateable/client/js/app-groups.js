@@ -6,12 +6,14 @@ var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 var curGroup = {};
 var groupList = [];
 
+
+
 	
 //if null then the user is not logged in
 if(curUser === null)
 	location.href = 'login.html';
 
-function AjaxGet(url, callback)
+function AjaxGet(url, callback, callbackError)
 {
 	$.ajax({
 			url:url,
@@ -21,13 +23,13 @@ function AjaxGet(url, callback)
 				callback(data);
 			},
 			error: function(object, textStatus, errorThrown){
-				alert("Could not get the data!");
+				callbackError();
 			}
 	});
 }
 
 //function that posts json data to server
-function AjaxPost(url,data, callback)
+function AjaxPost(url,data, callback, callbackError)
 {
 	$.ajax({
 			url:url,
@@ -39,12 +41,12 @@ function AjaxPost(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not post the data");
+				callbackError();
 	});
 }
 
 //function that posts json data to server
-function AjaxPatch(url,data, callback)
+function AjaxPatch(url,data, callback, callbackError)
 {
 	$.ajax({
 			url:url,
@@ -56,7 +58,7 @@ function AjaxPatch(url,data, callback)
 	}).done(function (data) {
 				callback(data);
 	}).fail(function(object, textStatus, errorThrown){
-				alert("Could not patch the data");
+				callbackError();
 	});
 }
 
@@ -65,13 +67,44 @@ function postMessage()
 {
 	//insert data from form into here
 	//user enters in messages and from that it will query the db
+	document.getElementById("msgButton").disabled = true;
+	setTimeout(function (){document.getElementById("msgButton").disabled = false;}, 2000);	
 	var message = $("#message").val();
+	var tempDate = new Date();
 
-
-	
 	if(message != "")
 	{
-			curGroup.messages.push(curUser.name + ": " + message);
+		var tmpMinString;
+		var tmpHourString;
+		var amOrPm;
+			
+		if(tempDate.getMinutes() < 10)
+		{
+			tmpMinString = "0" + String(tempDate.getMinutes());
+		}
+		else
+		{
+			tmpMinString = String(tempDate.getMinutes());
+		}
+					
+		if(tempDate.getHours() > 12)
+		{
+			tmpHourString = String(tempDate.getHours() - 12);
+			amOrPm = "PM";
+		}
+		else
+		{
+			if(tempDate.getHours() === 0)
+			{
+				tmpHourString = "12";
+			}
+			else{
+				tmpHourString = String(tempDate.getHours());
+				}
+				amOrPm = "AM";
+		}
+				
+			curGroup.messages.push(curUser.name + " @ " + tmpHourString + ":" + tmpMinString + amOrPm + ": " + message);
 			var prevMes = document.getElementById("chatBox").innerHTML; 
 			document.getElementById("chatBox").innerHTML = prevMes + curGroup.messages[curGroup.messages.length - 1] + '<br>';
 			
@@ -83,6 +116,9 @@ function postMessage()
 			AjaxPatch(link+"groups/"+ String(curGroup.id) + "?access_token=" + String(curUser.key), groupPatchData, function(groupData){
 				  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 				$("#message").val("");
+			}, function (){
+				alert("Could not post the message! Please reload the browser and try again!");
+				
 			});			
 
 	}
@@ -121,8 +157,14 @@ function createGroup()
 				location.href = 'groups.html';
 			
 				//input into group ui list here
+			}, function (){
+				alert("Could not add the user to the group! Please reload the browser and try again");
+				
 			});		
-		});
+		}, function (){
+				alert("Could not create the new group! Please reload the browser and try again");
+				
+			});
 	}
 }
 
@@ -146,7 +188,7 @@ function addGroup()
 		if(data.length > 0)
 		{
 				
-			if(data[0].members.indexOf(curUser.name) == -1)
+			if(curUser.groups.indexOf(data[0].id) == -1)
 			{
 				tempMembers = data[0].members;
 				if(tempMembers.length == 1 && tempMembers.indexOf("") != -1)
@@ -169,7 +211,10 @@ function addGroup()
 	
 					});		
 		
-				});	
+				}, function (){
+				alert("Could not put you in the new group! Please reload the browser and add the group as an existing group");
+				
+			});	
 			}
 			else{
 				alert("You are already in this group");
@@ -178,7 +223,10 @@ function addGroup()
 		else{
 			alert("Group does not exist!");
 		}
-		});
+		}, function (){
+				alert("Could not add the new group! Please reload the browser and try again");
+				
+			});
 	}
 	else{
 		alert("Please enter a valid GroupID");
@@ -191,6 +239,8 @@ let ViewModel = function () {
 	var count = 0;
 	
 	self.uiList = ko.observableArray([]);
+	
+
     
     //Function for sidebar animation
     
@@ -248,7 +298,10 @@ let ViewModel = function () {
 			
 			//input into group ui list here
             
-		});
+		}, function (){
+				alert("Could not get the group list! Please reload the browser and try again");
+				
+			});
 	}
 	
 	//group is the currently selected group when the user hits the leave group button
@@ -273,21 +326,25 @@ let ViewModel = function () {
 			groupTemp.push("");
 		
 	
-		groupPatchData= {"members":groupTemp};
 
-		AjaxPatch(link+"groups/" + String(group.id)+ "?access_token=" + String(curUser.key), groupPatchData, function(data){
 		
-			curUser.groups.splice(curUser.groups.indexOf(data.id),1);
-		
-			//patches the user data to include the new group
-			var userPatchData = {"groups": curUser.groups};
-			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
+			//patches the user data to remove the group
+		var userPatchData = {"groups": curUser.groups};
+		AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), userPatchData ,function(data){
 			
-				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				location.href = 'groups.html';
+			groupPatchData= {"members":groupTemp};
+			AjaxPatch(link+"groups/" + String(group.id)+ "?access_token=" + String(curUser.key), groupPatchData, function(data){
+		
+					curUser.groups.splice(curUser.groups.indexOf(data.id),1);
+					sessionStorage.setItem("curUser", JSON.stringify(curUser));
+					location.href = 'groups.html';
 
+				}, function (){
+					alert("Could not remove the user from the group! Please reload the browser and try again");
 			});		
-		});		
+		}, function (){
+					alert("Could not remove the user from the group! Please reload the browser and try again");
+			});		
 	};
 	self.ConnectChat = function (group)
 	{
@@ -303,6 +360,7 @@ let ViewModel = function () {
 			document.getElementById("chatBox").innerHTML += curGroup.messages[j] + '<br>';
 		}
 		document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+		
 
 	}
 
