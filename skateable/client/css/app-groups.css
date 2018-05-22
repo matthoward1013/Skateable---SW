@@ -145,8 +145,11 @@ a {
 #group-list {
     width: 50%;
     text-align: center;
-	overflow-y: scroll;
-	height: 90%;
+}
+
+#groupsList {
+    overflow-y: scroll;
+	height: 85%;
 }
 
 h4, h5, h6{
