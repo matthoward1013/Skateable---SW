@@ -16,7 +16,7 @@
                 <a href="profile.html" class="list">Edit Profile</a>
                 <a href="groups.html" class="list">Groups</a>
                 <a href="parks.html" class="list">Parks</a>
-                <a href="login.html" class="login">Login/Logout</a>
+                <a href="login.html" class="login">Logout</a>
             </div>
             
             <header id="top-bar">
@@ -46,8 +46,8 @@
 				</ul>	
 	<button type="button" id = "accBttn" data-bind="click: updateUser">Save Account Changes</button>
              <div class="entry">
-          <h2>Bio</h2>      
-<textarea id="bio" rows="4" cols="40" readonly>Enter some information about yourself!
+          <h2>Notes</h2>      
+<textarea id="bio" rows="4" cols="40" readonly>Enter your notes here!
 </textarea>
         </div>        
           </div>
@@ -55,7 +55,7 @@
 </div>
     
     <div class="settingsButton">
-    <button  id="profBttn" data-toggle="modal" data-target="#accModal">Edit Bio</button>
+    <button  id="profBttn" data-toggle="modal" data-target="#accModal">Edit Notes</button>
     <button  id="profBttn" data-toggle="modal" data-target="#pwModal">Change Password</button>
 
         <div class="modal fade" id="pwModal" role="dialog">  
@@ -95,18 +95,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h3 class="modal-title">Edit Bio</h3>
+            <h3 class="modal-title">Edit Notes</h3>
             </div>
             <div class="modal-body">
              <div class="entry">
-          <h2>Bio</h2>      
+          <h2>Notes</h2>      
 <textarea id="bio2" rows="4" cols="40" >
 </textarea>
         </div>    
               <br>  <br>
             </div>
    <div class="modal-footer">
-        <button type="button" class="btn btn-success" id = "editProfBtn" data-bind="click: editBio">Save Bio Edits</button>
+        <button type="button" class="btn btn-success" id = "editProfBtn" data-bind="click: editBio">Save Notes Edits</button>
        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
