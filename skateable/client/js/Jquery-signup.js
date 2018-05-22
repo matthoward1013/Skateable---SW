@@ -3,7 +3,7 @@
 
 var link = "http://localhost:3000/api/";
 //JQuery ajax POST 
-function AjaxPost(url, method, accept, contentType, datatype, data)
+function AjaxPost(url, method, accept, contentType, datatype, data, callback)
 {
 	$.ajax({
 			url:url,
@@ -15,15 +15,9 @@ function AjaxPost(url, method, accept, contentType, datatype, data)
 	}).done(function (data) {
 				location.href='login.html';
 	}).fail(function(object, textStatus, errorThrown){
-				if(errorThrown === "Unprocessable Entity"){
-					alert("Please Enter Valid Fields");
-							document.getElementById("signupbtn").disabled = false;
-                }
-                
-				else
-				{
-						alert(errorThrown);
-				}
+
+			document.getElementById("signupbtn").disabled = false;
+			callback();
 	});
 }
 
@@ -53,5 +47,7 @@ function signUp(){
 	//Example use
 	var userData = {"name": tempName,"email": tempEmail,"password": tempPsw,"adminStatus": false,"bio": "", "groups": [], "favoriteSpot":[], "likeSpot":[],"username" : tempEmail};
 
-	AjaxPost(link+"users", "POST",  "application/json",  "application/json",  "json", userData);
+	AjaxPost(link+"users", "POST",  "application/json",  "application/json",  "json", userData, function() {
+		alert("Could not create new account! please try again")
+	});
 }
