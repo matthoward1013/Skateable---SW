@@ -55,7 +55,7 @@
               Re-Enter Password<span class="req">*</span>
             </label>
               <br>
-            <input type="password" id="passTwo" required autocomplete="off"/>
+            <input type="password" id="passTwo" required autocomplete="off" onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#signupbtn').trigger('click');}"/>
               <br>
             </div>
 

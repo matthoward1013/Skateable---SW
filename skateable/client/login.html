@@ -13,10 +13,10 @@
 
   <div class="container">
     <label for="uname"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" id="uname" required>
+    <input type="text" placeholder="Enter Email" id="uname" required onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#loginbtn').trigger('click');}">
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" id="psw" required>
+    <input type="password" placeholder="Enter Password" id="psw" required onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#loginbtn').trigger('click');}">
 <div class="container2">
     <button type="button" id= "loginbtn" onclick="Login();">Login</button>
     <button type="button" id="signupbtn" onclick="location.href='signup.html'">Sign Up</button>

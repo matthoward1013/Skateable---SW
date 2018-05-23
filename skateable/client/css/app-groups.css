@@ -147,6 +147,11 @@ a {
     text-align: center;
 }
 
+#groupsList {
+    overflow-y: scroll;
+	height: 85%;
+}
+
 h4, h5, h6{
 	text-align: left;
 }
