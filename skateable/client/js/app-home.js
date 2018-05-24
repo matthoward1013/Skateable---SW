@@ -1,7 +1,6 @@
 /*global $, document, google, ko, theaters, ajax, setTimeout, console, alert, window, location, sessionStorage, navigator*/
 /*jshint esversion: 6 */
 var map;
-
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
@@ -252,7 +251,7 @@ function UpdateComment(comment)
 		var newComment = comment;
 
 		var patchData = {};
-		if(newComment !== "")
+		if(newComment !== "" && newComment.length <= 20)
 		{
 			if(curSkateSpot.comments.length < 10)
 			{
@@ -272,6 +271,15 @@ function UpdateComment(comment)
 				if(document.getElementById("makeComment") != null)
 					document.getElementById("makeComment").disabled = false;
 			});
+		}
+		else{
+			if (newComment == "")
+				alert("Comment is blank");
+			else 
+			{
+				alert("Comment cannot be more than 20 characters");
+			}
+			
 		}
 	});
 }
@@ -471,18 +479,16 @@ let group = function(group){
 function rightArrowScroll () {
         let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
         if (currentCmt === 0) {
-            return;
+           $('#comment').text(curSkateSpot.comments[curSkateSpot.comments.length -1]);
         } else {
             let nextCmt = currentCmt - 1;
             $('#comment').text(curSkateSpot.comments[nextCmt]);
         }
 }
-    
 function leftArrowScroll() {
         let currentCmt = jQuery.inArray($('#comment').text(), curSkateSpot.comments);
         if (currentCmt === curSkateSpot.comments.length - 1) {
-            console.log("No more");
-            return;
+           $('#comment').text(curSkateSpot.comments[0]);
         } else {
             let previousCmt = currentCmt + 1;
             console.log(previousCmt);
