@@ -31,16 +31,16 @@ function signUp(){
 		var tempEmail = $("#emailOne").val().toLowerCase();
 	else 
 	{
-        let errorMsg = $("<p class='error'></p>").text("Email does not match or is not a valid email");
-        $("#emailTwo").before(errorMsg);
+		alert("Email does not match or is not a valid email");
+       // let errorMsg = $("<p class='error'></p>").text("Email does not match or is not a valid email");
+       // $("#emailTwo").before(errorMsg);
 		return;
 	}
 	if($("#pass").val()  ===$("#passTwo").val() )
 			var tempPsw = $("#pass").val();
 	else
 	{
-        let errorMsg = $("<p class='error'></p>").text("Password does not match");
-        $("#passTwo").before(errorMsg);
+		alert("Password does not match");
 		return;
 	}
 
