@@ -140,43 +140,45 @@ function yayRating()
 		if(document.getElementsByClassName("nayBtn")[0] != undefined)
 			document.getElementsByClassName("nayBtn")[0].disabled = false;
 		}, 1000);
+	AjaxGet(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key) ,function(data){
+		curSkateSpot.rating = data.rating;	
+		var spotPatchData = {};	
+		if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
+		{
+			curSkateSpot.rating = curSkateSpot.rating - 1;
+			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
+			$('#ratingNumber').text(curSkateSpot.rating);
+		}
+		else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
+		{
+			curSkateSpot.rating = curSkateSpot.rating + 2;
+			
+			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);	
+			curUser.likeSpot.push(curSkateSpot.id + "yay");
+			$('#ratingNumber').text(curSkateSpot.rating);
+		}
+		else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
+		{
+			curSkateSpot.rating = curSkateSpot.rating + 1;
+			curUser.likeSpot.push(curSkateSpot.id + "yay");
+			$('#ratingNumber').text(curSkateSpot.rating);
+		}
 	
-	var spotPatchData = {};	
-	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
-	{
-		curSkateSpot.rating = curSkateSpot.rating - 1;
-		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
-        $('#ratingNumber').text(curSkateSpot.rating);
-	}
-	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
-	{
-		curSkateSpot.rating = curSkateSpot.rating + 2;
-		
-		curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);	
-		curUser.likeSpot.push(curSkateSpot.id + "yay");
-        $('#ratingNumber').text(curSkateSpot.rating);
-	}
-	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
-	{
-		curSkateSpot.rating = curSkateSpot.rating + 1;
-		curUser.likeSpot.push(curSkateSpot.id + "yay");
-        $('#ratingNumber').text(curSkateSpot.rating);
-	}
-	
-		spotPatchData["rating"] = curSkateSpot.rating;
+			spotPatchData["rating"] = curSkateSpot.rating;
 
-		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link +"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+			//patches the skatespot data to include the new rating and or comment
+			AjaxPatch(link +"skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+				AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
-				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
-				{
-					document.getElementsByClassName("yayBtn")[0].disabled = false;
-					document.getElementsByClassName("nayBtn")[0].disabled = false;
-				}
+					sessionStorage.setItem("curUser", JSON.stringify(curUser));
+					if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+					{
+						document.getElementsByClassName("yayBtn")[0].disabled = false;
+						document.getElementsByClassName("nayBtn")[0].disabled = false;
+					}
+				});
 			});
 		});
 	
@@ -194,45 +196,47 @@ function nayRating()
 		if(document.getElementsByClassName("nayBtn")[0] != undefined)
 			document.getElementsByClassName("nayBtn")[0].disabled = false;
 		}, 1000);
-	
-	var spotPatchData = {};	
-	if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
-	{
-			curSkateSpot.rating = curSkateSpot.rating - 2;
-			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
+	AjaxGet(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key) ,function(data){
+		curSkateSpot.rating = data.rating;
+		var spotPatchData = {};	
+		if(curUser.likeSpot.indexOf(curSkateSpot.id + "yay") !== -1)
+		{
+				curSkateSpot.rating = curSkateSpot.rating - 2;
+				curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "yay"),1);
+				curUser.likeSpot.push(curSkateSpot.id + "nay");
+				$('#ratingNumber').text(curSkateSpot.rating);
+		}
+		else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
+		{
+			curSkateSpot.rating = curSkateSpot.rating + 1;
+			curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);
+			$('#ratingNumber').text(curSkateSpot.rating);
+		}
+		else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
+		{
+			curSkateSpot.rating = curSkateSpot.rating - 1;
 			curUser.likeSpot.push(curSkateSpot.id + "nay");
 			$('#ratingNumber').text(curSkateSpot.rating);
-	}
-	else if (curUser.likeSpot.indexOf(curSkateSpot.id + "nay") !== -1)
-	{
-        curSkateSpot.rating = curSkateSpot.rating + 1;
-        curUser.likeSpot.splice(curUser.likeSpot.indexOf(curSkateSpot.id + "nay"),1);
-        $('#ratingNumber').text(curSkateSpot.rating);
-	}
-	else if ((curUser.likeSpot.indexOf(curSkateSpot.id + "nay") === -1) && (curUser.likeSpot.indexOf(curSkateSpot.id + "yay") === -1))
-	{
-		curSkateSpot.rating = curSkateSpot.rating - 1;
-		curUser.likeSpot.push(curSkateSpot.id + "nay");
-        $('#ratingNumber').text(curSkateSpot.rating);
-	}
+		}
 	
-		spotPatchData["rating"] = curSkateSpot.rating;
+			spotPatchData["rating"] = curSkateSpot.rating;
 
-		//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
+			//patches the skatespot data to include the new rating and or comment
+			AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), spotPatchData ,function(data){
 			
 					//patches the skatespot data to include the new rating and or comment
-			AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
+				AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
 	
-				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-				if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
-				{
-					document.getElementsByClassName("yayBtn")[0].disabled = false;
-					document.getElementsByClassName("nayBtn")[0].disabled = false;
-				}
-
+					sessionStorage.setItem("curUser", JSON.stringify(curUser));
+					if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
+					{
+						document.getElementsByClassName("yayBtn")[0].disabled = false;
+						document.getElementsByClassName("nayBtn")[0].disabled = false;
+					}
+	
+				});
 			});
-		});
+	});
 }
 
 //needs skateSpot id to patch 
@@ -243,32 +247,33 @@ function UpdateComment(comment)
 		if(document.getElementById("makeComment") != null)
 			document.getElementById("makeComment").disabled = false;
 		}, 2000);
-		
-	var newComment = comment;
+	AjaxGet(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key) ,function(data){
+		curSkateSpot.comments = data.comments;
+		var newComment = comment;
 
-	var patchData = {};
-	if(newComment !== "")
-	{
-		if(curSkateSpot.comments.length < 10)
+		var patchData = {};
+		if(newComment !== "")
 		{
-			curSkateSpot.comments.push(newComment);
-			patchData["comments"] = curSkateSpot.comments;
-		}
-		else if (curSkateSpot.comments.length >= 10)
-		{
-			curSkateSpot.comments.reverse();
-			curSkateSpot.comments.pop();
-			curSkateSpot.comments.reverse();
-			curSkateSpot.comments.push(newComment);
-			
-		}
+			if(curSkateSpot.comments.length < 10)
+			{
+				curSkateSpot.comments.push(newComment);
+				patchData["comments"] = curSkateSpot.comments;
+			}
+			else if (curSkateSpot.comments.length >= 10)
+			{
+				curSkateSpot.comments.reverse();
+				curSkateSpot.comments.pop();
+				curSkateSpot.comments.reverse();
+				curSkateSpot.comments.push(newComment);
+			}
 			//patches the skatespot data to include the new rating and or comment
-		AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
-			
-			if(document.getElementById("makeComment") != null)
-				document.getElementById("makeComment").disabled = false;
-		});
-	}
+			AjaxPatch(link + "skateSpots/"+ String(curSkateSpot.id) + "?access_token=" + String(curUser.key), patchData ,function(data){
+				
+				if(document.getElementById("makeComment") != null)
+					document.getElementById("makeComment").disabled = false;
+			});
+		}
+	});
 }
 
 function UpdateFavoriteSkateSpot()
