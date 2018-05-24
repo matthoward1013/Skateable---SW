@@ -302,10 +302,14 @@ function UpdateFavoriteSkateSpot()
 	if(index === -1)
 	{
 		curUser.favoriteSpot.push(curSkateSpot.id);
+        $('#favBtn').css("background-color", "yellow");
+        $('#favBtn').text("Unfavorite");
 	}
 	//else if the user wants to unfavorite the spot
 	else{
 		curUser.favoriteSpot.splice(index,1);
+        $('#favBtn').css("background-color", "white");
+        $('#favBtn').text("Favorite");
 	}
 	
 	patchData = {"favoriteSpot":curUser.favoriteSpot};
@@ -568,7 +572,16 @@ let ViewModel = function () {
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
-                    
+                    var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
+                    let text;
+	                //if the current skatespot is not in the curuser favorite spot array
+	                if(index === -1) {
+                        $('#favBtn').css("background-color", "yellow");
+                        $('#favBtn').text("Unfavorite");
+	                } else {
+                        $('#favBtn').css("background-color", "white");
+                        $('#favBtn').text("Favorite");
+	                }
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
