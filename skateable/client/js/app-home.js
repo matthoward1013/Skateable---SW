@@ -572,16 +572,7 @@ let ViewModel = function () {
                 //On click event listener for the markers
                 google.maps.event.addListener(spot.marker, 'click', function() {
 					curSkateSpot = spot;
-                    var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
-                    let text;
-	                //if the current skatespot is not in the curuser favorite spot array
-	                if(index === -1) {
-                        $('#favBtn').css("background-color", "yellow");
-                        $('#favBtn').text("Unfavorite");
-	                } else {
-                        $('#favBtn').css("background-color", "white");
-                        $('#favBtn').text("Favorite");
-	                }
+					var text;
 					//UpdateFavoriteSkateSpot(spot); //used as test
                     infoWindow.open(map, this);
                     map.panTo(this.getPosition());
@@ -604,6 +595,19 @@ let ViewModel = function () {
                     console.log(jQuery.inArray(curSkateSpot.id, curUser.favoriteSpot));*/
                     
                 });
+				google.maps.event.addListener(infoWindow, 'domready', function() {    
+				    var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
+                    let text;
+	                //if the current skatespot is not in the curuser favorite spot array
+	                if(index !== -1) {
+                        $('#favBtn').css("background-color", "yellow");
+                        $('#favBtn').text("Unfavorite");
+	                } else {
+                        $('#favBtn').css("background-color", "white");
+                        $('#favBtn').text("Favorite");
+	                }
+				});
+
                 markers.push(marker);
             });
 		
