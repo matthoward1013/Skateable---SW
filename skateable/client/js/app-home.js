@@ -705,6 +705,18 @@ let ViewModel = function () {
                     } 
 								
 							});
+							google.maps.event.addListener(infoWindow, 'domready', function() {    
+								var index = curUser.favoriteSpot.indexOf(curSkateSpot.id);
+								let text;
+								//if the current skatespot is  in the curuser favorite spot array
+								if(index !== -1) {
+									$('#favBtn').css("background-color", "yellow");
+									$('#favBtn').text("Unfavorite");
+								} else {
+									$('#favBtn').css("background-color", "white");
+									$('#favBtn').text("Favorite");
+								}
+							});
 							if(document.getElementById("yesButton") != null)
 								document.getElementById("yesButton").disabled = false;
 						
