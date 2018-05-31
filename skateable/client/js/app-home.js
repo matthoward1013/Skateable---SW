@@ -749,6 +749,11 @@ let ViewModel = function () {
 				document.getElementById("yesButton").disabled = false;
             alert('Please enter a name and address!');
         }
+		$("#pinName").val('');
+		$("#places-search").val('');
+		$("#commentInput").val('');
+
+
     };
 	
     
