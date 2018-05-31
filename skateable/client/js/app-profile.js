@@ -100,16 +100,16 @@ let ViewModel = function () {
 			changedData["name"] = $("#name").text();
 			curUser.name = changedData.name;
 		}
-		if($("#mail").text().toLowerCase() !== curUser.email.toLowerCase() && $("#mail").text() !== "" && $("#mail").text().includes("@"))
+		if($("#mail").text() !== "" && $("#mail").text().includes("@"))
 		{
-			changedData["email"] = $("#mail").text().toLowerCase();
-			curUser.email = changedData.email;
-			changedData["username"] = curUser.email;
+			if($("#mail").text().toLowerCase() !== curUser.email.toLowerCase())
+			{
+				changedData["email"] = $("#mail").text().toLowerCase();
+				curUser.email = changedData.email;
+				changedData["username"] = curUser.email;
+			}
 		}
-		else 
-		{
-			alert("Please enter a valid email");
-		}
+
 		
 		if(changedData["name"] !== undefined || changedData["email"] !== undefined){
 			

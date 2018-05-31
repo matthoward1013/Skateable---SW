@@ -139,6 +139,7 @@ function postMessage()
 //creates a new group
 function createGroup()
 {
+
 	//insert data from form into here
 	//groupId is how other members can join the group so we need to display this as well so users can send to their friends
 	//groupId is different then the id of the group in mongo
@@ -368,8 +369,14 @@ let ViewModel = function () {
 			document.getElementById("chatBox").innerHTML += curGroup.messages[j] + '<br>';
 		}
 		document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
-		
+		$('message').focus();
 	};
+	$('#groupModal').on('shown.bs.modal', function() {
+		$('#cGroupName').focus();
+	})
+	$('#addModal').on('shown.bs.modal', function() {
+		$('#aGroupID').focus();
+	})
 }
 
 ko.applyBindings(new ViewModel());
