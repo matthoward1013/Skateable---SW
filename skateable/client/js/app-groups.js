@@ -361,6 +361,7 @@ let ViewModel = function () {
 		}
 		document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 		
+		$('#message').focus();
 
 	}
 
