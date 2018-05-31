@@ -49,14 +49,14 @@
           <h2>Notes</h2>      
 <textarea id="bio" rows="4" cols="40" readonly>Notes...
 </textarea>
+	<div class="settingsButton">
+    <button  id="profBttn" data-toggle="modal" data-target="#accModal">Edit Notes</button>
+    <button  id="profBttn" data-toggle="modal" data-target="#pwModal">Change Password</button>
+     </div>
         </div>        
           </div>
         </div>    
 </div>
-    
-    <div class="settingsButton">
-    <button  id="profBttn" data-toggle="modal" data-target="#accModal">Edit Notes</button>
-    <button  id="profBttn" data-toggle="modal" data-target="#pwModal">Change Password</button>
 
         <div class="modal fade" id="pwModal" role="dialog">  
         <div class="modal-content">
@@ -106,13 +106,12 @@
               <br>  <br>
             </div>
    <div class="modal-footer">
-        <button type="button" class="btn btn-success" id = "editProfBtn" data-bind="click: editBio">Save Notes Edits</button>
+        <button type="button" class="btn btn-success" id = "editProfBtn" data-bind="click: editBio">Save Note Edits</button>
        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
 </div>
         
-    </div>
     </div>
    
 </div>   
