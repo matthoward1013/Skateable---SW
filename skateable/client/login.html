@@ -13,7 +13,7 @@
 
   <div class="container">
     <label for="uname"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" id="uname" required onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#loginbtn').trigger('click');}">
+    <input type="text" placeholder="Enter Email" id="uname" required onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#loginbtn').trigger('click');}" autofocus>
 
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" id="psw" required onkeypress = "if (event.keyCode == 13){ event.preventDefault(); $('#loginbtn').trigger('click');}">
@@ -33,4 +33,7 @@
           
         
     </body>
+	<footer>
+	*Browser Requirements: IE 11+, Firefox 59+, Google Chrome 49+, Safari 11+
+	</footer>
 </html>

@@ -757,6 +757,11 @@ let ViewModel = function () {
 				document.getElementById("yesButton").disabled = false;
             alert('Please enter a name and address!');
         }
+		$("#pinName").val('');
+		$("#places-search").val('');
+		$("#commentInput").val('');
+
+
     };
 	
     
@@ -790,8 +795,8 @@ let ViewModel = function () {
     //Create a pin modal function
     
     self.openModal = function() {
-        pinModal.modal('show');  
-    };
+        pinModal.modal('show');     
+	};
 	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
 		getMeetups( function(temp){
