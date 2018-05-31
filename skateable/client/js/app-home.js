@@ -3,6 +3,7 @@
 var map;
 var link = "http://localhost:3000/api/";
 var curSkateSpot = {};
+var skateSpots = [];
 var curUser = JSON.parse(sessionStorage.getItem("curUser"));
 
 
@@ -170,7 +171,14 @@ function yayRating()
 			
 					//patches the skatespot data to include the new rating and or comment
 				AjaxPatch(link + "users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), curUser ,function(data){
-	
+					for (let i = 0; i < skateSpots.length; i++)
+					{
+						if(skateSpots[i].id === curSkateSpot.id)
+						{
+							skateSpots[i].rating = curSkateSpot.rating;
+							break;
+						}
+					}
 					sessionStorage.setItem("curUser", JSON.stringify(curUser));
 					if(document.getElementsByClassName("yayBtn")[0] != undefined && document.getElementsByClassName("yayBtn")[0] != undefined)
 					{
@@ -516,7 +524,6 @@ let ViewModel = function () {
     
     let geocoder = new google.maps.Geocoder();
 	
-	var skateSpots = [];
 	let markers = ko.observableArray([]);
 	self.uiList = ko.observableArray([]);
 
@@ -583,6 +590,7 @@ let ViewModel = function () {
                     infoWindow.setContent(contentString);
                     $('#meetUpSpotName').text(curSkateSpot.name);
                     $('#meetUpSpotAddress').text(curSkateSpot.streetAddress);
+					$('#ratingNumber').text(curSkateSpot.rating);
                     if (spot.comments.length === 0 || (spot.comments.length === 1 && spot.comments[0] === "")) {
                         $('#comment').text("No comments yet available!");
                     } 

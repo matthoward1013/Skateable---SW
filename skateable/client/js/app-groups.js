@@ -65,12 +65,17 @@ function AjaxPatch(url,data, callback, callbackError)
 
 function postMessage()
 {
+	
 	//insert data from form into here
 	//user enters in messages and from that it will query the db
 	document.getElementById("msgButton").disabled = true;
 	setTimeout(function (){document.getElementById("msgButton").disabled = false;}, 2000);	
+	
 	var message = $("#message").val();
 	var tempDate = new Date();
+	
+	AjaxGet(link+"groups/"+ String(curGroup.id) + "?access_token=" + String(curUser.key), function(groupData){
+		var messages = groupData.messages;
 
 	if(message != "")
 	{
@@ -103,13 +108,15 @@ function postMessage()
 				}
 				amOrPm = "AM";
 		}
-				
-			curGroup.messages.push(curUser.name + " @ " + tmpHourString + ":" + tmpMinString + amOrPm + ": " + message);
-			var prevMes = document.getElementById("chatBox").innerHTML; 
-			document.getElementById("chatBox").innerHTML = prevMes + curGroup.messages[curGroup.messages.length - 1] + '<br>';
+		document.getElementById("chatBox").innerHTML = "";
+		messages.push(curUser.name + " @ " + tmpHourString + ":" + tmpMinString + amOrPm + ": " + message);
+		for(var j = 0; j < messages.length; j++)
+		{
+			document.getElementById("chatBox").innerHTML += messages[j] + '<br>';
+		}
 			
 	
-			var groupPatchData = {"messages": curGroup.messages};
+			var groupPatchData = {"messages": messages};
 
 			// http://localhost:3000/api/groups/5af4b92f4365dcb3c4f53360?access_token=Ouz0cE8CfEpTlBbPFBeTFROIHGCkOROuM4Ln4OH7poApl44zctz9obJZ7t2B6ZLZ
 
@@ -125,6 +132,7 @@ function postMessage()
 	else{
 		alert("Please enter a message");
 	}
+	});
 }
 
 
@@ -361,9 +369,7 @@ let ViewModel = function () {
 		}
 		document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 		
-
-	}
-
-};
+	};
+}
 
 ko.applyBindings(new ViewModel());
