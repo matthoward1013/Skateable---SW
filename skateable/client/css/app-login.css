@@ -58,8 +58,16 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    color: white;
+    color: black;
+	font-size: 150%;
+	font-weight: bold;
     text-align: center;
+	
+}
+.requirements {
+	    width: 50%;
+    min-width: 250px;
+	height: auto;
 }
 
 @media only screen and (max-width: 1000px) {

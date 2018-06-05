@@ -116,8 +116,7 @@ let ViewModel = function () {
 			AjaxPatch(link+"users/"+ String(curUser.id) + "?access_token=" + String(curUser.key), changedData ,function(data){
 				//store the changes to the curUser in sessionStorage
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
-			
-				console.log(data);
+				alert("User was successfully updated!");
 				location.href = 'profile.html';
 			});		
 		}			
@@ -141,10 +140,9 @@ let ViewModel = function () {
 				//store the changes to the curUser in sessionStorage
 				sessionStorage.setItem("curUser", JSON.stringify(curUser));
 			
-				console.log(data);
+				alert("Notes were successfully updated");
 				//document.getElementById("editProfBtn").disabled = false;
 				location.href = 'profile.html';
-						
 			});		
 		}
 		else{

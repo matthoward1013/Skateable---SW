@@ -171,7 +171,7 @@ function createGroup()
 				
 			});		
 		}, function (){
-				alert("Could not create the new group! Please reload the browser and try again");
+				alert("A group with that ID already exists!");
 				
 			});
 	}
