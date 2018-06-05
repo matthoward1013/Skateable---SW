@@ -798,6 +798,10 @@ let ViewModel = function () {
         pinModal.modal('show');     
 	};
 	
+	$('#commentModal').on('shown.bs.modal', function() {
+		$('#commentText').focus();
+	})
+	
 	$( "#vmeetModal" ).on('shown.bs.modal', function(){
 		getMeetups( function(temp){
 	
